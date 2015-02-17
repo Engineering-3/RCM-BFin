@@ -1,0 +1,20 @@
+
+a:active { color: #ff6600; font-size: 10pt; font-family: arial, helvetica, sansserif; text-style: underline  }
+a:hover { color: #ff6347; font-size: 10pt; font-family: arial, helvetica, sansserif; text-style: underline  }
+a:link { color: #660000; font-size: 10pt; font-family: arial, helvetica, sansserif; text-style: underline  }
+a:visited { color: #666666; font-size: 10pt; font-family: arial, helvetica, sansserif; text-style: underline  }
+b { font-weight: bold; font-size: 11pt; font-family: arial, helvetica, sansserif }
+body { color: #000066; font-size: 10pt; font-family: arial, helvetica, sansserif }
+caption { color: #000; font-weight: bold; font-size: 14pt; font-family: arial, helvetica, sansserif; text-decoration: none }
+div { color: #000066; font-size: 10pt; font-family: arial, helvetica, sansserif }
+h1 { color: #000066; font-size: 18pt; font-family: arial, helvetica, sansserif }
+h2 { color: #000066; font-size: 14pt; font-family: arial, helvetica, sansserif }
+h3 { color: #000066; font-size: 12pt; font-family: arial, helvetica, sansserif }
+i { font: 10pt arial, helvetica, sansserif }
+input { font: 10pt Arial, Helvetica, sans-serif; width: 130px }
+li { color: #000066; font-size: 10pt; font-family: arial, helvetica, sansserif }
+p { color: #000066; font-size: 10pt; font-family: arial, helvetica, sansserif }
+superheader { color: #000000; font-size: 22pt; font-family: arial, helvetica, sansserif; text-decoration: none }
+td { color: #000066; font-size: 10pt; font-family: arial, helvetica, sansserif }
+tt { color: #000066; font-size: 8pt; font-family: arial, helvetica, sansserif; text-decoration: none }
+ul { color: #000066; font-size: 10pt; font-family: arial, helvetica, sansserif }
