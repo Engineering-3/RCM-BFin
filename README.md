@@ -9,15 +9,15 @@ This is the primary processing board for the RCM Control Stack.
 Repository Contents
 -------------------
 
-* **/RCM\-Bfin\_v1_board/** Gerbers and schematic (PDF)
-* **/RCM\-Bfin\-Firmware/matchport/** Matchport radio custom firmware
-* **/RCM\-Bfin\-Firmware/RCM-Bfin_gcc/** Firmware for Blackfin processor
+* **/RCM\-BFin\_v1_board/** Gerbers and schematic (PDF)
+* **/RCM\-BFin\-Firmware/matchport/** Matchport radio custom firmware
+* **/RCM\-BFin\-Firmware/RCM-BFin_gcc/** Firmware for Blackfin processor
 
 
 Version History
 ---------------
-* [RCM\-Bfin\_v1\_board](https://github.com/Engineering-3/RCM-BFin/tree/master/RCM-Bfin_v1_board)- Version 1 of hardware - first released version
-* [rcm\_bfin\_v2\_test53.ldr](https://github.com/Engineering-3/RCM-BFin/blob/master/RCM-Bfin-Firmware/RCM-Bfin_gcc/releases/rcm_bfin_v2_test53.ldr)- Version 2 test 53 - inital public release of firmware
+* [RCM\-BFin\_v1\_board](https://github.com/Engineering-3/RCM-BFin/tree/master/RCM-BFin_v1_board)- Version 1 of hardware - first released version
+* [rcm\_BFin\_v2\_test53.ldr](https://github.com/Engineering-3/RCM-BFin/blob/master/RCM-BFin-Firmware/RCM-BFin_gcc/releases/rcm_bfin_v2_test53.ldr)- Version 2 test 53 - inital public release of firmware
 
 
 License Information
