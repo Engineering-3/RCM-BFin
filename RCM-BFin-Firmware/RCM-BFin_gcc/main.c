@@ -1115,11 +1115,17 @@ void ProcessCommands(uint8_t CharIn)
         case 'N':    // Setup streaming sensor packets back to PC command
             PacketBegin();
             switch (getch()) {
-                case 'D':    // For single bit digital sensors
-                    StreamingParseDigitalBit();
+                case 'D':    // For single bit digital sensors - normal I2C
+                    StreamingParseDigitalBit(I2C_NORMAL);
                     break;
-                case 'B':    // For byte (single or multiple) digital sensors
-                    StreamingParseDigitalByte();
+                case 'd':    // For single bit digital sensors - repeated start I2C
+                    StreamingParseDigitalBit(I2C_REPEATED_START);
+                    break;
+                case 'B':    // For byte (single or multiple) digital sensors - normal I2C
+                    StreamingParseDigitalByte(I2C_NORMAL);
+                    break;
+                case 'b':    // For byte (single or multiple) digital sensors - repeated start I2C
+                    StreamingParseDigitalByte(I2C_REPEATED_START);
                     break;
                 case 'A':    // For analog sensors
                     StreamingParseAnalogBit();

@@ -43,6 +43,7 @@ typedef struct
     uint32_t Bit;
     uint32_t Rate;                // if zero, this stream is off
     uint32_t RateCounter;
+    I2CRead_Type Type;            // I2C_NORMAL or I2C_REPEATED_START
 } StreamingDigitalBitType;
 
 typedef struct 
@@ -52,6 +53,7 @@ typedef struct
     uint32_t Bytes;
     uint32_t Rate;                // if zero, this stream is off
     uint32_t RateCounter;
+    I2CRead_Type Type;            // I2C_NORMAL or I2C_REPEATED_START
 } StreamingDigitalByteType;
 
 /* Structure to hold analog sensor streaming into */
@@ -105,7 +107,7 @@ void StreamingParseAnalogBit(void)
         if (Channel == Analogs[i].AnalogChannel)
         {
             // All we need to do is update the rate
-            // If Rate is zero, this will efectively shut this channel off
+            // If Rate is zero, this will effectively shut this channel off
             Analogs[i].Rate = Rate;
             Analogs[i].RateCounter = 0;    // Force a reload
             // Now we're done
@@ -138,7 +140,7 @@ void StreamingParseAnalogBit(void)
 
 /*
  * Handle the ND command - streams a single bit
- * Format is NDarbtt
+ * Format is NDarbtt (or Ndarbtt for repeated start)
  * where
  *   a is a one byte binary I2C address to read
  *   r is a one byte binary I2C register to read
@@ -147,10 +149,10 @@ void StreamingParseAnalogBit(void)
  *       in milliseconds between sensor streaming packet sends
  *
  * If tt = 0 then streaming from this I2C address and register is turned off
- * Returns "#NRD" when the ND command is received
+ * Returns "#NRD" or "#NRd" for repeated-start when the ND or Nd command is received
  * And starts (or stops) #ND responses at the desired streaming interval
  */
-void StreamingParseDigitalBit(void)
+void StreamingParseDigitalBit(I2CRead_Type I2CReadMethod)
 {
     uint32_t Address, Register, Bit, Rate, i;
     
@@ -174,8 +176,16 @@ void StreamingParseDigitalBit(void)
             // If Rate is zero, this will effectively shut this channel off
             DigitalBits[i].Rate = Rate;
             DigitalBits[i].RateCounter = 0;    // Force a reload
+            DigitalBits[i].Type = I2CReadMethod; // Always update the type
             // Now we're done
-            printf("#NRD");
+            if (I2CReadMethod == I2C_NORMAL)
+            {
+              printf("#NRD");
+            }
+            else
+            {
+              printf("#NRd");
+            }
             return;
         }
     }
@@ -193,20 +203,35 @@ void StreamingParseDigitalBit(void)
             DigitalBits[i].Bit = Bit;
             DigitalBits[i].Rate = Rate;
             DigitalBits[i].RateCounter = 0;    // Force a reload
+            DigitalBits[i].Type = I2CReadMethod; // Always update the type
             // Now we're done
-            printf("#NRD");
+            if (I2CReadMethod == I2C_NORMAL)
+            {
+              printf("#NRD");
+            }
+            else
+            {
+              printf("#NRd");
+            }
             return;
         }
     }
     
     // This is an error - we've used up all of the available slots
     // So fail silently
-    printf("#NRD");
+    if (I2CReadMethod == I2C_NORMAL)
+    {
+      printf("#NRD");
+    }
+    else
+    {
+      printf("#NRd");
+    }
 }
 
 /*
  * Handle the NB command - streams a byte or more than one byte from an I2C address and register
- * Format is NBarbtt
+ * Format is NBarbtt (or Nbarbtt for repeated-start)
  * where
  *   a is a one byte binary I2C address to read
  *   r is a one byte binary I2C register to read
@@ -215,10 +240,10 @@ void StreamingParseDigitalBit(void)
  *       in milliseconds between sensor streaming packet sends
  *
  * If tt = 0 then streaming from this I2C address and register is turned off
- * Returns "#NRB" when the NB command is received
+ * Returns "#NRB" (or "#NRb" for repeated-start) when the NB or Nb command is received
  * And starts (or stops) #NB responses at the desired streaming interval
  */
-void StreamingParseDigitalByte(void)
+void StreamingParseDigitalByte(I2CRead_Type I2CReadMethod)
 {
     uint32_t Address, Register, Bytes, Rate, i;
     
@@ -247,8 +272,16 @@ void StreamingParseDigitalByte(void)
             // If Rate is zero, this will effectively shut this channel off
             DigitalBytes[i].Rate = Rate;
             DigitalBytes[i].RateCounter = 0;    // Force a reload
+            DigitalBytes[i].Type = I2CReadMethod; // Always update the I2C read type
             // Now we're done
-            printf("#NRB");
+            if (I2CReadMethod == I2C_NORMAL)
+            {
+              printf("#NRB");
+            }
+            else
+            {
+              printf("#NRb");
+            }
             return;
         }
     }
@@ -266,15 +299,30 @@ void StreamingParseDigitalByte(void)
             DigitalBytes[i].Bytes = Bytes;
             DigitalBytes[i].Rate = Rate;
             DigitalBytes[i].RateCounter = 0;    // Force a reload
+            DigitalBytes[i].Type = I2CReadMethod; // Always update the I2C read type
             // Now we're done
-            printf("#NRB");
+            if (I2CReadMethod == I2C_NORMAL)
+            {
+              printf("#NRB");
+            }
+            else
+            {
+              printf("#NRb");
+            }
             return;
         }
     }
     
     // This is an error - we've used up all of the available slots
     // So fail silently
-    printf("#NRB");
+    if (I2CReadMethod == I2C_NORMAL)
+    {
+      printf("#NRB");
+    }
+    else
+    {
+      printf("#NRb");
+    }
 }
 
 /*
@@ -495,7 +543,14 @@ uint32_t StreamingProcess(void)
                     // Set up the register to read from
                     i2c_data[0] = DigitalBits[i].I2CRegister;
                     // Perform the sensor read
-                    i2cread((uint8_t)DigitalBits[i].I2CAddress, (uint8_t *)i2c_data, 1, SCCB_ON);
+                    if (DigitalBits[i].Type == I2C_NORMAL)
+                    {
+                      i2cread((uint8_t)DigitalBits[i].I2CAddress, (uint8_t *)i2c_data, 1, SCCB_ON);
+                    }
+                    else
+                    {
+                      i2creadrs((uint8_t)DigitalBits[i].I2CAddress, (uint8_t *)i2c_data, 1, SCCB_ON);
+                    }
                     /// TODO: put in check for failed I2C call
                     if (i2c_data[0] & (1 << DigitalBits[i].Bit))
                     {
@@ -508,12 +563,24 @@ uint32_t StreamingProcess(void)
                     
                     // And send out a packet
                     PacketBegin();
-                    printf("#ND%c%c%c%c",
-                        (uint8_t)DigitalBits[i].I2CAddress,
-                        (uint8_t)DigitalBits[i].I2CRegister,
-                        (uint8_t)DigitalBits[i].Bit,
-                        (uint8_t)Result
-                    );
+                    if (DigitalBits[i].Type == I2C_NORMAL)
+                    {
+                      printf("#ND%c%c%c%c",
+                          (uint8_t)DigitalBits[i].I2CAddress,
+                          (uint8_t)DigitalBits[i].I2CRegister,
+                          (uint8_t)DigitalBits[i].Bit,
+                          (uint8_t)Result
+                      );
+                    }
+                    else
+                    {
+                      printf("#Nd%c%c%c%c",
+                          (uint8_t)DigitalBits[i].I2CAddress,
+                          (uint8_t)DigitalBits[i].I2CRegister,
+                          (uint8_t)DigitalBits[i].Bit,
+                          (uint8_t)Result
+                      );
+                    }
                     PacketEnd(true);
                 }
             }
@@ -534,15 +601,32 @@ uint32_t StreamingProcess(void)
                     // Set up the register to read from
                     i2c_data[0] = DigitalBytes[i].I2CRegister;
                     // Perform the sensor read
-                    i2cread((uint8_t)DigitalBytes[i].I2CAddress, (uint8_t *)i2c_data, DigitalBytes[i].Bytes, SCCB_ON);
+                    if (DigitalBytes[i].Type == I2C_NORMAL)
+                    {
+                      i2cread((uint8_t)DigitalBytes[i].I2CAddress, (uint8_t *)i2c_data, DigitalBytes[i].Bytes, SCCB_ON);
+                    }
+                    else
+                    {
+                      i2creadrs((uint8_t)DigitalBytes[i].I2CAddress, (uint8_t *)i2c_data, DigitalBytes[i].Bytes, SCCB_ON);
+                    }
                     /// TODO: put in check for failed I2C call
                     
                     // And send out a packet
                     PacketBegin();
-                    printf("#NB%c%c",
-                        (uint8_t)DigitalBytes[i].I2CAddress,
-                        (uint8_t)DigitalBytes[i].I2CRegister
-                    );
+                    if (DigitalBytes[i].Type == I2C_NORMAL)
+                    {
+                      printf("#NB%c%c",
+                          (uint8_t)DigitalBytes[i].I2CAddress,
+                          (uint8_t)DigitalBytes[i].I2CRegister
+                      );
+                    }
+                    else
+                    {
+                      printf("#Nb%c%c",
+                          (uint8_t)DigitalBytes[i].I2CAddress,
+                          (uint8_t)DigitalBytes[i].I2CRegister
+                      );
+                    }
                     for (j=0; j < DigitalBytes[i].Bytes; j++)
                     {
                         printf("%c", i2c_data[j]);
@@ -575,7 +659,7 @@ uint32_t StreamingProcess(void)
                         (uint8_t)(Result >> 8)
                     );
                     PacketEnd(true);
-					
+                    
                 }
             }
         }
@@ -645,27 +729,27 @@ uint32_t StreamingProcess(void)
  */
 void StopAllStreaming(void)
 {
-	uint32_t i;
-	
-	// Shut everybody down
-	for (i = 0; i < STREAMING_MAX_DIGITAL_BITS; i++)
-	{
-		DigitalBits[i].Rate = 0;
-	}
-	for (i = 0; i < STREAMING_MAX_DIGITAL_BYTES; i++)
-	{
-		DigitalBytes[i].Rate = 0;
-	}
-	for (i = 0; i < STREAMING_MAX_ANALOGS; i++)
-	{
-		Analogs[i].Rate = 0;
-	}
-	for (i = 0; i < STREAMING_MAX_PICOCVARS; i++)
-	{
-		PicoCVars[i].Rate = 0;
-	}
-	SetOption(OPT_STREAM_VIDEO_ON, false);    	// Video streaming off
-	FlushAllTXBuffers();						// Clear out any pending bytes
+    uint32_t i;
+
+    // Shut everybody down
+    for (i = 0; i < STREAMING_MAX_DIGITAL_BITS; i++)
+    {
+        DigitalBits[i].Rate = 0;
+    }
+    for (i = 0; i < STREAMING_MAX_DIGITAL_BYTES; i++)
+    {
+        DigitalBytes[i].Rate = 0;
+    }
+    for (i = 0; i < STREAMING_MAX_ANALOGS; i++)
+    {
+        Analogs[i].Rate = 0;
+    }
+    for (i = 0; i < STREAMING_MAX_PICOCVARS; i++)
+    {
+        PicoCVars[i].Rate = 0;
+    }
+    SetOption(OPT_STREAM_VIDEO_ON, false);      // Video streaming off
+    FlushAllTXBuffers();                        // Clear out any pending bytes
 }
 
 /*
@@ -677,13 +761,13 @@ void StreamingTick(void)
     int i;
     
     // Check for timeout
-	/// TODO: Optomize this by only doing it once, then setting a flag. The next time a byte comes in,
-	/// trip the flag back. You don't want to be running through all of these every tick.
+    /// TODO: Optimize this by only doing it once, then setting a flag. The next time a byte comes in,
+    /// trip the flag back. You don't want to be running through all of these every tick.
     if ((UART0LastByteRX > (StreamShutdownTimeout * 1000)) && (StreamShutdownTimeout != 0))
     {
-		StopAllStreaming();
+        StopAllStreaming();
     }
-    /// TODO: Optomize by only checking streaming 'channels' that are actually being used - have MaxUsed for each type
+    /// TODO: Optimize by only checking streaming 'channels' that are actually being used - have MaxUsed for each type
     
     // Handle all of the digital bits
     for (i = 0; i < STREAMING_MAX_DIGITAL_BITS; i++)
@@ -692,9 +776,9 @@ void StreamingTick(void)
         {
             DigitalBits[i].RateCounter -= StreamingLastTickMS;
         }
-		else
-		{
-		    DigitalBits[i].RateCounter = 0;
+        else
+        {
+            DigitalBits[i].RateCounter = 0;
         }
     }
 
@@ -705,10 +789,10 @@ void StreamingTick(void)
         {
             DigitalBytes[i].RateCounter -= StreamingLastTickMS;
         }
-		else
-		{
+        else
+        {
             DigitalBytes[i].RateCounter = 0;
-		}
+        }
     }
 
     // And all of the analogs
@@ -718,10 +802,10 @@ void StreamingTick(void)
         {
             Analogs[i].RateCounter -= StreamingLastTickMS;
         }
-		else
-		{
+        else
+        {
             Analogs[i].RateCounter = 0;
-		}
+        }
     }
 
     // And all of the PicoC shared variables
@@ -731,12 +815,12 @@ void StreamingTick(void)
         {
             PicoCVars[i].RateCounter -= StreamingLastTickMS;
         }
-		else
-		{
+        else
+        {
             PicoCVars[i].RateCounter = 0;
-		}
+        }
     }
-	
-	// Clear our "milliseconds since last call" timer
-	StreamingLastTickMS = 0;
+
+    // Clear our "milliseconds since last call" timer
+    StreamingLastTickMS = 0;
 }

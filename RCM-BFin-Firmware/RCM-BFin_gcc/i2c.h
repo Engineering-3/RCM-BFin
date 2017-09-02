@@ -34,6 +34,7 @@ extern int InitI2C(void);
 extern int i2cwrite(unsigned char i2c_device, unsigned char *i2c_data, unsigned int pair_count, int sccb_flag);
 extern int i2cwritex(unsigned char i2c_device, unsigned char *i2c_data, unsigned int count, int sccb_flag);
 extern int i2cread(unsigned char i2c_device, unsigned char *i2c_data, unsigned int pair_count, int sccb_flag);
+extern int i2creadrs(unsigned char i2c_device, unsigned char *i2c_data, unsigned int pair_count, int sccb_flag);
 extern int i2cslowread(unsigned char i2c_device, unsigned char *i2c_data, unsigned int pair_count, int sccb_flag);
 extern int i2c_read_timed(unsigned char i2c_device, unsigned char *i2c_data, unsigned int data_count, int sccb_flag, int delay_us);
 extern int i2c_read_timed2(

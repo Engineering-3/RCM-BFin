@@ -2395,6 +2395,15 @@ void process_autoinc_i2c(void) {
                 v is a one character ASCII ‘0’ or ‘1’ representing the value of the bit that just got read
                 example: "##ib 32 7F 3 0\n\r" would be indicating a 0 from bit 3 of register 0x7F of address 0x32 
 
+            Command:
+                “icxxyyz”
+                Exactly the same as "ib" above, but using repeated start I2C transaction
+
+            Response:
+                “##ic xx yy z v\r\n”
+                Exactly the same as "ib" above, but using repeated start I2C transaction
+                
+
         Read One Byte From I2C Register
             Command:
                 “ilxxyy”
@@ -2408,7 +2417,16 @@ void process_autoinc_i2c(void) {
                 vv is a two character ASCII hexadecimal value from 00 to FF representing the value just read
                 example: "##il 32 7F F2\n\r" would be indicating a value of 0xF2 from register 0x7F of address 0x32 
 
-        Read Two Bytes From I2C Register
+            Command:
+                “inxxyyz”
+                Exactly the same as "il" above, but using repeated start I2C transaction
+
+            Response:
+                “##in xx yy z v\r\n”
+                Exactly the same as "il" above, but using repeated start I2C transaction
+
+
+                Read Two Bytes From I2C Register
             Command:
                 “iLxxyy”
                 xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address
@@ -2421,13 +2439,23 @@ void process_autoinc_i2c(void) {
                 vvvv is a four character ASCII hexadecimal value from 0000 to FFFF representing the value just read
                 example: "##il 32 7F 4F2D\n\r" would be indicating a value of 0x4F2D from register 0x7F of address 0x32 
 
+            Command:
+                “iNxxyyz”
+                Exactly the same as "iL" above, but using repeated start I2C transaction
+
+            Response:
+                “##iN xx yy z v\r\n”
+                Exactly the same as "iL" above, but using repeated start I2C transaction
+
         Serial protocol char: i */
 void process_i2c() {
     unsigned char i2c_device, i2c_data[16], cx, count, c1, c2, i2c_register, i2c_bit;
     char buf[100];
+    unsigned char cmd;
     
     PacketBegin();
-    switch ((unsigned char)getch()) {
+    cmd = (unsigned char)getch();
+    switch (cmd) {
         case 'r':
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
@@ -2491,6 +2519,7 @@ void process_i2c() {
             printf("##id%2x", i2c_device);
             break;
         case 'b':
+        case 'c':
             buf[0] = (unsigned char)getch();
             buf[1] = (unsigned char)getch();
             buf[2] = 0x00;
@@ -2506,15 +2535,29 @@ void process_i2c() {
             if (i2c_bit > 7) {
                 i2c_bit = 7;
             }
-            i2cread(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
-            if (i2c_data[0] & (1 << i2c_bit)) {
-                printf("##ib %02x %02x %01x 1\r\n", i2c_device, i2c_register, i2c_bit);
+            if (cmd == 'b')
+            {
+                i2cread(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
+                if (i2c_data[0] & (1 << i2c_bit)) {
+                    printf("##ib %02x %02x %01x 1\r\n", i2c_device, i2c_register, i2c_bit);
+                }
+                else {
+                    printf("##ib %02x %02x %01x 0\r\n", i2c_device, i2c_register, i2c_bit);
+                }
             }
-            else {
-                printf("##ib %02x %02x %01x 0\r\n", i2c_device, i2c_register, i2c_bit);
+            else
+            {
+                i2creadrs(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
+                if (i2c_data[0] & (1 << i2c_bit)) {
+                    printf("##ic %02x %02x %01x 1\r\n", i2c_device, i2c_register, i2c_bit);
+                }
+                else {
+                    printf("##ic %02x %02x %01x 0\r\n", i2c_device, i2c_register, i2c_bit);
+                }
             }
             break;
         case 'l':
+        case 'n':
             buf[0] = (unsigned char)getch();
             buf[1] = (unsigned char)getch();
             buf[2] = 0x00;
@@ -2524,10 +2567,19 @@ void process_i2c() {
             buf[2] = 0x00;
             i2c_register = (unsigned char)strtol(buf, NULL, 16);
             i2c_data[0] = i2c_register;
-            i2cread(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
-            printf("##il %02x %02x %02x\r\n", i2c_device, i2c_register, i2c_data[0]);
+            if (cmd == 'l')
+            {
+                i2cread(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
+                printf("##il %02x %02x %02x\r\n", i2c_device, i2c_register, i2c_data[0]);
+            }
+            else
+            {
+                i2creadrs(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
+                printf("##in %02x %02x %02x\r\n", i2c_device, i2c_register, i2c_data[0]);
+            }
             break;
         case 'L':
+        case 'N':
             buf[0] = (unsigned char)getch();
             buf[1] = (unsigned char)getch();
             buf[2] = 0x00;
@@ -2537,8 +2589,16 @@ void process_i2c() {
             buf[2] = 0x00;
             i2c_register = (unsigned char)strtol(buf, NULL, 16);
             i2c_data[0] = i2c_register;
-            i2cread(i2c_device, (unsigned char *)i2c_data, 2, SCCB_ON);
-            printf("##iL %02x %02x %04x\r\n", i2c_device, i2c_register, (i2c_data[0] << 8) + i2c_data[1]);        
+            if (cmd == 'L')
+            {
+                i2cread(i2c_device, (unsigned char *)i2c_data, 2, SCCB_ON);
+                printf("##iL %02x %02x %04x\r\n", i2c_device, i2c_register, (i2c_data[0] << 8) + i2c_data[1]);
+            }
+            else
+            {
+                i2creadrs(i2c_device, (unsigned char *)i2c_data, 2, SCCB_ON);
+                printf("##iN %02x %02x %04x\r\n", i2c_device, i2c_register, (i2c_data[0] << 8) + i2c_data[1]);
+            }
             break;
         default:
             return;
@@ -3549,7 +3609,7 @@ unsigned int CheckForRCMBFINCommand(void)
 }
 
 // Allow user to send PicoC program as text over serial link, terminating with 0x1b (ESC, ^[)
-// read in buytes to BufferPtr, max length BufferSize, until ESC is received. (ctrl-c also works)
+// read in bytes to BufferPtr, max length BufferSize, until ESC is received. (ctrl-c also works)
 void ReadPicoCProgram(char * BufferPtr, unsigned int BufferSize)
 {
     int i = 0;

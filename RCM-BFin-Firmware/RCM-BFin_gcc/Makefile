@@ -39,7 +39,7 @@ SRCS=$(SRCS:%.o=%.c)
 # I know this is a stupid way to do it (allow operation on both 64 and 32 bit Windows 
 # systems)  but I couldn't come up with a better way. If you know of a more slick way to
 # do this, and still allow multiple versions of the compiler on the machine at once,
-# please let me know at brian.s@logicpd.com
+# please let me know at brian@schmalzhaus.com
 CROSS_COMPILE = "/cygdrive/c/Program Files (x86)/Analog Devices/GNU Toolchain/2011R1/elf"
 #CROSS_COMPILE = "/cygdrive/c/Program Files/Analog Devices/GNU Toolchain/2011R1/elf"
 AS = $(CROSS_COMPILE)/bin/bfin-elf-as

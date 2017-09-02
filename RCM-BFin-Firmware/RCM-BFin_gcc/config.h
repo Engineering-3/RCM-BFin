@@ -76,7 +76,7 @@
 /*
  * Version string
  */
-#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test53"
+#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test54"
 
 /*
  * I2C speed

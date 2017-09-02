@@ -134,7 +134,7 @@ GET /index.html HTTP/1.1 <br><br>
 	'a' is device id/address (one binary byte), 'b' is register (one binary byte), 'hh' is the ASCII HEX representation of 'a' (always two characters) 'cc' is 8-bit return value from register displayed as decimal value, which could be one, two or three characters long, and there is a <cr><lf> pair of bytes at the end. The <cr><lf> can be used to know that the variable length 'cc' is complete.
 	</lf></cr></lf></cr></td>
 </tr>
-<tr style="background-color:tan">
+<tr>
 	<td>'&irddab'</td>
 	<td>'##&irddhh cc'</td>
 	<td>I2C register read ('a' and 'b' parameters sent as 8-bit binary, 'dd' sent as 16-bit binary)<br>
@@ -340,6 +340,25 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
             example: "##ib 32 7F 3 0\n\r" would be indicating a 0 from bit 3 of register 0x7F of address 0x32<br> 
     </td>
 </tr>
+<tr style="background-color:tan">
+    <td>'icxxyyz'</td>
+    <td>'##ic xx yy z v\r\n'</td>
+    <td>
+        <b>Read One Bit From I2C Register</b><br>
+        <p>Identical to 'ibxxyyz' except that this command uses a repeated start I2C transaction : <a href="https://www.i2c-bus.org/repeated-start-condition/">https://www.i2c-bus.org/repeated-start-condition/</a></p>
+        <b>Command:</b>'icxxyyz'<br>
+            xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
+            yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
+            z is a one character ASCII hexadecimal value from 0 to 7 representing the bit to be read<br>
+            example: "ic327F3" would request a read of the 3rd bit of register 0x7F from I2C address 0x32<br>
+        <b>Response:</b>'##ic xx yy z v\r\n'<br>
+            xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
+            yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
+            z is a one character ASCII hexadecimal value from 0 to 7 representing the bit to be read<br>
+            v is a one character ASCII '0' or '1' representing the value of the bit that just got read<br>
+            example: "##ic 32 7F 3 0\n\r" would be indicating a 0 from bit 3 of register 0x7F of address 0x32<br> 
+    </td>
+</tr>
 <tr>
     <td>'ilxxyy'</td>
     <td>'##il xx yy vv\r\n'</td>
@@ -357,6 +376,23 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
     </td>
 </tr>
 <tr style="background-color:tan">
+    <td>'inxxyy'</td>
+    <td>'##in xx yy vv\r\n'</td>
+    <td>
+        <b>Read One Byte From I2C Register</b><br>
+        <p>Identical to 'ilxxyy' except that this command uses a repeated start I2C transaction : <a href="https://www.i2c-bus.org/repeated-start-condition/">https://www.i2c-bus.org/repeated-start-condition/</a></p>
+        <b>Command:</b>'inxxyy'<br>
+            xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
+            yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
+            example: "in327F" would request a read of register 0x7F from I2C address 0x32<br>
+        <b>Response:</b>'##in xx yy vv\r\n'<br>
+            xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
+            yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
+            vv is a two character ASCII hexadecimal value from 00 to FF representing the value just read<br>
+            example: "##in 32 7F F2\n\r" would be indicating a value of 0xF2 from register 0x7F of address 0x32<br> 
+    </td>
+</tr>
+<tr>
     <td>'&ilddddxxyy'</td>
     <td>'##&il dddd xx yy vv\r\n'</td>
     <td>
@@ -391,6 +427,23 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
     </td>
 </tr>
 <tr style="background-color:tan">
+    <td>'iMxxyy'</td>
+    <td>'##iM xx yy vvvv\r\n'</td>
+    <td>
+        <b>Read Two Byte From I2C Register</b><br>
+        <p>Identical to 'iLxxyy' except that this command uses a repeated start I2C transaction : <a href="https://www.i2c-bus.org/repeated-start-condition/">https://www.i2c-bus.org/repeated-start-condition/</a></p>
+        <b>Command:</b>'iMxxyy'<br>
+            xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
+            yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
+            example: "iM327F" would request a read of register 0x7F from I2C address 0x32<br>
+        <b>Response:</b>'##iM xx yy vv\r\n'<br>
+            xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
+            yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
+            vvvv is a four character ASCII hexadecimal value from 0000 to FFFF representing the value just read<br>
+            example: "##iM 32 7F EF7D\n\r" would be indicating a value of 0xEF7D from register 0x7F of address 0x32<br> 
+    </td>
+</tr>
+<tr>
     <td>'&iLddddxxyy'</td>
     <td>'##&iL dddd xx yy vvvv\r\n'</td>
     <td>
@@ -471,6 +524,15 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
     <p>This command is typically used to stream a single digital input's value back to the PC, although it can be used to read the state of any single bit in any I2C register at any I2C address.</p>
 	</td>
 </tr>
+<tr style="background-color:tan">
+    <td>'Ndarbtt'</td><td>'#NRd'</td>
+    <td>
+    <p>Identical to 'NDarbtt' except that this command uses a repeated start I2C transaction : <a href="https://www.i2c-bus.org/repeated-start-condition/">https://www.i2c-bus.org/repeated-start-condition/</a></p>
+    <p>Stream one bit from an I2C register.  'a' is a one byte binary I2C address to read. 'r' is a one byte binary I2C register to read (at address 'a'). 'b' is a one byte binary number from 0 to 7 indicating the bit to be read (from within register 'r') 'tt' is a two byte binary (LSB first) number, indicating the time in milliseconds between sensor streaming packet sends. If tt = 0 then streaming from this combination of I2C address and register is turned off.</p>
+    <p>The sensor data sent every 'tt' ms will consist of '#Ndarbv', where 'a', 'r' and 'b' are as above, and 'v' is the binary value 0 or 1 representing the state of the digital input.</p>
+    <p>This command is typically used to stream a single digital input's value back to the PC, although it can be used to read the state of any single bit in any I2C register at any I2C address.</p>
+    </td>
+</tr>
 <tr>
 	<td>'NBarbtt'</td><td>'#NRB'</td>
 	<td>
@@ -480,6 +542,15 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
 	</p></td>
 </tr>
 <tr style="background-color:tan">
+    <td>'Nbarbtt'</td><td>'#NRb'</td>
+    <td>
+    <p>Identical to 'NBarbtt' except that this command uses a repeated start I2C transaction : <a href="https://www.i2c-bus.org/repeated-start-condition/">https://www.i2c-bus.org/repeated-start-condition/</a></p>
+    <p>Stream data from an I2C register.  'a' is a one byte binary I2C address to read. 'r' is a one byte binary I2C register to read (at address 'a'). 'b' is a one byte binary number indicating the number of bytes to be read from 1 to 255. 'tt' is a two byte binary (LSB first) number, indicating the time in milliseconds between sensor streaming packet sends. If tt = 0 then streaming from this combination of I2C address and register is turned off.</p>
+    <p>The sensor data sent every 'tt' ms will consist of '#Nbarv1v2v3...', where 'a', and 'r' are as above, and 'v1' is the first byte returned from the I2C device, 'v2' is the second byte, 'v3' is the third, etc. For example if 'b' = 0x01, then there will only be one return value in the stream reply and it will look like '#NBarv'.</p>
+    <p>This command is typically used to stream data when reading a single byte ('b' = 1) or multiple bytes from a single sensor ('b' &gt; 1). For example, you could stream compass data from a HMC6352 compass at address 0x22, which requires 2 bytes of data to be read out, by setting up the steam as follows (raw hex bytes) : 0x4E 0x42 0x22 0x41 0x02 0x64 0x00. This would ask for a 2-byte read from address 0x22, register 0x41, every 100ms. If the current heading is 180 degrees, the resulting stream reply would look like this : 0x23 0x4E 0x42 0x22 0x41 0x07 0x08.
+    </p></td>
+</tr>
+<tr>
 	<td>'&NBddarbtt'</td><td>'#&NRBdd'</td>
 	<td>
 	<p>Stream data from an I2C register. 'dd' is a 16-bit (2 byte) value that is not used by the BFin firmware, but will be returned in any responses that are generated because of this command. 'a' is a one byte binary I2C address to read. 'r' is a one byte binary I2C register to read (at address 'a'). 'b' is a one byte binary number indicating the number of bytes to be read from 1 to 255. 'tt' is a two byte binary (LSB first) number, indicating the time in milliseconds between sensor streaming packet sends. If tt = 0 then streaming from this combination of I2C address and register is turned off.</p>
@@ -649,7 +720,7 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
         Read an integer from PicoC shared memory integer number [index]. [index] can be from 0 to 255. The RCM-BFin will respond with a packet that includes [index] as well as [value] which is the integer requested. For example, if integer number 88 contained -1234567 then the command '*R,I,88[CR]' would return '##R,I,88,-1234567[CR][LF]'.
     </td>
 </tr>
-<tr style="background-color:tan">
+<tr>
     <td>*&R,I,[ddddd],[index][CR]</td>
     <td>##&R,I,[ddddd],[index],[value][CR][LF]</td>
     <td>
@@ -663,7 +734,7 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
         Read a float from PicoC shared memory float number [index]. [index] can be from 0 to 255. The RCM-BFin will respond with a packet that includes [index] as well as [value] which is the float requested. For example, if float number 244 contained 66.77888989 then the command '*R,F,244[CR]' would return '##R,F,244,66.77888989[CR][LF]'.
     </td>
 </tr>
-<tr style="background-color:tan">
+<tr>
     <td>*&R,F,[ddddd],[index][CR]</td>
     <td>##&R,F,[ddddd],[index],[value][CR][LF]</td>
     <td>
@@ -704,7 +775,7 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
     </td>
 </tr>
 
-<tr style="background-color:tan">
+<tr>
     <td>&NP,[a],[dddd],[tt],[b],[c][CR]</td>
     <td>#&NRP,[dddd]</td>
     <td>
@@ -859,7 +930,7 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
 </tbody>
 </table>
 <br>
-Last updated 4 July 2015, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test52
+Last updated 1 September 2017, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test54
 <br>
 <br>Tan colored cells indicate a change since the last firmware version<br>
 </body></html>
