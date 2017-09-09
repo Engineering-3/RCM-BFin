@@ -36,7 +36,7 @@
 // Define PICOC2_DEBUG to print out memory copy operation debug information
 //#define PICOC2_DEBUG
 
-// Define DEBUG if you want H15 through H9 (I/O pins) to be available as debug outputs
+// Define DEBUG if you want H1-H5 and H7 through H15 (I/O pins) to be available as debug outputs. See system.h for the defines.
 #define DEBUG
 
 // Define UART1_PACKET_DEBUG if you want packet mode debug to come out UART1
@@ -76,7 +76,7 @@
 /*
  * Version string
  */
-#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test54"
+#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test55"
 
 /*
  * I2C speed

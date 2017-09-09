@@ -46,7 +46,7 @@
 /*****************************************************************
    System wide defines
    
-   These defines are used throughout all of the RCM-Bfin fimrware
+   These defines are used throughout all of the RCM-Bfin firmware
 *****************************************************************/
 
 #define CPU_BF537    37
@@ -55,57 +55,93 @@
 #define CPU                 CPU_BF537
 
 #if defined(DEBUG)
-	#define DEBUG_INIT()        *pPORTHIO_DIR |= PH8 | PH9 | PH10 | PH11 | PH12 | PH13 | PH14 | PH15;
-	#define DEBUG_H15_HIGH()    *pPORTHIO_SET = 0x8000;
-	#define DEBUG_H14_HIGH()    *pPORTHIO_SET = 0x4000;    
-	#define DEBUG_H13_HIGH()    *pPORTHIO_SET = 0x2000;
-	#define DEBUG_H12_HIGH()    *pPORTHIO_SET = 0x1000;    
-	#define DEBUG_H11_HIGH()    *pPORTHIO_SET = 0x0800;    
-	#define DEBUG_H10_HIGH()    *pPORTHIO_SET = 0x0400;    
-	#define DEBUG_H9_HIGH()     *pPORTHIO_SET = 0x0200;    
-	#define DEBUG_H8_HIGH()     *pPORTHIO_SET = 0x0100;
-	#define DEBUG_H15_LOW()     *pPORTHIO_CLEAR = 0x8000;    
-	#define DEBUG_H14_LOW()     *pPORTHIO_CLEAR = 0x4000;   
-	#define DEBUG_H13_LOW()     *pPORTHIO_CLEAR = 0x2000;    
-	#define DEBUG_H12_LOW()     *pPORTHIO_CLEAR = 0x1000;   
-	#define DEBUG_H11_LOW()     *pPORTHIO_CLEAR = 0x0800;   
-	#define DEBUG_H10_LOW()     *pPORTHIO_CLEAR = 0x0400;   
-	#define DEBUG_H9_LOW()      *pPORTHIO_CLEAR = 0x0200;   
-	#define DEBUG_H8_LOW()      *pPORTHIO_CLEAR = 0x0100;
-	#define DEBUG_H15_TOGGLE()  *pPORTHIO_TOGGLE = 0x8000;
-	#define DEBUG_H14_TOGGLE()  *pPORTHIO_TOGGLE = 0x4000;
-	#define DEBUG_H13_TOGGLE()  *pPORTHIO_TOGGLE = 0x2000;
-	#define DEBUG_H12_TOGGLE()  *pPORTHIO_TOGGLE = 0x1000;
-	#define DEBUG_H11_TOGGLE()  *pPORTHIO_TOGGLE = 0x0800;
-	#define DEBUG_H10_TOGGLE()  *pPORTHIO_TOGGLE = 0x0400;
-	#define DEBUG_H9_TOGGLE()   *pPORTHIO_TOGGLE = 0x0200;
-	#define DEBUG_H8_TOGGLE()   *pPORTHIO_TOGGLE = 0x0100;
+  #define DEBUG_INIT()        *pPORTHIO_DIR |= PH1 | PH2 | PH3 | PH4 | PH5 | PH7 | PH8 | PH9 | PH10 | PH11 | PH12 | PH13 | PH14 | PH15;
+  #define DEBUG_H15_HIGH()    *pPORTHIO_SET = 0x8000;
+  #define DEBUG_H14_HIGH()    *pPORTHIO_SET = 0x4000;
+  #define DEBUG_H13_HIGH()    *pPORTHIO_SET = 0x2000;
+  #define DEBUG_H12_HIGH()    *pPORTHIO_SET = 0x1000;
+  #define DEBUG_H11_HIGH()    *pPORTHIO_SET = 0x0800;
+  #define DEBUG_H10_HIGH()    *pPORTHIO_SET = 0x0400;
+  #define DEBUG_H9_HIGH()     *pPORTHIO_SET = 0x0200;
+  #define DEBUG_H8_HIGH()     *pPORTHIO_SET = 0x0100;
+  #define DEBUG_H7_HIGH()     *pPORTHIO_SET = 0x0080;
+  #define DEBUG_H5_HIGH()     *pPORTHIO_SET = 0x0020;
+  #define DEBUG_H4_HIGH()     *pPORTHIO_SET = 0x0010;
+  #define DEBUG_H3_HIGH()     *pPORTHIO_SET = 0x0008;
+  #define DEBUG_H2_HIGH()     *pPORTHIO_SET = 0x0004;
+  #define DEBUG_H1_HIGH()     *pPORTHIO_SET = 0x0002;
+  #define DEBUG_H15_LOW()     *pPORTHIO_CLEAR = 0x8000;
+  #define DEBUG_H14_LOW()     *pPORTHIO_CLEAR = 0x4000;
+  #define DEBUG_H13_LOW()     *pPORTHIO_CLEAR = 0x2000;
+  #define DEBUG_H12_LOW()     *pPORTHIO_CLEAR = 0x1000;
+  #define DEBUG_H11_LOW()     *pPORTHIO_CLEAR = 0x0800;
+  #define DEBUG_H10_LOW()     *pPORTHIO_CLEAR = 0x0400;
+  #define DEBUG_H9_LOW()      *pPORTHIO_CLEAR = 0x0200;
+  #define DEBUG_H8_LOW()      *pPORTHIO_CLEAR = 0x0100;
+  #define DEBUG_H7_LOW()      *pPORTHIO_CLEAR = 0x0080;
+  #define DEBUG_H5_LOW()      *pPORTHIO_CLEAR = 0x0020;
+  #define DEBUG_H4_LOW()      *pPORTHIO_CLEAR = 0x0010;
+  #define DEBUG_H3_LOW()      *pPORTHIO_CLEAR = 0x0008;
+  #define DEBUG_H2_LOW()      *pPORTHIO_CLEAR = 0x0004;
+  #define DEBUG_H1_LOW()      *pPORTHIO_CLEAR = 0x0002;
+  #define DEBUG_H15_TOGGLE()  *pPORTHIO_TOGGLE = 0x8000;
+  #define DEBUG_H14_TOGGLE()  *pPORTHIO_TOGGLE = 0x4000;
+  #define DEBUG_H13_TOGGLE()  *pPORTHIO_TOGGLE = 0x2000;
+  #define DEBUG_H12_TOGGLE()  *pPORTHIO_TOGGLE = 0x1000;
+  #define DEBUG_H11_TOGGLE()  *pPORTHIO_TOGGLE = 0x0800;
+  #define DEBUG_H10_TOGGLE()  *pPORTHIO_TOGGLE = 0x0400;
+  #define DEBUG_H9_TOGGLE()   *pPORTHIO_TOGGLE = 0x0200;
+  #define DEBUG_H8_TOGGLE()   *pPORTHIO_TOGGLE = 0x0100;
+  #define DEBUG_H7_TOGGLE()   *pPORTHIO_TOGGLE = 0x0080;
+  #define DEBUG_H5_TOGGLE()   *pPORTHIO_TOGGLE = 0x0020;
+  #define DEBUG_H4_TOGGLE()   *pPORTHIO_TOGGLE = 0x0010;
+  #define DEBUG_H3_TOGGLE()   *pPORTHIO_TOGGLE = 0x0008;
+  #define DEBUG_H2_TOGGLE()   *pPORTHIO_TOGGLE = 0x0004;
+  #define DEBUG_H1_TOGGLE()   *pPORTHIO_TOGGLE = 0x0002;
 #else
-	#define DEBUG_INIT()
-	#define DEBUG_H15_HIGH()
-	#define DEBUG_H14_HIGH()
-	#define DEBUG_H13_HIGH()
-	#define DEBUG_H12_HIGH()
-	#define DEBUG_H11_HIGH()
-	#define DEBUG_H10_HIGH()
-	#define DEBUG_H9_HIGH()
-	#define DEBUG_H8_HIGH()
-	#define DEBUG_H15_LOW() 
-	#define DEBUG_H14_LOW() 
-	#define DEBUG_H13_LOW() 
-	#define DEBUG_H12_LOW() 
-	#define DEBUG_H11_LOW() 
-	#define DEBUG_H10_LOW() 
-	#define DEBUG_H9_LOW()
-	#define DEBUG_H8_LOW()
-	#define DEBUG_H15_TOGGLE()
-	#define DEBUG_H14_TOGGLE()
-	#define DEBUG_H13_TOGGLE()
-	#define DEBUG_H12_TOGGLE()
-	#define DEBUG_H11_TOGGLE()
-	#define DEBUG_H10_TOGGLE()
-	#define DEBUG_H9_TOGGLE() 
-	#define DEBUG_H8_TOGGLE() 
+  #define DEBUG_INIT()
+  #define DEBUG_H15_HIGH()
+  #define DEBUG_H14_HIGH()
+  #define DEBUG_H13_HIGH()
+  #define DEBUG_H12_HIGH()
+  #define DEBUG_H11_HIGH()
+  #define DEBUG_H10_HIGH()
+  #define DEBUG_H9_HIGH()
+  #define DEBUG_H8_HIGH()
+  #define DEBUG_H7_HIGH()
+  #define DEBUG_H5_HIGH()
+  #define DEBUG_H4_HIGH()
+  #define DEBUG_H3_HIGH()
+  #define DEBUG_H2_HIGH()
+  #define DEBUG_H1_HIGH()
+  #define DEBUG_H15_LOW()
+  #define DEBUG_H14_LOW()
+  #define DEBUG_H13_LOW()
+  #define DEBUG_H12_LOW()
+  #define DEBUG_H11_LOW()
+  #define DEBUG_H10_LOW()
+  #define DEBUG_H9_LOW()
+  #define DEBUG_H8_LOW()
+  #define DEBUG_H7_LOW()
+  #define DEBUG_H5_LOW()
+  #define DEBUG_H4_LOW()
+  #define DEBUG_H3_LOW()
+  #define DEBUG_H2_LOW()
+  #define DEBUG_H1_LOW()
+  #define DEBUG_H15_TOGGLE()
+  #define DEBUG_H14_TOGGLE()
+  #define DEBUG_H13_TOGGLE()
+  #define DEBUG_H12_TOGGLE()
+  #define DEBUG_H11_TOGGLE()
+  #define DEBUG_H10_TOGGLE()
+  #define DEBUG_H9_TOGGLE()
+  #define DEBUG_H8_TOGGLE()
+  #define DEBUG_H7_TOGGLE()
+  #define DEBUG_H5_TOGGLE()
+  #define DEBUG_H4_TOGGLE()
+  #define DEBUG_H3_TOGGLE()
+  #define DEBUG_H2_TOGGLE()
+  #define DEBUG_H1_TOGGLE()
 #endif
 
 // LED defines

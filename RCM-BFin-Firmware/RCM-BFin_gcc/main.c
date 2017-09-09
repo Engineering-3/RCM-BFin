@@ -83,10 +83,10 @@ static void ProcessCommands(unsigned char CharIn);
 
 int main() 
 {
-    init_io(); // Initialise LED, GPIO, serial flow & lasers.
+    init_io(); // Initialize LED, GPIO, serial flow & lasers.
 
     // We do this just to test all of the debug I/O pins - normally these would
-    // be shut off by undefining #debug in config.h
+    // be shut off by undefined #debug in config.h
     DEBUG_INIT()			// Init
     DEBUG_H15_LOW()			// Init
     DEBUG_H14_LOW()			// Init

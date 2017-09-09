@@ -59,6 +59,10 @@ static int WaitForMCOMP(void);
 // Initialize the I2C hardware so we can use it
 int InitI2C(void)
 {
+    *pTWI_CONTROL = 0x0000;                    // Turn off I2C if it was already on
+    SSYNC;
+    SSYNC;
+    SSYNC;
     *pTWI_CONTROL = TWI_ENA | PRESCALE120M;    // PRESCALE = fsclk/10MHz
     *pTWI_CLKDIV = TWI_CLKDIV_VAL;             // Set clock div for 60% low and 30% high clock time
     *pTWI_MASTER_CTL = 0x0000;                 // Clear out master mode control register
@@ -135,14 +139,19 @@ static int WaitForXMTSERV(void)
     
     I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
     // wait to load the next sample into the TX FIFO
-    while (!(*pTWI_INT_STAT & XMTSERV) && I2CTimeoutMS) 
+    while (!(*pTWI_INT_STAT & XMTSERV) && !(*pTWI_INT_STAT & MERR) && I2CTimeoutMS) 
     {
         SSYNC;
     }
     // Check for timeout
-    if (I2CTimeoutMS == 0)
+    if (I2CTimeoutMS == 0 || (*pTWI_INT_STAT & MERR))
     {
         Ret = -1;
+    }
+    else
+    {
+      // Write a 1 to XMTSERV to clear it
+      *pTWI_INT_STAT = XMTSERV;
     }
     return (Ret);
 }
@@ -314,23 +323,30 @@ int i2cwritex(unsigned char i2c_device, unsigned char *i2c_data, unsigned int co
 // Return error code on timeout or other error
 int i2creadSingle(unsigned char i2c_device, unsigned char *i2c_data, unsigned int data_count, int sccb_flag)
 {
-    int i, t;
+  int i, t;
+  int retval = 0;
 
-    // Set/clear sccb flag
-    if (sccb_flag)
-        *pTWI_CONTROL |= SCCB;
-    else
-        *pTWI_CONTROL &= ~SCCB;
+  // Set/clear sccb flag
+  if (sccb_flag)
+  {
+    *pTWI_CONTROL |= SCCB;
+  }
+  else
+  {
+    *pTWI_CONTROL &= ~SCCB;
+  }
 
-     // Target address - just 7-bit address, no read/write flag
-    *pTWI_MASTER_ADDR = (i2c_device & 0x7F);
+   // Target address - just 7-bit address, no read/write flag
+  *pTWI_MASTER_ADDR = (i2c_device & 0x7F);
 
-    // Wait for space in the TX FIFO
-    if(WaitForTX_FIFORoom())
-    {
-        return (-1);
-    }
-    
+  // Wait for space in the TX FIFO
+  if(WaitForTX_FIFORoom())
+  {
+    retval = -1;
+  }
+  
+  if (!retval)
+  {
     // Put the register value into the TX FIFO
     *pTWI_XMT_DATA8 = *i2c_data;
     // Start master mode transmit, sending only 1 data byte (register value)
@@ -339,25 +355,38 @@ int i2creadSingle(unsigned char i2c_device, unsigned char *i2c_data, unsigned in
     // Now wait until transfer is complete
     if (WaitForIdleBus())
     {
-        return (-1);
+      retval = -2;
     }
-    
+  }
+  
+  if (!retval)
+  {
     // Now start reading data_count bytes from the slave
     *pTWI_MASTER_CTL = (data_count << 6) | MEN | MDIR; 
     t = 0;
-    for (i=0; i<data_count; i++)
+    for (i = 0; i < data_count; i++)
     {
-        while ((*pTWI_FIFO_STAT & RCVSTAT) == 0)
-        {
-            SSYNC;
-            delayUS(10);
-            if (t++ >= 200)
-                return(-3);
-        }
-        *i2c_data++ = *pTWI_RCV_DATA8; // Load the next sample into the TX FIFO. 
+      while (((*pTWI_FIFO_STAT & RCVSTAT) == 0) && (!retval))
+      {
         SSYNC;
+        delayUS(10);
+        if (t++ >= 200)
+        {
+          retval = -1;
+        }
+      }
+      if (!retval)
+      {
+        *i2c_data++ = *pTWI_RCV_DATA8; // Load the next sample into the TX FIFO.
+        SSYNC;
+      }
     }
-    return (WaitForIdleBus());
+  }
+  if (!retval)
+  {
+    retval = WaitForIdleBus();
+  }
+  return (retval);
 }
 
 // Read data_count number of bytes from I2C address i2c_device into i2c_data, using repeated start.
@@ -367,26 +396,33 @@ int i2creadSingle(unsigned char i2c_device, unsigned char *i2c_data, unsigned in
 // Return error code on timeout or other error
 int i2creadSinglers(unsigned char i2c_device, unsigned char *i2c_data, unsigned int data_count, int sccb_flag)
 {
-    int i, t;
+  int i, t;
+  int retval = 0;
 
-    // Set/clear sccb flag
-    if (sccb_flag)
-        *pTWI_CONTROL |= SCCB;
-    else
-        *pTWI_CONTROL &= ~SCCB;
+  // Set/clear sccb flag
+  if (sccb_flag)
+  {
+    *pTWI_CONTROL |= SCCB;
+  }
+  else
+  {
+    *pTWI_CONTROL &= ~SCCB;
+  }
 
-    // Set FIFO control - set to generate RCVSERV and XTMSERV only when FIFO is completely empty
-    *pTWI_FIFO_CTL = 0x000C0;
-      
-     // Target address - just 7-bit address, no read/write flag
-    *pTWI_MASTER_ADDR = (i2c_device & 0x7F);
-
-    // Wait for space in the TX FIFO
-    if(WaitForTX_FIFORoom())
-    {
-        return (-1);
-    }
+  // Set FIFO control - set to generate RCVSERV and XTMSERV only when FIFO is completely empty
+  *pTWI_FIFO_CTL = 0x000C0;
     
+   // Target address - just 7-bit address, no read/write flag
+  *pTWI_MASTER_ADDR = (i2c_device & 0x7F);
+
+  // Wait for space in the TX FIFO
+  if(WaitForTX_FIFORoom())
+  {
+    retval = -1;
+  }
+
+  if (!retval)
+  {
     // Put the register value into the TX FIFO
     *pTWI_XMT_DATA8 = *i2c_data;
     // Start master mode transmit, sending only 1 data byte (register value)
@@ -395,41 +431,60 @@ int i2creadSinglers(unsigned char i2c_device, unsigned char *i2c_data, unsigned 
     // Now wait until XMTSERV bit is set, indicating that the address has been sent
     if (WaitForXMTSERV())
     {
-        return (-1);
+      WaitForIdleBus();
+      retval = -2;
     }
-    
+  }
+
+  if (!retval)
+  {
     // To cause repeated start condition, set RSTART bit and set MDIR bit to indicate a receive
     *pTWI_MASTER_CTL = RSTART | MDIR | MEN;
     
     // Now wait for MCOMP bit to be set, indicating that the write phase is complete
     if (WaitForMCOMP())
     {
-        return (-1);
+      retval = -3;
     }
+  }
  
-    I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
- 
+  I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
+
+  if (!retval)
+  {
     // Now start reading data_count bytes from the slave, clearing the RSTART bit in the process
     *pTWI_MASTER_CTL = (data_count << 6) | MEN | MDIR; 
     t = 0;
     for (i=0; i<data_count; i++)
     {
-        while (((*pTWI_FIFO_STAT & RCVSTAT) == 0) && I2CTimeoutMS)
-        {
-            SSYNC;
-            delayUS(10);
-            if (t++ >= 200)
-                return(-3);
-        }
-        if (I2CTimeoutMS == 0)
-        {
-          WaitForIdleBus();
-          return(-1);
-        }
-        *i2c_data++ = *pTWI_RCV_DATA8; // Load the next sample into the TX FIFO. 
+      while (((*pTWI_FIFO_STAT & RCVSTAT) == 0) && I2CTimeoutMS && (!retval))
+      {
         SSYNC;
+        delayUS(10);
+        if (t++ >= 200)
+        {
+          retval = -4;
+        }
+      }
+      if (I2CTimeoutMS == 0 && !retval)
+      {
+        WaitForIdleBus();
+        retval = -5;
+      }
+      if (!retval)
+      {
+        *i2c_data++ = *pTWI_RCV_DATA8; // Read the received byte from the RX FIFO and store it
+        SSYNC;
+      }
     }
-    return (WaitForIdleBus());
+  }
+  
+  if (!retval)
+  {
+    retval = WaitForIdleBus();
+  }
+  
+  return (retval);
 }
 
 // Wrapper function for i2cread(). Tries up to I2CMaxRetries before giving up.
