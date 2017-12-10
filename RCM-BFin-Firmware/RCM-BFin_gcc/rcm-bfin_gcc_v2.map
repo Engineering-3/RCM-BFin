@@ -909,7 +909,7 @@ LOAD c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/g
                 0x00100000                . = ALIGN (0x4)
                 0x00100000                __sdram_bss_end = .
 
-.text           0x00000eb8    0x304c8
+.text           0x00000eb8    0x30630
  *(.text .text.*)
  .text          0x00000eb8       0xd8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
  .text          0x00000f90     0x575c rcm-bfin.o
@@ -1409,7 +1409,7 @@ LOAD c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/g
                 0x000187c4                DebugCleanup
                 0x0001880c                DebugSetBreakpoint
                 0x000188a0                DebugInit
- .text          0x000188d0     0x19dc picoc/platform/library_surveyor.o
+ .text          0x000188d0     0x1b44 picoc/platform/library_surveyor.o
                 0x000188d0                Ciodir
                 0x00018908                Cioread
                 0x00018928                Ciowrite
@@ -1442,502 +1442,506 @@ LOAD c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/g
                 0x000190c0                Ctan
                 0x000190e0                Ccos
                 0x00019100                Csin
-                0x00019120                Cwritei2c2
-                0x00019168                Cwritei2c
-                0x000191a8                Creadi2c2rs
-                0x00019200                Creadi2crs
-                0x00019250                Creadi2c2
-                0x000192a8                Creadi2c
-                0x000192f8                Cgps
-                0x00019358                Canalogx
-                0x0001938c                Canalog
-                0x0001940c                Ctilt
-                0x00019444                Ccompassx
-                0x000194bc                Ccompass
-                0x0001953c                Cvsend
-                0x00019604                Coutput
-                0x00019684                Cvjpeg
-                0x000196e8                Cvblob
-                0x000197dc                Cvmean
-                0x0001981c                Cvscan
-                0x0001988c                Cvpix
-                0x000198d8                Cvrcap
-                0x000198e4                Cvcap
-                0x000198f0                Cvfind
-                0x00019934                Cvcam
-                0x00019978                Crange
-                0x00019994                Csonar
-                0x000199e0                Cservos2
-                0x00019a58                Cservos
-                0x00019ad0                Cinit_uart1
-                0x00019ae4                Coutput1
-                0x00019af8                Cmotorx
-                0x00019bb8                Cmotors2
-                0x00019c58                Cmotors
-                0x00019cf8                Cencoderx
-                0x00019d2c                Cencoders
-                0x00019d54                Crand
-                0x00019d7c                Cdelay
-                0x00019db8                Cread_str
-                0x00019e0c                Cread_int
-                0x00019e50                Cinput
-                0x00019e6c                Cinput1
-                0x00019e88                Csignal1
-                0x00019ea4                Csignal
-                0x00019ec0                PlatformLibraryInit
- .text          0x0001a2ac      0x3d4 picoc/platform.o
-                0x0001a2ac                PlatformMakeTempName
-                0x0001a2ec                PlatformVPrintf
-                0x0001a3b8                PlatformPrintf
-                0x0001a3d0                PrintSourceTextErrorLine
-                0x0001a4e4                PlatformErrorPrefix
-                0x0001a508                LexFail
-                0x0001a548                ProgramFail
-                0x0001a57c                AssignFail
-                0x0001a600                PicocCleanup
-                0x0001a628                PicocInitialise
- .text          0x0001a680      0x2b8 picoc/platform/platform_surveyor.o
-                0x0001a680                PlatformInit
-                0x0001a690                PlatformCleanup
-                0x0001a6a0                PlatformExit
-                0x0001a6c4                PlatformGetCharacter
-                0x0001a6d4                PlatformPutc
-                0x0001a7ac                PlatformGetLine
- .text          0x0001a938      0x190 interrupts.o
-                0x0001a938                Timer0_ISR
- .text          0x0001aac8      0x1ac sysinit.o
-                0x0001aac8                init_program_clocks
-                0x0001ab30                InitTMR0
-                0x0001ab68                Init_Interrupts
-                0x0001abe4                hardware_error_handler
- .text          0x0001ac74      0x1f0 system.o
-                0x0001ac74                run_leds
-                0x0001aca0                getUnaligned32
-                0x0001acc8                atoi_b16
-                0x0001ad10                atoi_b10
-                0x0001ad30                strnstr
-                0x0001ad90                ctoi
-                0x0001adb4                _getpid
-                0x0001adc4                hang
-                0x0001adcc                get_seqstat
-                0x0001addc                _kill
-                0x0001adf4                strReplace
- *fill*         0x0001ae64        0x4 00
- .text          0x0001ae68       0xf0 r8x8dct.o
-                0x0001ae68                _r8x8dct
- .text          0x0001af58      0x950 motionvect.o
-                0x0001af58                _motionvect
-                0x0001b3c0                hpel
-                0x0001b4b0                _hpel_core1
-                0x0001b5d0                _hpel_core2
-                0x0001b720                _mve_core
- .text          0x0001b8a8      0x37c cache.o
-                0x0001b8a8                dcache_reg_set
-                0x0001b8d0                icache_reg_set
-                0x0001b8f8                icache_setup
-                0x0001b940                dcache_setup
-                0x0001b988                cache_init
-                0x0001bb94                dcache_enable
-                0x0001bbc8                icache_enable
-                0x0001bbf8                cache_status
- .text          0x0001bc24       0x4c options.o
-                0x0001bc24                GetOption
-                0x0001bc48                SetOption
- .text          0x0001bc70      0xa1c streaming.o
-                0x0001bc70                StopAllStreaming
-                0x0001bd08                StreamingTick
-                0x0001be50                StreamingParseHokuyo
-                0x0001be64                StreamingProcess
-                0x0001c274                StreamingParseDigitalByte
-                0x0001c378                StreamingParseDigitalBit
-                0x0001c474                StreamingParseAnalogBit
-                0x0001c504                StreamingShutdown
-                0x0001c554                StreamingParsePicoC
- .text          0x0001c68c      0x430 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_atan.o)
-                0x0001c68c                atan
- .text          0x0001cabc      0x158 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_ceil.o)
-                0x0001cabc                ceil
- .text          0x0001cc14       0xd0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_cos.o)
-                0x0001cc14                cos
- .text          0x0001cce4       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_fabs.o)
-                0x0001cce4                fabs
- .text          0x0001ccf4      0x15c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_floor.o)
-                0x0001ccf4                floor
- .text          0x0001ce50       0xd4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_sin.o)
-                0x0001ce50                sin
- .text          0x0001cf24       0x78 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_tan.o)
-                0x0001cf24                tan
- .text          0x0001cf9c      0x164 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_tanh.o)
-                0x0001cf9c                tanh
- .text          0x0001d100       0xc0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_acos.o)
-                0x0001d100                acos
- .text          0x0001d1c0       0xc0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_asin.o)
-                0x0001d1c0                asin
- .text          0x0001d280       0xd8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_cosh.o)
-                0x0001d280                cosh
- .text          0x0001d358      0x11c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_exp.o)
-                0x0001d358                exp
- .text          0x0001d474       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log.o)
-                0x0001d474                log
- .text          0x0001d570       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log10.o)
-                0x0001d570                log10
- .text          0x0001d66c      0x350 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_pow.o)
-                0x0001d66c                pow
- .text          0x0001d9bc       0xf4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sinh.o)
-                0x0001d9bc                sinh
- .text          0x0001dab0       0xb8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sqrt.o)
-                0x0001dab0                sqrt
- .text          0x0001db68      0x618 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_acos.o)
-                0x0001db68                __ieee754_acos
- .text          0x0001e180      0x598 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_asin.o)
-                0x0001e180                __ieee754_asin
- .text          0x0001e718      0x1cc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_cosh.o)
-                0x0001e718                __ieee754_cosh
- .text          0x0001e8e4      0x3ec c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_exp.o)
-                0x0001e8e4                __ieee754_exp
- .text          0x0001ecd0      0x500 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_log.o)
-                0x0001ecd0                __ieee754_log
- .text          0x0001f1d0      0x150 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_log10.o)
-                0x0001f1d0                __ieee754_log10
- .text          0x0001f320      0xce4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_pow.o)
-                0x0001f320                __ieee754_pow
- .text          0x00020004      0x514 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_rem_pio2.o)
-                0x00020004                __ieee754_rem_pio2
- .text          0x00020518      0x1e0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_sinh.o)
-                0x00020518                __ieee754_sinh
- .text          0x000206f8      0x1b8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_sqrt.o)
-                0x000206f8                __ieee754_sqrt
- .text          0x000208b0      0x2fc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_cos.o)
-                0x000208b0                __kernel_cos
- .text          0x00020bac      0x9cc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_rem_pio2.o)
-                0x00020bac                __kernel_rem_pio2
- .text          0x00021578      0x1c8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_sin.o)
-                0x00021578                __kernel_sin
- .text          0x00021740      0x4b0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_tan.o)
-                0x00021740                __kernel_tan
- .text          0x00021bf0      0x574 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_expm1.o)
-                0x00021bf0                expm1
- .text          0x00022164       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_finite.o)
-                0x00022164                finite
- .text          0x0002217c       0x94 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_fpclassify.o)
-                0x0002217c                __fpclassifyd
- .text          0x00022210       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_matherr.o)
-                0x00022210                matherr
- .text          0x00022220       0x14 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_nan.o)
-                0x00022220                nan
- .text          0x00022234      0x154 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_rint.o)
-                0x00022234                rint
- .text          0x00022388      0x16c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_scalbn.o)
-                0x00022388                scalbn
- .text          0x000224f4       0x1c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_copysign.o)
-                0x000224f4                copysign
- .text          0x00022510       0xa8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_divsi3.o)
-                0x00022510                __divsi3
- .text          0x000225b8       0x9c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_udivsi3.o)
-                0x000225b8                __udivsi3
- .text          0x00022654       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_umodsi3.o)
-                0x00022654                __umodsi3
- .text          0x0002266c       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_modsi3.o)
-                0x0002266c                __modsi3
- .text          0x00022684      0x6b4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(adddf3.o)
-                0x00022684                __adddf3
- .text          0x00022d38      0x5fc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(divdf3.o)
-                0x00022d38                __divdf3
- .text          0x00023334       0x98 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(eqdf2.o)
-                0x00023334                __eqdf2
-                0x00023334                __nedf2
- .text          0x000233cc       0xe4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(gedf2.o)
-                0x000233cc                __gtdf2
-                0x000233cc                __gedf2
- .text          0x000234b0       0xe8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(ledf2.o)
-                0x000234b0                __ltdf2
-                0x000234b0                __ledf2
- .text          0x00023598      0x4e0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(muldf3.o)
-                0x00023598                __muldf3
- .text          0x00023a78      0x6d4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(subdf3.o)
-                0x00023a78                __subdf3
- .text          0x0002414c       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixdfsi.o)
-                0x0002414c                __fixdfsi
- .text          0x000241c8       0x78 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixunsdfsi.o)
-                0x000241c8                __fixunsdfsi
- .text          0x00024240       0xa0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatsidf.o)
-                0x00024240                __floatsidf
- .text          0x000242e0       0x8c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatunsidf.o)
-                0x000242e0                __floatunsidf
- .text          0x0002436c       0xc0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(extendsfdf2.o)
-                0x0002436c                __extendsfdf2
- .text          0x0002442c       0x50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_clzsi2.o)
-                0x0002442c                __clzsi2
- .text          0x0002447c       0x50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-assert.o)
-                0x0002447c                __assert_func
-                0x000244c0                __assert
- .text          0x000244cc       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-atexit.o)
-                0x000244cc                atexit
- .text          0x000244e4       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-atoi.o)
-                0x000244e4                _atoi_r
-                0x000244f8                atoi
- .text          0x00024508       0x1c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-calloc.o)
-                0x00024508                calloc
- .text          0x00024524       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-callocr.o)
-                0x00024524                _calloc_r
- .text          0x000245a0       0x14 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-errno.o)
-                0x000245a0                __errno
- .text          0x000245b4       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-exit.o)
-                0x000245b4                exit
- .text          0x000245e0      0x1bc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fflush.o)
-                0x000245e0                _fflush_r
-                0x00024764                fflush
- .text          0x0002479c      0x2a0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-findfp.o)
-                0x0002479c                __sfp_lock_acquire
-                0x000247ac                __sfp_lock_release
-                0x000247bc                __sinit_lock_acquire
-                0x000247cc                __sinit_lock_release
-                0x000247fc                __fp_unlock_all
-                0x0002481c                __fp_lock_all
-                0x0002483c                _cleanup_r
-                0x00024850                _cleanup
-                0x000248d0                __sinit
-                0x00024934                __sfmoreglue
-                0x00024970                __sfp
- .text          0x00024a3c       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fiprintf.o)
-                0x00024a3c                fiprintf
-                0x00024a68                _fiprintf_r
- .text          0x00024a7c      0x2bc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-freer.o)
-                0x00024a7c                _malloc_trim_r
-                0x00024b34                _free_r
- .text          0x00024d38       0xe8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fwalk.o)
-                0x00024d38                _fwalk_reent
-                0x00024db0                _fwalk
- .text          0x00024e20       0xc8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-longjmp.o)
-                0x00024e20                longjmp
- .text          0x00024ee8       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-malloc.o)
-                0x00024ee8                free
-                0x00024f00                malloc
- .text          0x00024f18      0x55c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mallocr.o)
-                0x00024f18                _malloc_r
- .text          0x00025474       0xa4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memcpy.o)
-                0x00025474                memcpy
- .text          0x00025518       0xd4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memmove.o)
-                0x00025518                memmove
- .text          0x000255ec       0xb8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memset.o)
-                0x000255ec                memset
- .text          0x000256a4       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mlock.o)
-                0x000256a4                __malloc_lock
-                0x000256b4                __malloc_unlock
- .text          0x000256c4       0x48 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-printf.o)
-                0x000256c4                printf
-                0x000256ec                _printf_r
- .text          0x0002570c       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-putchar.o)
-                0x0002570c                putchar
-                0x00025728                _putchar_r
- .text          0x00025738       0x88 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-puts.o)
-                0x00025738                _puts_r
-                0x000257a8                puts
- .text          0x000257c0       0x6c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-rand.o)
-                0x000257c0                srand
-                0x000257e0                rand
- .text          0x0002582c       0x1c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-realloc.o)
-                0x0002582c                realloc
- .text          0x00025848      0x358 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-reallocr.o)
-                0x00025848                _realloc_r
- .text          0x00025ba0       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sbrkr.o)
-                0x00025ba0                _sbrk_r
- .text          0x00025bd0       0xbc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-setjmp.o)
-                0x00025bd0                setjmp
- .text          0x00025c8c       0x90 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sprintf.o)
-                0x00025c8c                sprintf
-                0x00025cdc                _sprintf_r
- .text          0x00025d1c       0xb4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sscanf.o)
-                0x00025d1c                _sscanf_r
-                0x00025d74                sscanf
- .text          0x00025dd0       0xe4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-stdio.o)
-                0x00025dd0                __seofread
-                0x00025de0                __sclose
-                0x00025df0                __sseek
-                0x00025e30                __swrite
-                0x00025e70                __sread
- .text          0x00025eb4      0x12c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strchr.o)
-                0x00025eb4                strchr
- .text          0x00025fe0       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strcmp.o)
-                0x00025fe0                strcmp
- .text          0x0002605c       0x88 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strlen.o)
-                0x0002605c                strlen
- .text          0x000260e4       0xd8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strncmp.o)
-                0x000260e4                strncmp
- .text          0x000261bc       0xa4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strncpy.o)
-                0x000261bc                strncpy
- .text          0x00026260      0x674 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strstr.o)
-                0x00026618                strstr
- .text          0x000268d4      0xfd4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
-                0x000268d4                _strtod_r
-                0x0002784c                strtof
-                0x0002788c                strtod
- .text          0x000278a8       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtok.o)
-                0x000278a8                strtok
- .text          0x000278cc       0x98 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtok_r.o)
-                0x000278cc                __strtok_r
-                0x00027950                strtok_r
- .text          0x00027964      0x18c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtol.o)
-                0x00027964                _strtol_r
-                0x00027ac0                strtol
- .text          0x00027af0     0x1650 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfprintf.o)
-                0x00027af0                _svfprintf_r
- .text          0x00029140      0xd50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfscanf.o)
-                0x00029140                __ssvfscanf_r
- .text          0x00029e90      0xb40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfiprintf.o)
-                0x00029e90                __sprint_r
-                0x00029f28                _vfiprintf_r
-                0x0002a9a0                vfiprintf
- .text          0x0002a9d0     0x1774 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfprintf.o)
-                0x0002a9d0                _vfprintf_r
-                0x0002c114                vfprintf
- .text          0x0002c144      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wbuf.o)
-                0x0002c144                __swbuf_r
-                0x0002c228                __swbuf
- .text          0x0002c244       0x3c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-writer.o)
-                0x0002c244                _write_r
- .text          0x0002c280       0xe0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wsetup.o)
-                0x0002c280                __swsetup_r
- .text          0x0002c360       0xbc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-__atexit.o)
-                0x0002c360                __register_exitproc
- .text          0x0002c41c      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-__call_atexit.o)
-                0x0002c41c                __call_exitprocs
- .text          0x0002c51c       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-abort.o)
-                0x0002c51c                abort
- .text          0x0002c52c       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-closer.o)
-                0x0002c52c                _close_r
- .text          0x0002c564     0x1018 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-dtoa.o)
-                0x0002c6bc                _dtoa_r
- .text          0x0002d57c       0xdc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fclose.o)
-                0x0002d57c                _fclose_r
-                0x0002d640                fclose
- .text          0x0002d658      0x12c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fputwc.o)
-                0x0002d658                _fputwc_r
-                0x0002d750                fputwc
- .text          0x0002d784      0x300 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fvwrite.o)
-                0x0002d784                __sfvwrite_r
- .text          0x0002da84      0x6c4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
-                0x0002da84                __hexdig_init
-                0x0002dbb4                __gethex
- .text          0x0002e148      0x1b8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-hexnan.o)
-                0x0002e148                __hexnan
- .text          0x0002e300       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-iswspace.o)
-                0x0002e300                iswspace
- .text          0x0002e330       0xe8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-locale.o)
-                0x0002e330                __locale_charset
-                0x0002e344                __locale_mb_cur_max
-                0x0002e358                __locale_msgcharset
-                0x0002e36c                __locale_cjk_lang
-                0x0002e37c                _localeconv_r
-                0x0002e390                localeconv
-                0x0002e3a4                _setlocale_r
-                0x0002e3fc                setlocale
- .text          0x0002e418       0x3c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-lseekr.o)
-                0x0002e418                _lseek_r
- .text          0x0002e454       0xf0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-makebuf.o)
-                0x0002e454                __smakebuf_r
- .text          0x0002e544       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbrtowc.o)
-                0x0002e544                mbrtowc
-                0x0002e5cc                _mbrtowc_r
- .text          0x0002e640       0x74 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbtowc_r.o)
-                0x0002e640                __ascii_mbtowc
-                0x0002e67c                _mbtowc_r
- .text          0x0002e6b4       0xcc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memchr.o)
-                0x0002e6b4                memchr
- .text          0x0002e780       0x78 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memcmp.o)
-                0x0002e780                memcmp
- .text          0x0002e7f8      0xa70 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mprec.o)
-                0x0002e7f8                _Bfree
-                0x0002e81c                __hi0bits
-                0x0002e878                __lo0bits
-                0x0002e904                __mcmp
-                0x0002e950                __ulp
-                0x0002e9ac                __b2d
-                0x0002ea78                __ratio
-                0x0002eadc                _mprec_log10
-                0x0002eb2c                __copybits
-                0x0002eb7c                __any_on
-                0x0002ebf0                _Balloc
-                0x0002ec58                __d2b
-                0x0002ed34                __mdiff
-                0x0002ee50                __lshift
-                0x0002ef08                __multiply
-                0x0002f058                __i2b
-                0x0002f078                __multadd
-                0x0002f108                __pow5mult
-                0x0002f1cc                __s2b
- .text          0x0002f268      0x120 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-putc.o)
-                0x0002f268                putc
-                0x0002f2fc                _putc_r
- .text          0x0002f388       0x3c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-readr.o)
-                0x0002f388                _read_r
- .text          0x0002f3c4       0xa4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sccl.o)
-                0x0002f3c4                __sccl
- .text          0x0002f468       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sf_nan.o)
-                0x0002f468                nanf
- .text          0x0002f478      0x1e4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-signal.o)
-                0x0002f478                _raise_r
-                0x0002f4e8                raise
-                0x0002f500                _init_signal_r
-                0x0002f544                _init_signal
-                0x0002f55c                __sigtramp_r
-                0x0002f5d0                __sigtramp
-                0x0002f5e8                _signal_r
-                0x0002f640                signal
- .text          0x0002f65c       0x44 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-signalr.o)
-                0x0002f65c                _getpid_r
-                0x0002f668                _kill_r
- .text          0x0002f6a0      0x190 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtoul.o)
-                0x0002f6a0                _strtoul_r
-                0x0002f800                strtoul
- .text          0x0002f830      0xa8c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiprintf.o)
-                0x0002f830                __ssprint_r
-                0x0002f964                _svfiprintf_r
- .text          0x000302bc      0xb04 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiscanf.o)
-                0x000302bc                __ssrefill_r
-                0x00030314                _sfread_r
-                0x000303a8                _sungetc_r
-                0x00030458                __ssvfiscanf_r
- .text          0x00030dc0      0x1cc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-ungetc.o)
-                0x00030dc0                __submore
-                0x00030e54                _ungetc_r
-                0x00030f70                ungetc
- .text          0x00030f8c       0xe0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wcrtomb.o)
-                0x00030f8c                wcrtomb
-                0x00031004                _wcrtomb_r
- .text          0x0003106c       0x64 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wctomb_r.o)
-                0x0003106c                __ascii_wctomb
-                0x0003109c                _wctomb_r
- .text          0x000310d0       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fstatr.o)
-                0x000310d0                _fstat_r
- .text          0x00031108       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-isattyr.o)
-                0x00031108                _isatty_r
- .text          0x00031140        0x8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libbfinbsp.a(_exit.o)
-                0x00031140                _exit
- .text          0x00031148       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libnosys.a(sbrk.o)
-                0x00031148                _sbrk
- .text          0x00031180       0x4c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_muldi3.o)
-                0x00031180                __muldi3
- .text          0x000311cc      0x17c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(truncdfsf2.o)
-                0x000311cc                __truncdfsf2
- .text          0x00031348       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
+                0x00019120                Cwritei2c4
+                0x0001917c                Cwritei2c3
+                0x000191d0                Cwritei2c2
+                0x00019218                Cwritei2c
+                0x00019258                Creadi2c3rs
+                0x000192b4                Creadi2c2rs
+                0x0001930c                Creadi2crs
+                0x0001935c                Creadi2c3
+                0x000193b8                Creadi2c2
+                0x00019410                Creadi2c
+                0x00019460                Cgps
+                0x000194c0                Canalogx
+                0x000194f4                Canalog
+                0x00019574                Ctilt
+                0x000195ac                Ccompassx
+                0x00019624                Ccompass
+                0x000196a4                Cvsend
+                0x0001976c                Coutput
+                0x000197ec                Cvjpeg
+                0x00019850                Cvblob
+                0x00019944                Cvmean
+                0x00019984                Cvscan
+                0x000199f4                Cvpix
+                0x00019a40                Cvrcap
+                0x00019a4c                Cvcap
+                0x00019a58                Cvfind
+                0x00019a9c                Cvcam
+                0x00019ae0                Crange
+                0x00019afc                Csonar
+                0x00019b48                Cservos2
+                0x00019bc0                Cservos
+                0x00019c38                Cinit_uart1
+                0x00019c4c                Coutput1
+                0x00019c60                Cmotorx
+                0x00019d20                Cmotors2
+                0x00019dc0                Cmotors
+                0x00019e60                Cencoderx
+                0x00019e94                Cencoders
+                0x00019ebc                Crand
+                0x00019ee4                Cdelay
+                0x00019f20                Cread_str
+                0x00019f74                Cread_int
+                0x00019fb8                Cinput
+                0x00019fd4                Cinput1
+                0x00019ff0                Csignal1
+                0x0001a00c                Csignal
+                0x0001a028                PlatformLibraryInit
+ .text          0x0001a414      0x3d4 picoc/platform.o
+                0x0001a414                PlatformMakeTempName
+                0x0001a454                PlatformVPrintf
+                0x0001a520                PlatformPrintf
+                0x0001a538                PrintSourceTextErrorLine
+                0x0001a64c                PlatformErrorPrefix
+                0x0001a670                LexFail
+                0x0001a6b0                ProgramFail
+                0x0001a6e4                AssignFail
+                0x0001a768                PicocCleanup
+                0x0001a790                PicocInitialise
+ .text          0x0001a7e8      0x2b8 picoc/platform/platform_surveyor.o
+                0x0001a7e8                PlatformInit
+                0x0001a7f8                PlatformCleanup
+                0x0001a808                PlatformExit
+                0x0001a82c                PlatformGetCharacter
+                0x0001a83c                PlatformPutc
+                0x0001a914                PlatformGetLine
+ .text          0x0001aaa0      0x190 interrupts.o
+                0x0001aaa0                Timer0_ISR
+ .text          0x0001ac30      0x1ac sysinit.o
+                0x0001ac30                init_program_clocks
+                0x0001ac98                InitTMR0
+                0x0001acd0                Init_Interrupts
+                0x0001ad4c                hardware_error_handler
+ .text          0x0001addc      0x1f0 system.o
+                0x0001addc                run_leds
+                0x0001ae08                getUnaligned32
+                0x0001ae30                atoi_b16
+                0x0001ae78                atoi_b10
+                0x0001ae98                strnstr
+                0x0001aef8                ctoi
+                0x0001af1c                _getpid
+                0x0001af2c                hang
+                0x0001af34                get_seqstat
+                0x0001af44                _kill
+                0x0001af5c                strReplace
+ *fill*         0x0001afcc        0x4 00
+ .text          0x0001afd0       0xf0 r8x8dct.o
+                0x0001afd0                _r8x8dct
+ .text          0x0001b0c0      0x950 motionvect.o
+                0x0001b0c0                _motionvect
+                0x0001b528                hpel
+                0x0001b618                _hpel_core1
+                0x0001b738                _hpel_core2
+                0x0001b888                _mve_core
+ .text          0x0001ba10      0x37c cache.o
+                0x0001ba10                dcache_reg_set
+                0x0001ba38                icache_reg_set
+                0x0001ba60                icache_setup
+                0x0001baa8                dcache_setup
+                0x0001baf0                cache_init
+                0x0001bcfc                dcache_enable
+                0x0001bd30                icache_enable
+                0x0001bd60                cache_status
+ .text          0x0001bd8c       0x4c options.o
+                0x0001bd8c                GetOption
+                0x0001bdb0                SetOption
+ .text          0x0001bdd8      0xa1c streaming.o
+                0x0001bdd8                StopAllStreaming
+                0x0001be70                StreamingTick
+                0x0001bfb8                StreamingParseHokuyo
+                0x0001bfcc                StreamingProcess
+                0x0001c3dc                StreamingParseDigitalByte
+                0x0001c4e0                StreamingParseDigitalBit
+                0x0001c5dc                StreamingParseAnalogBit
+                0x0001c66c                StreamingShutdown
+                0x0001c6bc                StreamingParsePicoC
+ .text          0x0001c7f4      0x430 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_atan.o)
+                0x0001c7f4                atan
+ .text          0x0001cc24      0x158 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_ceil.o)
+                0x0001cc24                ceil
+ .text          0x0001cd7c       0xd0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_cos.o)
+                0x0001cd7c                cos
+ .text          0x0001ce4c       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_fabs.o)
+                0x0001ce4c                fabs
+ .text          0x0001ce5c      0x15c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_floor.o)
+                0x0001ce5c                floor
+ .text          0x0001cfb8       0xd4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_sin.o)
+                0x0001cfb8                sin
+ .text          0x0001d08c       0x78 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_tan.o)
+                0x0001d08c                tan
+ .text          0x0001d104      0x164 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_tanh.o)
+                0x0001d104                tanh
+ .text          0x0001d268       0xc0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_acos.o)
+                0x0001d268                acos
+ .text          0x0001d328       0xc0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_asin.o)
+                0x0001d328                asin
+ .text          0x0001d3e8       0xd8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_cosh.o)
+                0x0001d3e8                cosh
+ .text          0x0001d4c0      0x11c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_exp.o)
+                0x0001d4c0                exp
+ .text          0x0001d5dc       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log.o)
+                0x0001d5dc                log
+ .text          0x0001d6d8       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log10.o)
+                0x0001d6d8                log10
+ .text          0x0001d7d4      0x350 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_pow.o)
+                0x0001d7d4                pow
+ .text          0x0001db24       0xf4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sinh.o)
+                0x0001db24                sinh
+ .text          0x0001dc18       0xb8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sqrt.o)
+                0x0001dc18                sqrt
+ .text          0x0001dcd0      0x618 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_acos.o)
+                0x0001dcd0                __ieee754_acos
+ .text          0x0001e2e8      0x598 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_asin.o)
+                0x0001e2e8                __ieee754_asin
+ .text          0x0001e880      0x1cc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_cosh.o)
+                0x0001e880                __ieee754_cosh
+ .text          0x0001ea4c      0x3ec c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_exp.o)
+                0x0001ea4c                __ieee754_exp
+ .text          0x0001ee38      0x500 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_log.o)
+                0x0001ee38                __ieee754_log
+ .text          0x0001f338      0x150 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_log10.o)
+                0x0001f338                __ieee754_log10
+ .text          0x0001f488      0xce4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_pow.o)
+                0x0001f488                __ieee754_pow
+ .text          0x0002016c      0x514 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_rem_pio2.o)
+                0x0002016c                __ieee754_rem_pio2
+ .text          0x00020680      0x1e0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_sinh.o)
+                0x00020680                __ieee754_sinh
+ .text          0x00020860      0x1b8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_sqrt.o)
+                0x00020860                __ieee754_sqrt
+ .text          0x00020a18      0x2fc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_cos.o)
+                0x00020a18                __kernel_cos
+ .text          0x00020d14      0x9cc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_rem_pio2.o)
+                0x00020d14                __kernel_rem_pio2
+ .text          0x000216e0      0x1c8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_sin.o)
+                0x000216e0                __kernel_sin
+ .text          0x000218a8      0x4b0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_tan.o)
+                0x000218a8                __kernel_tan
+ .text          0x00021d58      0x574 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_expm1.o)
+                0x00021d58                expm1
+ .text          0x000222cc       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_finite.o)
+                0x000222cc                finite
+ .text          0x000222e4       0x94 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_fpclassify.o)
+                0x000222e4                __fpclassifyd
+ .text          0x00022378       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_matherr.o)
+                0x00022378                matherr
+ .text          0x00022388       0x14 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_nan.o)
+                0x00022388                nan
+ .text          0x0002239c      0x154 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_rint.o)
+                0x0002239c                rint
+ .text          0x000224f0      0x16c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_scalbn.o)
+                0x000224f0                scalbn
+ .text          0x0002265c       0x1c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_copysign.o)
+                0x0002265c                copysign
+ .text          0x00022678       0xa8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_divsi3.o)
+                0x00022678                __divsi3
+ .text          0x00022720       0x9c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_udivsi3.o)
+                0x00022720                __udivsi3
+ .text          0x000227bc       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_umodsi3.o)
+                0x000227bc                __umodsi3
+ .text          0x000227d4       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_modsi3.o)
+                0x000227d4                __modsi3
+ .text          0x000227ec      0x6b4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(adddf3.o)
+                0x000227ec                __adddf3
+ .text          0x00022ea0      0x5fc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(divdf3.o)
+                0x00022ea0                __divdf3
+ .text          0x0002349c       0x98 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(eqdf2.o)
+                0x0002349c                __eqdf2
+                0x0002349c                __nedf2
+ .text          0x00023534       0xe4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(gedf2.o)
+                0x00023534                __gtdf2
+                0x00023534                __gedf2
+ .text          0x00023618       0xe8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(ledf2.o)
+                0x00023618                __ltdf2
+                0x00023618                __ledf2
+ .text          0x00023700      0x4e0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(muldf3.o)
+                0x00023700                __muldf3
+ .text          0x00023be0      0x6d4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(subdf3.o)
+                0x00023be0                __subdf3
+ .text          0x000242b4       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixdfsi.o)
+                0x000242b4                __fixdfsi
+ .text          0x00024330       0x78 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixunsdfsi.o)
+                0x00024330                __fixunsdfsi
+ .text          0x000243a8       0xa0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatsidf.o)
+                0x000243a8                __floatsidf
+ .text          0x00024448       0x8c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatunsidf.o)
+                0x00024448                __floatunsidf
+ .text          0x000244d4       0xc0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(extendsfdf2.o)
+                0x000244d4                __extendsfdf2
+ .text          0x00024594       0x50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_clzsi2.o)
+                0x00024594                __clzsi2
+ .text          0x000245e4       0x50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-assert.o)
+                0x000245e4                __assert_func
+                0x00024628                __assert
+ .text          0x00024634       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-atexit.o)
+                0x00024634                atexit
+ .text          0x0002464c       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-atoi.o)
+                0x0002464c                _atoi_r
+                0x00024660                atoi
+ .text          0x00024670       0x1c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-calloc.o)
+                0x00024670                calloc
+ .text          0x0002468c       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-callocr.o)
+                0x0002468c                _calloc_r
+ .text          0x00024708       0x14 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-errno.o)
+                0x00024708                __errno
+ .text          0x0002471c       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-exit.o)
+                0x0002471c                exit
+ .text          0x00024748      0x1bc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fflush.o)
+                0x00024748                _fflush_r
+                0x000248cc                fflush
+ .text          0x00024904      0x2a0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-findfp.o)
+                0x00024904                __sfp_lock_acquire
+                0x00024914                __sfp_lock_release
+                0x00024924                __sinit_lock_acquire
+                0x00024934                __sinit_lock_release
+                0x00024964                __fp_unlock_all
+                0x00024984                __fp_lock_all
+                0x000249a4                _cleanup_r
+                0x000249b8                _cleanup
+                0x00024a38                __sinit
+                0x00024a9c                __sfmoreglue
+                0x00024ad8                __sfp
+ .text          0x00024ba4       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fiprintf.o)
+                0x00024ba4                fiprintf
+                0x00024bd0                _fiprintf_r
+ .text          0x00024be4      0x2bc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-freer.o)
+                0x00024be4                _malloc_trim_r
+                0x00024c9c                _free_r
+ .text          0x00024ea0       0xe8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fwalk.o)
+                0x00024ea0                _fwalk_reent
+                0x00024f18                _fwalk
+ .text          0x00024f88       0xc8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-longjmp.o)
+                0x00024f88                longjmp
+ .text          0x00025050       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-malloc.o)
+                0x00025050                free
+                0x00025068                malloc
+ .text          0x00025080      0x55c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mallocr.o)
+                0x00025080                _malloc_r
+ .text          0x000255dc       0xa4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memcpy.o)
+                0x000255dc                memcpy
+ .text          0x00025680       0xd4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memmove.o)
+                0x00025680                memmove
+ .text          0x00025754       0xb8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memset.o)
+                0x00025754                memset
+ .text          0x0002580c       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mlock.o)
+                0x0002580c                __malloc_lock
+                0x0002581c                __malloc_unlock
+ .text          0x0002582c       0x48 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-printf.o)
+                0x0002582c                printf
+                0x00025854                _printf_r
+ .text          0x00025874       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-putchar.o)
+                0x00025874                putchar
+                0x00025890                _putchar_r
+ .text          0x000258a0       0x88 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-puts.o)
+                0x000258a0                _puts_r
+                0x00025910                puts
+ .text          0x00025928       0x6c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-rand.o)
+                0x00025928                srand
+                0x00025948                rand
+ .text          0x00025994       0x1c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-realloc.o)
+                0x00025994                realloc
+ .text          0x000259b0      0x358 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-reallocr.o)
+                0x000259b0                _realloc_r
+ .text          0x00025d08       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sbrkr.o)
+                0x00025d08                _sbrk_r
+ .text          0x00025d38       0xbc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-setjmp.o)
+                0x00025d38                setjmp
+ .text          0x00025df4       0x90 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sprintf.o)
+                0x00025df4                sprintf
+                0x00025e44                _sprintf_r
+ .text          0x00025e84       0xb4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sscanf.o)
+                0x00025e84                _sscanf_r
+                0x00025edc                sscanf
+ .text          0x00025f38       0xe4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-stdio.o)
+                0x00025f38                __seofread
+                0x00025f48                __sclose
+                0x00025f58                __sseek
+                0x00025f98                __swrite
+                0x00025fd8                __sread
+ .text          0x0002601c      0x12c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strchr.o)
+                0x0002601c                strchr
+ .text          0x00026148       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strcmp.o)
+                0x00026148                strcmp
+ .text          0x000261c4       0x88 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strlen.o)
+                0x000261c4                strlen
+ .text          0x0002624c       0xd8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strncmp.o)
+                0x0002624c                strncmp
+ .text          0x00026324       0xa4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strncpy.o)
+                0x00026324                strncpy
+ .text          0x000263c8      0x674 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strstr.o)
+                0x00026780                strstr
+ .text          0x00026a3c      0xfd4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
+                0x00026a3c                _strtod_r
+                0x000279b4                strtof
+                0x000279f4                strtod
+ .text          0x00027a10       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtok.o)
+                0x00027a10                strtok
+ .text          0x00027a34       0x98 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtok_r.o)
+                0x00027a34                __strtok_r
+                0x00027ab8                strtok_r
+ .text          0x00027acc      0x18c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtol.o)
+                0x00027acc                _strtol_r
+                0x00027c28                strtol
+ .text          0x00027c58     0x1650 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfprintf.o)
+                0x00027c58                _svfprintf_r
+ .text          0x000292a8      0xd50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfscanf.o)
+                0x000292a8                __ssvfscanf_r
+ .text          0x00029ff8      0xb40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfiprintf.o)
+                0x00029ff8                __sprint_r
+                0x0002a090                _vfiprintf_r
+                0x0002ab08                vfiprintf
+ .text          0x0002ab38     0x1774 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfprintf.o)
+                0x0002ab38                _vfprintf_r
+                0x0002c27c                vfprintf
+ .text          0x0002c2ac      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wbuf.o)
+                0x0002c2ac                __swbuf_r
+                0x0002c390                __swbuf
+ .text          0x0002c3ac       0x3c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-writer.o)
+                0x0002c3ac                _write_r
+ .text          0x0002c3e8       0xe0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wsetup.o)
+                0x0002c3e8                __swsetup_r
+ .text          0x0002c4c8       0xbc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-__atexit.o)
+                0x0002c4c8                __register_exitproc
+ .text          0x0002c584      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-__call_atexit.o)
+                0x0002c584                __call_exitprocs
+ .text          0x0002c684       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-abort.o)
+                0x0002c684                abort
+ .text          0x0002c694       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-closer.o)
+                0x0002c694                _close_r
+ .text          0x0002c6cc     0x1018 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-dtoa.o)
+                0x0002c824                _dtoa_r
+ .text          0x0002d6e4       0xdc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fclose.o)
+                0x0002d6e4                _fclose_r
+                0x0002d7a8                fclose
+ .text          0x0002d7c0      0x12c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fputwc.o)
+                0x0002d7c0                _fputwc_r
+                0x0002d8b8                fputwc
+ .text          0x0002d8ec      0x300 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fvwrite.o)
+                0x0002d8ec                __sfvwrite_r
+ .text          0x0002dbec      0x6c4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
+                0x0002dbec                __hexdig_init
+                0x0002dd1c                __gethex
+ .text          0x0002e2b0      0x1b8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-hexnan.o)
+                0x0002e2b0                __hexnan
+ .text          0x0002e468       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-iswspace.o)
+                0x0002e468                iswspace
+ .text          0x0002e498       0xe8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-locale.o)
+                0x0002e498                __locale_charset
+                0x0002e4ac                __locale_mb_cur_max
+                0x0002e4c0                __locale_msgcharset
+                0x0002e4d4                __locale_cjk_lang
+                0x0002e4e4                _localeconv_r
+                0x0002e4f8                localeconv
+                0x0002e50c                _setlocale_r
+                0x0002e564                setlocale
+ .text          0x0002e580       0x3c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-lseekr.o)
+                0x0002e580                _lseek_r
+ .text          0x0002e5bc       0xf0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-makebuf.o)
+                0x0002e5bc                __smakebuf_r
+ .text          0x0002e6ac       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbrtowc.o)
+                0x0002e6ac                mbrtowc
+                0x0002e734                _mbrtowc_r
+ .text          0x0002e7a8       0x74 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbtowc_r.o)
+                0x0002e7a8                __ascii_mbtowc
+                0x0002e7e4                _mbtowc_r
+ .text          0x0002e81c       0xcc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memchr.o)
+                0x0002e81c                memchr
+ .text          0x0002e8e8       0x78 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-memcmp.o)
+                0x0002e8e8                memcmp
+ .text          0x0002e960      0xa70 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mprec.o)
+                0x0002e960                _Bfree
+                0x0002e984                __hi0bits
+                0x0002e9e0                __lo0bits
+                0x0002ea6c                __mcmp
+                0x0002eab8                __ulp
+                0x0002eb14                __b2d
+                0x0002ebe0                __ratio
+                0x0002ec44                _mprec_log10
+                0x0002ec94                __copybits
+                0x0002ece4                __any_on
+                0x0002ed58                _Balloc
+                0x0002edc0                __d2b
+                0x0002ee9c                __mdiff
+                0x0002efb8                __lshift
+                0x0002f070                __multiply
+                0x0002f1c0                __i2b
+                0x0002f1e0                __multadd
+                0x0002f270                __pow5mult
+                0x0002f334                __s2b
+ .text          0x0002f3d0      0x120 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-putc.o)
+                0x0002f3d0                putc
+                0x0002f464                _putc_r
+ .text          0x0002f4f0       0x3c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-readr.o)
+                0x0002f4f0                _read_r
+ .text          0x0002f52c       0xa4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sccl.o)
+                0x0002f52c                __sccl
+ .text          0x0002f5d0       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-sf_nan.o)
+                0x0002f5d0                nanf
+ .text          0x0002f5e0      0x1e4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-signal.o)
+                0x0002f5e0                _raise_r
+                0x0002f650                raise
+                0x0002f668                _init_signal_r
+                0x0002f6ac                _init_signal
+                0x0002f6c4                __sigtramp_r
+                0x0002f738                __sigtramp
+                0x0002f750                _signal_r
+                0x0002f7a8                signal
+ .text          0x0002f7c4       0x44 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-signalr.o)
+                0x0002f7c4                _getpid_r
+                0x0002f7d0                _kill_r
+ .text          0x0002f808      0x190 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtoul.o)
+                0x0002f808                _strtoul_r
+                0x0002f968                strtoul
+ .text          0x0002f998      0xa8c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiprintf.o)
+                0x0002f998                __ssprint_r
+                0x0002facc                _svfiprintf_r
+ .text          0x00030424      0xb04 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiscanf.o)
+                0x00030424                __ssrefill_r
+                0x0003047c                _sfread_r
+                0x00030510                _sungetc_r
+                0x000305c0                __ssvfiscanf_r
+ .text          0x00030f28      0x1cc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-ungetc.o)
+                0x00030f28                __submore
+                0x00030fbc                _ungetc_r
+                0x000310d8                ungetc
+ .text          0x000310f4       0xe0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wcrtomb.o)
+                0x000310f4                wcrtomb
+                0x0003116c                _wcrtomb_r
+ .text          0x000311d4       0x64 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wctomb_r.o)
+                0x000311d4                __ascii_wctomb
+                0x00031204                _wctomb_r
+ .text          0x00031238       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-fstatr.o)
+                0x00031238                _fstat_r
+ .text          0x00031270       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-isattyr.o)
+                0x00031270                _isatty_r
+ .text          0x000312a8        0x8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libbfinbsp.a(_exit.o)
+                0x000312a8                _exit
+ .text          0x000312b0       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libnosys.a(sbrk.o)
+                0x000312b0                _sbrk
+ .text          0x000312e8       0x4c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_muldi3.o)
+                0x000312e8                __muldi3
+ .text          0x00031334      0x17c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(truncdfsf2.o)
+                0x00031334                __truncdfsf2
+ .text          0x000314b0       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
 
-.init           0x00031380       0x12
+.init           0x000314e8       0x12
  *(.init)
- .init          0x00031380        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crti.o
-                0x00031380                _init
- .init          0x00031384        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
- .init          0x00031388        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
- .init          0x0003138c        0x6 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtn.o
+ .init          0x000314e8        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crti.o
+                0x000314e8                _init
+ .init          0x000314ec        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .init          0x000314f0        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
+ .init          0x000314f4        0x6 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtn.o
 
-.fini           0x00031392        0xe
+.fini           0x000314fa        0xe
  *(.fini)
- .fini          0x00031392        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crti.o
-                0x00031392                _fini
- .fini          0x00031396        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
- .fini          0x0003139a        0x6 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtn.o
+ .fini          0x000314fa        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crti.o
+                0x000314fa                _fini
+ .fini          0x000314fe        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .fini          0x00031502        0x6 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtn.o
 
-.rodata         0x00100000     0x618c
+.rodata         0x00100000     0x6200
                 0x00100000                PROVIDE (__etext, .)
                 0x00100000                PROVIDE (_etext, .)
                 0x00100000                PROVIDE (etext, .)
@@ -2037,162 +2041,162 @@ LOAD c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/g
                                  0x24 (size before relaxing)
  *fill*         0x00103dea        0x2 00
  .rodata.str1.4
-                0x00103dec      0xaba picoc/platform/library_surveyor.o
-                                0xad0 (size before relaxing)
- *fill*         0x001048a6        0x2 00
+                0x00103dec      0xb2e picoc/platform/library_surveyor.o
+                                0xb44 (size before relaxing)
+ *fill*         0x0010491a        0x2 00
  .rodata.str1.4
-                0x001048a8       0x44 picoc/platform.o
+                0x0010491c       0x44 picoc/platform.o
                                  0x58 (size before relaxing)
  .rodata.str1.4
-                0x001048ec       0x11 picoc/platform/platform_surveyor.o
+                0x00104960       0x11 picoc/platform/platform_surveyor.o
                                  0x14 (size before relaxing)
- *fill*         0x001048fd        0x3 00
+ *fill*         0x00104971        0x3 00
  .rodata.str1.4
-                0x00104900       0x17 sysinit.o
+                0x00104974       0x17 sysinit.o
                                  0x18 (size before relaxing)
- *fill*         0x00104917        0x1 00
+ *fill*         0x0010498b        0x1 00
  .rodata.str1.4
-                0x00104918        0xe system.o
+                0x0010498c        0xe system.o
                                  0x10 (size before relaxing)
- *fill*         0x00104926        0x2 00
+ *fill*         0x0010499a        0x2 00
  .rodata.str1.4
-                0x00104928       0x95 streaming.o
+                0x0010499c       0x95 streaming.o
                                  0x9c (size before relaxing)
- *fill*         0x001049bd        0x3 00
- .rodata        0x001049c0       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_atan.o)
- .rodata.str1.4
-                0x00104a00        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_acos.o)
-                                  0xc (size before relaxing)
- *fill*         0x00104a05        0x3 00
- .rodata.str1.4
-                0x00104a08        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_asin.o)
-                                  0xc (size before relaxing)
- *fill*         0x00104a0d        0x3 00
- .rodata.str1.4
-                0x00104a10        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_cosh.o)
-                                  0x8 (size before relaxing)
- *fill*         0x00104a15        0x3 00
- .rodata.str1.4
-                0x00104a18        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_exp.o)
- .rodata.str1.4
-                0x00104a1c        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log.o)
-                                  0x8 (size before relaxing)
- .rodata.str1.4
-                0x00104a20        0x6 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log10.o)
-                                  0xc (size before relaxing)
- *fill*         0x00104a26        0x2 00
- .rodata.str1.4
-                0x00104a28        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_pow.o)
- .rodata.str1.4
-                0x00104a2c        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sinh.o)
-                                  0x8 (size before relaxing)
  *fill*         0x00104a31        0x3 00
+ .rodata        0x00104a34       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_atan.o)
  .rodata.str1.4
-                0x00104a34        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sqrt.o)
+                0x00104a74        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_acos.o)
+                                  0xc (size before relaxing)
+ *fill*         0x00104a79        0x3 00
+ .rodata.str1.4
+                0x00104a7c        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_asin.o)
+                                  0xc (size before relaxing)
+ *fill*         0x00104a81        0x3 00
+ .rodata.str1.4
+                0x00104a84        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_cosh.o)
                                   0x8 (size before relaxing)
- *fill*         0x00104a39        0x3 00
- .rodata        0x00104a3c       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_exp.o)
+ *fill*         0x00104a89        0x3 00
+ .rodata.str1.4
+                0x00104a8c        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_exp.o)
+ .rodata.str1.4
+                0x00104a90        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log.o)
+                                  0x8 (size before relaxing)
+ .rodata.str1.4
+                0x00104a94        0x6 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_log10.o)
+                                  0xc (size before relaxing)
+ *fill*         0x00104a9a        0x2 00
+ .rodata.str1.4
+                0x00104a9c        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_pow.o)
+ .rodata.str1.4
+                0x00104aa0        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sinh.o)
+                                  0x8 (size before relaxing)
+ *fill*         0x00104aa5        0x3 00
+ .rodata.str1.4
+                0x00104aa8        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-w_sqrt.o)
+                                  0x8 (size before relaxing)
+ *fill*         0x00104aad        0x3 00
+ .rodata        0x00104ab0       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_exp.o)
  .rodata.str1.4
                 0x00000000        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_pow.o)
- .rodata        0x00104a6c       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_pow.o)
- .rodata        0x00104a9c      0x188 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_rem_pio2.o)
- .rodata        0x00104c24       0x50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_rem_pio2.o)
- .rodata        0x00104c74       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_rint.o)
- .rodata        0x00104c84       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(divdf3.o)
- .rodata        0x00104cc4       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(muldf3.o)
- .rodata        0x00104d04      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_clz.o)
-                0x00104d04                __clz_tab
+ .rodata        0x00104ae0       0x30 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_pow.o)
+ .rodata        0x00104b10      0x188 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-e_rem_pio2.o)
+ .rodata        0x00104c98       0x50 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-k_rem_pio2.o)
+ .rodata        0x00104ce8       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_rint.o)
+ .rodata        0x00104cf8       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(divdf3.o)
+ .rodata        0x00104d38       0x40 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(muldf3.o)
+ .rodata        0x00104d78      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(_clz.o)
+                0x00104d78                __clz_tab
  .rodata.str1.4
-                0x00104e04       0x3f c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-assert.o)
+                0x00104e78       0x3f c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-assert.o)
                                  0x44 (size before relaxing)
- .rodata        0x00104e43      0x281 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-ctype_.o)
-                0x00104e43                _ctype_
- .rodata        0x001050c4        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-impure.o)
-                0x001050c4                _global_impure_ptr
+ .rodata        0x00104eb7      0x281 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-ctype_.o)
+                0x00104eb7                _ctype_
+ .rodata        0x00105138        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-impure.o)
+                0x00105138                _global_impure_ptr
  .rodata.str1.4
-                0x001050c8        0x2 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-impure.o)
+                0x0010513c        0x2 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-impure.o)
                                   0x4 (size before relaxing)
  .rodata.str1.4
                 0x00000000        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-puts.o)
- *fill*         0x001050ca        0x2 00
+ *fill*         0x0010513e        0x2 00
  .rodata.str1.4
-                0x001050cc        0xf c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
+                0x00105140        0xf c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
                                  0x10 (size before relaxing)
- *fill*         0x001050db        0x1 00
- .rodata        0x001050dc       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
+ *fill*         0x0010514f        0x1 00
+ .rodata        0x00105150       0xfc c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
  .rodata.str1.4
-                0x001051d8       0x5a c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfprintf.o)
+                0x0010524c       0x5a c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfprintf.o)
                                  0x60 (size before relaxing)
- *fill*         0x00105232        0x2 00
- .rodata        0x00105234      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfprintf.o)
+ *fill*         0x001052a6        0x2 00
+ .rodata        0x001052a8      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfprintf.o)
  .rodata.str1.4
-                0x001053b8        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfscanf.o)
+                0x0010542c        0x5 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfscanf.o)
                                   0x8 (size before relaxing)
- *fill*         0x001053bd        0x3 00
- .rodata        0x001053c0      0x490 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfscanf.o)
+ *fill*         0x00105431        0x3 00
+ .rodata        0x00105434      0x490 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfscanf.o)
  .rodata.str1.4
                 0x00000000       0x4c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfiprintf.o)
- .rodata        0x00105850      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfiprintf.o)
+ .rodata        0x001058c4      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfiprintf.o)
  .rodata.str1.4
                 0x00000000       0x60 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfprintf.o)
- .rodata        0x001059d4      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfprintf.o)
+ .rodata        0x00105a48      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-vfprintf.o)
  .rodata.str1.4
-                0x00105b58       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-dtoa.o)
+                0x00105bcc       0x10 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-dtoa.o)
                                  0x14 (size before relaxing)
- .rodata        0x00105b68       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-dtoa.o)
+ .rodata        0x00105bdc       0x18 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-dtoa.o)
  .rodata.str1.4
-                0x00105b80       0x1b c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
+                0x00105bf4       0x1b c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
                                  0x1c (size before relaxing)
- *fill*         0x00105b9b        0x1 00
+ *fill*         0x00105c0f        0x1 00
  .rodata.str1.4
-                0x00105b9c        0x8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-locale.o)
+                0x00105c10        0x8 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-locale.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
                 0x00000000        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbrtowc.o)
- .rodata        0x00105ba4      0x124 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mprec.o)
-                0x00105ba4                __mprec_tens
-                0x00105c6c                __mprec_bigtens
-                0x00105c94                __mprec_tinytens
+ .rodata        0x00105c18      0x124 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mprec.o)
+                0x00105c18                __mprec_tens
+                0x00105ce0                __mprec_bigtens
+                0x00105d08                __mprec_tinytens
  .rodata.str1.4
                 0x00000000       0x4c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiprintf.o)
- .rodata        0x00105cc8      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiprintf.o)
- .rodata        0x00105e4c      0x340 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiscanf.o)
+ .rodata        0x00105d3c      0x184 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiprintf.o)
+ .rodata        0x00105ec0      0x340 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-svfiscanf.o)
 
-.picoc_rodata   0x0010618c        0x0
-                0x0010618c                __picoc_rodata_start = .
+.picoc_rodata   0x00106200        0x0
+                0x00106200                __picoc_rodata_start = .
  picoc*(.rodata .rodata.*)
-                0x0010618c                __picoc_rodata_end = .
+                0x00106200                __picoc_rodata_end = .
 
-.eh_frame       0x0010618c      0x1f4
+.eh_frame       0x00106200      0x1f4
  *(.eh_frame)
- .eh_frame      0x0010618c        0x0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
- .eh_frame      0x0010618c       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(adddf3.o)
- .eh_frame      0x001061c4       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(divdf3.o)
+ .eh_frame      0x00106200        0x0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .eh_frame      0x00106200       0x38 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(adddf3.o)
+ .eh_frame      0x00106238       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(divdf3.o)
                                  0x3c (size before relaxing)
- .eh_frame      0x001061f0       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(eqdf2.o)
+ .eh_frame      0x00106264       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(eqdf2.o)
                                  0x34 (size before relaxing)
- .eh_frame      0x00106214       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(gedf2.o)
+ .eh_frame      0x00106288       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(gedf2.o)
                                  0x34 (size before relaxing)
- .eh_frame      0x00106238       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(ledf2.o)
+ .eh_frame      0x001062ac       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(ledf2.o)
                                  0x34 (size before relaxing)
- .eh_frame      0x0010625c       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(muldf3.o)
+ .eh_frame      0x001062d0       0x2c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(muldf3.o)
                                  0x3c (size before relaxing)
- .eh_frame      0x00106288       0x28 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(subdf3.o)
+ .eh_frame      0x001062fc       0x28 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(subdf3.o)
                                  0x38 (size before relaxing)
- .eh_frame      0x001062b0       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixdfsi.o)
+ .eh_frame      0x00106324       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixdfsi.o)
                                  0x30 (size before relaxing)
- .eh_frame      0x001062d0       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixunsdfsi.o)
+ .eh_frame      0x00106344       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(fixunsdfsi.o)
                                  0x30 (size before relaxing)
- .eh_frame      0x001062f0       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatsidf.o)
+ .eh_frame      0x00106364       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatsidf.o)
                                  0x34 (size before relaxing)
- .eh_frame      0x00106314       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatunsidf.o)
+ .eh_frame      0x00106388       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(floatunsidf.o)
                                  0x30 (size before relaxing)
- .eh_frame      0x00106334       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(extendsfdf2.o)
+ .eh_frame      0x001063a8       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(extendsfdf2.o)
                                  0x34 (size before relaxing)
- .eh_frame      0x00106358       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(truncdfsf2.o)
+ .eh_frame      0x001063cc       0x24 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5\libgcc.a(truncdfsf2.o)
                                  0x34 (size before relaxing)
- .eh_frame      0x0010637c        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
-                0x00107380                . = (ALIGN (0x1000) + (. & 0xfff))
+ .eh_frame      0x001063f0        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
+                0x001073f4                . = (ALIGN (0x1000) + (. & 0xfff))
 
 .eh_frame
  *(.eh_frame)
@@ -2200,349 +2204,349 @@ LOAD c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/g
 .gcc_except_table
  *(.gcc_except_table .gcc_except_table.*)
 
-.ctors          0x00106380        0x8
+.ctors          0x001063f4        0x8
  *crtbegin*.o(.ctors)
- .ctors         0x00106380        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .ctors         0x001063f4        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
  *(EXCLUDE_FILE(*crtend*.o) .ctors)
  *(SORT(.ctors.*))
  *(.ctors)
- .ctors         0x00106384        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
+ .ctors         0x001063f8        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
 
-.dtors          0x00106388        0x8
+.dtors          0x001063fc        0x8
  *crtbegin*.o(.dtors)
- .dtors         0x00106388        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .dtors         0x001063fc        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
  *(EXCLUDE_FILE(*crtend*.o) .dtors)
  *(SORT(.dtors.*))
  *(.dtors)
- .dtors         0x0010638c        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
-                0x0010638c                __DTOR_END__
+ .dtors         0x00106400        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
+                0x00106400                __DTOR_END__
 
-.jcr            0x00106390        0x4
+.jcr            0x00106404        0x4
  *(.jcr)
- .jcr           0x00106390        0x0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
- .jcr           0x00106390        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
+ .jcr           0x00106404        0x0 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .jcr           0x00106404        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtend.o
 
-.picoc_data     0x00106394      0x558
-                0x00106394                __picoc_data_start = .
+.picoc_data     0x00106408      0x578
+                0x00106408                __picoc_data_start = .
  pico*(.data .data.* .gnu.linkonce.d.*)
- .data          0x00106394      0x1e4 picoc/lex.o
- .data          0x00106578       0x10 picoc/heap.o
-                0x00106578                HeapStackTop
-                0x0010657c                HeapMemStart
- .data          0x00106588       0x10 picoc/type.o
- .data          0x00106598      0x13c picoc/clibrary.o
-                0x00106598                CLibrary
- .data          0x001066d4      0x218 picoc/platform/library_surveyor.o
-                0x001066d4                PlatformLibrary
-                0x001068ec                __picoc_data_end = .
+ .data          0x00106408      0x1e4 picoc/lex.o
+ .data          0x001065ec       0x10 picoc/heap.o
+                0x001065ec                HeapStackTop
+                0x001065f0                HeapMemStart
+ .data          0x001065fc       0x10 picoc/type.o
+ .data          0x0010660c      0x13c picoc/clibrary.o
+                0x0010660c                CLibrary
+ .data          0x00106748      0x238 picoc/platform/library_surveyor.o
+                0x00106748                PlatformLibrary
+                0x00106980                __picoc_data_end = .
 
-.data           0x001068ec     0x2dfc
+.data           0x00106980     0x2dfc
  *(.data .data.*)
- .data          0x001068ec        0x4 main.o
- .data          0x001068f0      0xa98 rcm-bfin.o
-                0x001068f0                fontmask
-                0x001068f8                font8x8
-                0x00106cf8                PicoCStreamBufferEnabled
-                0x00106cfc                version_string
-                0x00106d48                frame
-                0x00106d68                rand_seed
- .data          0x00107388        0x8 intuart.o
- .data          0x00107390      0x8f0 jpeg.o
-                0x00107390                fdct_coeff
-                0x001073a0                luminance_dc_code_table
-                0x001073b8                luminance_dc_size_table
-                0x001073d0                chrominance_dc_code_table
-                0x001073e8                chrominance_dc_size_table
-                0x00107400                luminance_ac_code_table
-                0x00107544                luminance_ac_size_table
-                0x00107688                chrominance_ac_code_table
-                0x001077cc                chrominance_ac_size_table
-                0x00107910                bitsize
-                0x00107a10                markerdata
-                0x00107bc0                zigzag_table
-                0x00107c00                luminance_quant_table
-                0x00107c40                chrominance_quant_table
- .data          0x00107c80     0x10d0 httpd.o
-                0x00107c80                adminHtml
- .data          0x00108d50       0x8c neural.o
-                0x00108d50                learn
-                0x00108d54                npattern
-                0x00108dd4                nmask
- .data          0x00108ddc       0x20 cache.o
- .data          0x00108dfc        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_lib_ver.o)
-                0x00108dfc                __fdlib_version
- .data          0x00108e00        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-ctype_.o)
-                0x00108e00                __ctype_ptr__
- .data          0x00108e04      0x428 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-impure.o)
-                0x00108e04                _impure_ptr
- .data          0x0010922c      0x410 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mallocr.o)
-                0x0010922c                __malloc_av_
-                0x00109634                __malloc_trim_threshold
-                0x00109638                __malloc_sbrk_base
- .data          0x0010963c       0x28 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
- .data          0x00109664       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-locale.o)
-                0x00109664                __mb_cur_max
- .data          0x001096e0        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbtowc_r.o)
-                0x001096e0                __mbtowc
- .data          0x001096e4        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wctomb_r.o)
-                0x001096e4                __wctomb
-                0x001096e8                __edata = .
-                0x001096e8                PROVIDE (_edata, .)
+ .data          0x00106980        0x4 main.o
+ .data          0x00106984      0xa98 rcm-bfin.o
+                0x00106984                fontmask
+                0x0010698c                font8x8
+                0x00106d8c                PicoCStreamBufferEnabled
+                0x00106d90                version_string
+                0x00106ddc                frame
+                0x00106dfc                rand_seed
+ .data          0x0010741c        0x8 intuart.o
+ .data          0x00107424      0x8f0 jpeg.o
+                0x00107424                fdct_coeff
+                0x00107434                luminance_dc_code_table
+                0x0010744c                luminance_dc_size_table
+                0x00107464                chrominance_dc_code_table
+                0x0010747c                chrominance_dc_size_table
+                0x00107494                luminance_ac_code_table
+                0x001075d8                luminance_ac_size_table
+                0x0010771c                chrominance_ac_code_table
+                0x00107860                chrominance_ac_size_table
+                0x001079a4                bitsize
+                0x00107aa4                markerdata
+                0x00107c54                zigzag_table
+                0x00107c94                luminance_quant_table
+                0x00107cd4                chrominance_quant_table
+ .data          0x00107d14     0x10d0 httpd.o
+                0x00107d14                adminHtml
+ .data          0x00108de4       0x8c neural.o
+                0x00108de4                learn
+                0x00108de8                npattern
+                0x00108e68                nmask
+ .data          0x00108e70       0x20 cache.o
+ .data          0x00108e90        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libm.a(lib_a-s_lib_ver.o)
+                0x00108e90                __fdlib_version
+ .data          0x00108e94        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-ctype_.o)
+                0x00108e94                __ctype_ptr__
+ .data          0x00108e98      0x428 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-impure.o)
+                0x00108e98                _impure_ptr
+ .data          0x001092c0      0x410 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mallocr.o)
+                0x001092c0                __malloc_av_
+                0x001096c8                __malloc_trim_threshold
+                0x001096cc                __malloc_sbrk_base
+ .data          0x001096d0       0x28 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-strtod.o)
+ .data          0x001096f8       0x7c c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-locale.o)
+                0x001096f8                __mb_cur_max
+ .data          0x00109774        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mbtowc_r.o)
+                0x00109774                __mbtowc
+ .data          0x00109778        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-wctomb_r.o)
+                0x00109778                __wctomb
+                0x0010977c                __edata = .
+                0x0010977c                PROVIDE (_edata, .)
 
-.picoc_bss      0x001096e8      0x9d8
-                0x001096e8                __picoc_bss_start = .
+.picoc_bss      0x0010977c      0x9d8
+                0x0010977c                __picoc_bss_start = .
  pico*(.dynbss)
  pico*(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x001096e8        0x4 picoc/table.o
-                0x001096e8                StrEmpty
- .bss           0x001096ec       0x4c picoc/lex.o
- .bss           0x00109738        0x4 picoc/parse.o
- .bss           0x0010973c       0x24 picoc/heap.o
- .bss           0x00109760        0x8 picoc/type.o
- .bss           0x00109768        0x4 picoc/variable.o
-                0x00109768                TopStackFrame
- .bss           0x0010976c       0x10 picoc/clibrary.o
- .bss           0x0010977c        0x8 picoc/debug.o
-                0x0010977c                BreakpointCount
-                0x00109780                DebugManualBreak
- .bss           0x00109784       0xdc picoc/platform/library_surveyor.o
- .bss           0x00109860        0x4 picoc/platform.o
-                0x00109860                PicocExitValue
+ .bss           0x0010977c        0x4 picoc/table.o
+                0x0010977c                StrEmpty
+ .bss           0x00109780       0x4c picoc/lex.o
+ .bss           0x001097cc        0x4 picoc/parse.o
+ .bss           0x001097d0       0x24 picoc/heap.o
+ .bss           0x001097f4        0x8 picoc/type.o
+ .bss           0x001097fc        0x4 picoc/variable.o
+                0x001097fc                TopStackFrame
+ .bss           0x00109800       0x10 picoc/clibrary.o
+ .bss           0x00109810        0x8 picoc/debug.o
+                0x00109810                BreakpointCount
+                0x00109814                DebugManualBreak
+ .bss           0x00109818       0xdc picoc/platform/library_surveyor.o
+ .bss           0x001098f4        0x4 picoc/platform.o
+                0x001098f4                PicocExitValue
  pico*(COMMON)
- COMMON         0x00109864        0x1 picoc/picoc.o
-                0x00109864                gAllowBackgroundMode
- *fill*         0x00109865        0x3 00
- COMMON         0x00109868      0x18c picoc/table.o
-                0x00109868                StringHashTable
-                0x001099ec                StringTable
- COMMON         0x001099f4      0x2a4 picoc/type.o
-                0x001099f4                GotoLabelType
-                0x00109a20                FPType
-                0x00109a4c                CharArrayType
-                0x00109a50                FunctionType
-                0x00109a7c                TypeType
-                0x00109aa8                EnumType
-                0x00109ad4                VoidType
-                0x00109b00                ShortType
-                0x00109b2c                MacroType
-                0x00109b58                CharType
-                0x00109b84                CharPtrType
-                0x00109b88                VoidPtrType
-                0x00109b8c                LongType
-                0x00109bb8                IntType
-                0x00109be4                UnsignedLongType
-                0x00109c10                UberType
-                0x00109c3c                UnsignedIntType
-                0x00109c68                UnsignedShortType
-                0x00109c94                CharPtrPtrType
- COMMON         0x00109c98      0x318 picoc/variable.o
-                0x00109c98                StringLiteralHashTable
-                0x00109e1c                GlobalHashTable
-                0x00109fa0                GlobalTable
-                0x00109fa8                StringLiteralTable
- COMMON         0x00109fb0       0x10 picoc/clibrary.o
-                0x00109fb0                CStdOut
-                0x00109fb4                CStdOutBase
- COMMON         0x00109fc0       0x5c picoc/debug.o
-                0x00109fc0                BreakpointTable
-                0x00109fc8                BreakpointHashTable
- COMMON         0x0010a01c       0xa4 picoc/platform/platform_surveyor.o
-                0x0010a01c                PicocExitBuf
-                0x0010a0c0                __picoc_bss_end = .
+ COMMON         0x001098f8        0x1 picoc/picoc.o
+                0x001098f8                gAllowBackgroundMode
+ *fill*         0x001098f9        0x3 00
+ COMMON         0x001098fc      0x18c picoc/table.o
+                0x001098fc                StringHashTable
+                0x00109a80                StringTable
+ COMMON         0x00109a88      0x2a4 picoc/type.o
+                0x00109a88                GotoLabelType
+                0x00109ab4                FPType
+                0x00109ae0                CharArrayType
+                0x00109ae4                FunctionType
+                0x00109b10                TypeType
+                0x00109b3c                EnumType
+                0x00109b68                VoidType
+                0x00109b94                ShortType
+                0x00109bc0                MacroType
+                0x00109bec                CharType
+                0x00109c18                CharPtrType
+                0x00109c1c                VoidPtrType
+                0x00109c20                LongType
+                0x00109c4c                IntType
+                0x00109c78                UnsignedLongType
+                0x00109ca4                UberType
+                0x00109cd0                UnsignedIntType
+                0x00109cfc                UnsignedShortType
+                0x00109d28                CharPtrPtrType
+ COMMON         0x00109d2c      0x318 picoc/variable.o
+                0x00109d2c                StringLiteralHashTable
+                0x00109eb0                GlobalHashTable
+                0x0010a034                GlobalTable
+                0x0010a03c                StringLiteralTable
+ COMMON         0x0010a044       0x10 picoc/clibrary.o
+                0x0010a044                CStdOut
+                0x0010a048                CStdOutBase
+ COMMON         0x0010a054       0x5c picoc/debug.o
+                0x0010a054                BreakpointTable
+                0x0010a05c                BreakpointHashTable
+ COMMON         0x0010a0b0       0xa4 picoc/platform/platform_surveyor.o
+                0x0010a0b0                PicocExitBuf
+                0x0010a154                __picoc_bss_end = .
 
-.bss            0x0010a0c0    0xcad10
-                0x0010a0c0                __bss_start = .
+.bss            0x0010a154    0xcad10
+                0x0010a154                __bss_start = .
  *(.bss)
- .bss           0x0010a0c0       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
- .bss           0x0010a0e0        0x4 main.o
-                0x0010a0e0                superdebug
- .bss           0x0010a0e4       0x34 rcm-bfin.o
-                0x0010a0e4                PicoCRunning
-                0x0010a0e8                PicoCStreamBufferIn
-                0x0010a0ec                PicoCStreamBufferOut
-                0x0010a0f0                PicoCStreamBufferLength
-                0x0010a0f4                failsafe_mode
-                0x0010a0f8                sonar_flag
-                0x0010a0fc                uart1_flag
- .bss           0x0010a118    0x20064 intuart.o
-                0x0010a118                UseHardwareHandshaking
- .bss           0x0012a17c        0x8 jpeg.o
-                0x0012a17c                lcode
-                0x0012a180                bitindex
- .bss           0x0012a184      0x280 httpd.o
- .bss           0x0012a404       0x50 colors.o
- .bss           0x0012a454       0x10 edit.o
- .bss           0x0012a464        0x8 gps.o
- .bss           0x0012a46c       0x28 interrupts.o
-                0x0012a46c                Counter0
-                0x0012a470                CounterStreamVideoTimout
-                0x0012a474                I2CDelayTimeoutMS
-                0x0012a478                LEDCounterMS
-                0x0012a47c                XMODEMTimeoutMS
-                0x0012a480                I2CTimeoutMS
-                0x0012a484                PicoCDelay
-                0x0012a488                StreamShutdownTimeout
-                0x0012a48c                UART0LastByteRX
-                0x0012a490                I2CAutoincTimeoutMS
- .bss           0x0012a494        0x4 basiccrt.o
- .bss           0x0012a498        0xc options.o
- .bss           0x0012a4a4     0x4b08 streaming.o
-                0x0012a4a4                StreamingTickTrigger
-                0x0012a4a8                StreamingLastTickMS
- .bss           0x0012efac       0x34 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mallocr.o)
-                0x0012efac                __malloc_top_pad
-                0x0012efb0                __malloc_max_sbrked_mem
-                0x0012efb4                __malloc_max_total_mem
-                0x0012efb8                __malloc_current_mallinfo
- .bss           0x0012efe0        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libnosys.a(sbrk.o)
+ .bss           0x0010a154       0x20 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/crtbegin.o
+ .bss           0x0010a174        0x4 main.o
+                0x0010a174                superdebug
+ .bss           0x0010a178       0x34 rcm-bfin.o
+                0x0010a178                PicoCRunning
+                0x0010a17c                PicoCStreamBufferIn
+                0x0010a180                PicoCStreamBufferOut
+                0x0010a184                PicoCStreamBufferLength
+                0x0010a188                failsafe_mode
+                0x0010a18c                sonar_flag
+                0x0010a190                uart1_flag
+ .bss           0x0010a1ac    0x20064 intuart.o
+                0x0010a1ac                UseHardwareHandshaking
+ .bss           0x0012a210        0x8 jpeg.o
+                0x0012a210                lcode
+                0x0012a214                bitindex
+ .bss           0x0012a218      0x280 httpd.o
+ .bss           0x0012a498       0x50 colors.o
+ .bss           0x0012a4e8       0x10 edit.o
+ .bss           0x0012a4f8        0x8 gps.o
+ .bss           0x0012a500       0x28 interrupts.o
+                0x0012a500                Counter0
+                0x0012a504                CounterStreamVideoTimout
+                0x0012a508                I2CDelayTimeoutMS
+                0x0012a50c                LEDCounterMS
+                0x0012a510                XMODEMTimeoutMS
+                0x0012a514                I2CTimeoutMS
+                0x0012a518                PicoCDelay
+                0x0012a51c                StreamShutdownTimeout
+                0x0012a520                UART0LastByteRX
+                0x0012a524                I2CAutoincTimeoutMS
+ .bss           0x0012a528        0x4 basiccrt.o
+ .bss           0x0012a52c        0xc options.o
+ .bss           0x0012a538     0x4b08 streaming.o
+                0x0012a538                StreamingTickTrigger
+                0x0012a53c                StreamingLastTickMS
+ .bss           0x0012f040       0x34 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-mallocr.o)
+                0x0012f040                __malloc_top_pad
+                0x0012f044                __malloc_max_sbrked_mem
+                0x0012f048                __malloc_max_total_mem
+                0x0012f04c                __malloc_current_mallinfo
+ .bss           0x0012f074        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libnosys.a(sbrk.o)
  *(COMMON)
- COMMON         0x0012efe4        0x4 main.o
-                0x0012efe4                TimeBetweenStreamingFramesMS
- COMMON         0x0012efe8    0x20d0c rcm-bfin.o
-                0x0012efe8                imgWidth
-                0x0012efec                rfailsafe
-                0x0012eff0                j
-                0x0012eff4                blob_display_flag
-                0x0012eff8                x_acc
-                0x0012effc                i
-                0x0012f000                invert_flag
-                0x0012f004                segmentation_flag
-                0x0012f008                move_stop_time
-                0x0012f00c                compass_continuous_calibration
-                0x0012f010                czmax
-                0x0012f014                pwm2_init
-                0x0012f018                pico_char
-                0x0013f018                sonar_data
-                0x0013f02c                y_acc0
-                0x0013f030                quality
-                0x0013f034                move_start_time
-                0x0013f038                y_acc
-                0x0013f03c                output_start
-                0x0013f040                lcount
-                0x0013f044                pwm1_init
-                0x0013f048                image_size
-                0x0013f04c                pwm1_mode
-                0x0013f050                x_center
-                0x0013f054                lfailsafe
-                0x0013f058                edge_thresh
-                0x0013f05c                compass_init
-                0x0013f060                cxmin
-                0x0013f064                horizon_detect_flag
-                0x0013f068                master
-                0x0013f06c                base_speed
-                0x0013f070                tilt_init
-                0x0013f074                rspeed2
-                0x0013f078                PicoCStreamBuffer
-                0x0014f078                pico_int
-                0x0014f478                lspeed
-                0x0014f47c                overlay_flag
-                0x0014f480                lspeed2
-                0x0014f484                err1
-                0x0014f488                cp
-                0x0014f48c                cymin
-                0x0014f490                output_end
-                0x0014f494                czmin
-                0x0014f498                pwm2_mode
-                0x0014f49c                obstacle_detect_flag
-                0x0014f4a0                cxmax
-                0x0014f4a4                blob_display_num
-                0x0014f4a8                framecount
-                0x0014f4ac                pico_float
-                0x0014fcac                rcount
-                0x0014fcb0                x_acc0
-                0x0014fcb4                imgHead
-                0x0014fcc0                edge_detect_flag
-                0x0014fcc4                encoder_flag
-                0x0014fcc8                imgHeight
-                0x0014fccc                failsafe_clock
-                0x0014fcd0                move_time_mS
-                0x0014fcd4                y_center
-                0x0014fcd8                cymax
-                0x0014fcdc                xwd_init
-                0x0014fce0                rspeed
-                0x0014fce4                base_speed2
-                0x0014fce8                frame_diff_flag
-                0x0014fcec                ix
-                0x0014fcf0                robot_moving
- COMMON         0x0014fcf4    0x8204c intuart.o
-                0x0014fcf4                RXAltBuf
-                0x0016fcf4                TXBufIn
-                0x0016fcf8                TXAltBufIn
-                0x0016fcfc                RXPriorityBufIn
-                0x0016fd00                TXAltBufOut
-                0x0016fd04                RXBufOut
-                0x0016fd08                processing_priority_command
-                0x0016fd0c                RXAltBufOut
-                0x0016fd10                RXPriorityBufCount
-                0x0016fd14                TXPriorityBufCount
-                0x0016fd18                RXBufIn
-                0x0016fd1c                RXBuf
-                0x0018fd1c                RXBufCount
-                0x0018fd20                TXAltBufCount
-                0x0018fd24                TXBufCount
-                0x0018fd28                TXBuf
-                0x001afd28                TXPriorityBufIn
-                0x001afd2c                RXAltBufIn
-                0x001afd30                TXAltBuf
-                0x001cfd30                RXAltBufCount
-                0x001cfd34                TXBufOut
-                0x001cfd38                RXPriorityBufOut
-                0x001cfd3c                RXPriorityBuf
-                0x001d0d3c                TXPriorityBuf
-                0x001d1d3c                TXPriorityBufOut
- COMMON         0x001d1d40       0x18 camera.o
-                0x001d1d40                dlist2
-                0x001d1d4c                dlist1
- COMMON         0x001d1d58      0x584 jpeg.o
-                0x001d1d58                Y2
-                0x001d1dd8                Temp
-                0x001d1e58                Cqt
-                0x001d1e98                Y3
-                0x001d1f18                Y4
-                0x001d1f98                ICqt
-                0x001d2018                ILqt
-                0x001d2098                CR
-                0x001d2118                Lqt
-                0x001d2158                CB
-                0x001d21d8                fdct_temp
-                0x001d2258                read_format
-                0x001d225c                Y1
- COMMON         0x001d22dc      0x406 xmodem.o
-                0x001d22dc                xbuff
- *fill*         0x001d26e2        0x2 00
- COMMON         0x001d26e4      0xf8c colors.o
-                0x001d26e4                blobcnt
-                0x001d27e0                ymax
-                0x001d2824                blobx1
-                0x001d2920                umax
-                0x001d2964                hist0
-                0x001d2d64                hist1
-                0x001d3164                blobix
-                0x001d3260                bloby2
-                0x001d335c                mean
-                0x001d3368                vmax
-                0x001d33ac                vmin
-                0x001d33f0                bloby1
-                0x001d34ec                blobx2
-                0x001d35e8                ymin
-                0x001d362c                umin
- COMMON         0x001d3670        0x1 edit.o
-                0x001d3670                EditorRunning
- *fill*         0x001d3671        0x3 00
- COMMON         0x001d3674     0x1640 neural.o
-                0x001d3674                weights
-                0x001d4a74                teach_neurons
-                0x001d4ab4                nerror
-                0x001d4b34                neurons
- COMMON         0x001d4cb4       0x18 gps.o
-                0x001d4cb4                gps_gga
- COMMON         0x001d4ccc      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
-                0x001d4ccc                __hexdig
- COMMON         0x001d4dcc        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-reent.o)
-                0x001d4dcc                errno
-                0x001d4dd0                . = ALIGN ((. != 0x0)?0x4:0x1)
-                0x001d4dd0                __bss_end = .
-                0x001d4dd0                . = ALIGN (0x4)
+ COMMON         0x0012f078        0x4 main.o
+                0x0012f078                TimeBetweenStreamingFramesMS
+ COMMON         0x0012f07c    0x20d0c rcm-bfin.o
+                0x0012f07c                imgWidth
+                0x0012f080                rfailsafe
+                0x0012f084                j
+                0x0012f088                blob_display_flag
+                0x0012f08c                x_acc
+                0x0012f090                i
+                0x0012f094                invert_flag
+                0x0012f098                segmentation_flag
+                0x0012f09c                move_stop_time
+                0x0012f0a0                compass_continuous_calibration
+                0x0012f0a4                czmax
+                0x0012f0a8                pwm2_init
+                0x0012f0ac                pico_char
+                0x0013f0ac                sonar_data
+                0x0013f0c0                y_acc0
+                0x0013f0c4                quality
+                0x0013f0c8                move_start_time
+                0x0013f0cc                y_acc
+                0x0013f0d0                output_start
+                0x0013f0d4                lcount
+                0x0013f0d8                pwm1_init
+                0x0013f0dc                image_size
+                0x0013f0e0                pwm1_mode
+                0x0013f0e4                x_center
+                0x0013f0e8                lfailsafe
+                0x0013f0ec                edge_thresh
+                0x0013f0f0                compass_init
+                0x0013f0f4                cxmin
+                0x0013f0f8                horizon_detect_flag
+                0x0013f0fc                master
+                0x0013f100                base_speed
+                0x0013f104                tilt_init
+                0x0013f108                rspeed2
+                0x0013f10c                PicoCStreamBuffer
+                0x0014f10c                pico_int
+                0x0014f50c                lspeed
+                0x0014f510                overlay_flag
+                0x0014f514                lspeed2
+                0x0014f518                err1
+                0x0014f51c                cp
+                0x0014f520                cymin
+                0x0014f524                output_end
+                0x0014f528                czmin
+                0x0014f52c                pwm2_mode
+                0x0014f530                obstacle_detect_flag
+                0x0014f534                cxmax
+                0x0014f538                blob_display_num
+                0x0014f53c                framecount
+                0x0014f540                pico_float
+                0x0014fd40                rcount
+                0x0014fd44                x_acc0
+                0x0014fd48                imgHead
+                0x0014fd54                edge_detect_flag
+                0x0014fd58                encoder_flag
+                0x0014fd5c                imgHeight
+                0x0014fd60                failsafe_clock
+                0x0014fd64                move_time_mS
+                0x0014fd68                y_center
+                0x0014fd6c                cymax
+                0x0014fd70                xwd_init
+                0x0014fd74                rspeed
+                0x0014fd78                base_speed2
+                0x0014fd7c                frame_diff_flag
+                0x0014fd80                ix
+                0x0014fd84                robot_moving
+ COMMON         0x0014fd88    0x8204c intuart.o
+                0x0014fd88                RXAltBuf
+                0x0016fd88                TXBufIn
+                0x0016fd8c                TXAltBufIn
+                0x0016fd90                RXPriorityBufIn
+                0x0016fd94                TXAltBufOut
+                0x0016fd98                RXBufOut
+                0x0016fd9c                processing_priority_command
+                0x0016fda0                RXAltBufOut
+                0x0016fda4                RXPriorityBufCount
+                0x0016fda8                TXPriorityBufCount
+                0x0016fdac                RXBufIn
+                0x0016fdb0                RXBuf
+                0x0018fdb0                RXBufCount
+                0x0018fdb4                TXAltBufCount
+                0x0018fdb8                TXBufCount
+                0x0018fdbc                TXBuf
+                0x001afdbc                TXPriorityBufIn
+                0x001afdc0                RXAltBufIn
+                0x001afdc4                TXAltBuf
+                0x001cfdc4                RXAltBufCount
+                0x001cfdc8                TXBufOut
+                0x001cfdcc                RXPriorityBufOut
+                0x001cfdd0                RXPriorityBuf
+                0x001d0dd0                TXPriorityBuf
+                0x001d1dd0                TXPriorityBufOut
+ COMMON         0x001d1dd4       0x18 camera.o
+                0x001d1dd4                dlist2
+                0x001d1de0                dlist1
+ COMMON         0x001d1dec      0x584 jpeg.o
+                0x001d1dec                Y2
+                0x001d1e6c                Temp
+                0x001d1eec                Cqt
+                0x001d1f2c                Y3
+                0x001d1fac                Y4
+                0x001d202c                ICqt
+                0x001d20ac                ILqt
+                0x001d212c                CR
+                0x001d21ac                Lqt
+                0x001d21ec                CB
+                0x001d226c                fdct_temp
+                0x001d22ec                read_format
+                0x001d22f0                Y1
+ COMMON         0x001d2370      0x406 xmodem.o
+                0x001d2370                xbuff
+ *fill*         0x001d2776        0x2 00
+ COMMON         0x001d2778      0xf8c colors.o
+                0x001d2778                blobcnt
+                0x001d2874                ymax
+                0x001d28b8                blobx1
+                0x001d29b4                umax
+                0x001d29f8                hist0
+                0x001d2df8                hist1
+                0x001d31f8                blobix
+                0x001d32f4                bloby2
+                0x001d33f0                mean
+                0x001d33fc                vmax
+                0x001d3440                vmin
+                0x001d3484                bloby1
+                0x001d3580                blobx2
+                0x001d367c                ymin
+                0x001d36c0                umin
+ COMMON         0x001d3704        0x1 edit.o
+                0x001d3704                EditorRunning
+ *fill*         0x001d3705        0x3 00
+ COMMON         0x001d3708     0x1640 neural.o
+                0x001d3708                weights
+                0x001d4b08                teach_neurons
+                0x001d4b48                nerror
+                0x001d4bc8                neurons
+ COMMON         0x001d4d48       0x18 gps.o
+                0x001d4d48                gps_gga
+ COMMON         0x001d4d60      0x100 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-gdtoa-gethex.o)
+                0x001d4d60                __hexdig
+ COMMON         0x001d4e60        0x4 c:/program files (x86)/analog devices/gnu toolchain/2011r1/elf/bin/../lib/gcc/bfin-elf/4.3.5/../../../../bfin-elf/lib\libc.a(lib_a-reent.o)
+                0x001d4e60                errno
+                0x001d4e64                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x001d4e64                __bss_end = .
+                0x001d4e64                . = ALIGN (0x4)
 
 .heap           0x00200000        0x0
                 0x00200000                __end = .

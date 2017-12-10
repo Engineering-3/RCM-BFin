@@ -677,7 +677,7 @@ void Creadi2c(struct ParseState *Parser, struct Value *ReturnValue, struct Value
     }
 }
 
-void Creadi2c2(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   two_byte_val = readi2c(device, register); 
+void Creadi2c2(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   two_byte_val = readi2c2(device, register); 
 {
     unsigned char i2c_device, i2c_data[2];
     int ret = 0;
@@ -693,7 +693,27 @@ void Creadi2c2(struct ParseState *Parser, struct Value *ReturnValue, struct Valu
     }
     else
     {
-        ReturnValue->Val->Integer = (((unsigned int)i2c_data[0] << 8) + i2c_data[1]);
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[0] + ((unsigned int)i2c_data[1] << 8));
+    }
+}
+
+void Creadi2c3(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   three_byte_val = readi2c3(device, register);
+{
+    unsigned char i2c_device, i2c_data[4];
+    int ret = 0;
+
+    i2c_device = (unsigned char)Param[0]->Val->Integer;
+    i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
+    
+    ret = i2cread(i2c_device, (unsigned char *)i2c_data, 3, SCCB_OFF);
+    if (ret)
+    {
+        // This indicates an error happened while reading i2c data
+        ReturnValue->Val->Integer = (ret);
+    }
+    else
+    {
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[2] + ((unsigned int)i2c_data[1] << 8) + ((unsigned int)i2c_data[0] << 16));
     }
 }
 
@@ -714,19 +734,8 @@ void Creadi2crs(struct ParseState *Parser, struct Value *ReturnValue, struct Val
     }
     else
     {
-        ReturnValue->Val->Integer = ((int)i2c_data[0] & 0x000000FF);
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[0]);
     }
-}
-
-void Cwritei2c(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   writei2c(device, register, value);
-{
-    unsigned char i2c_device, i2c_data[2];
-
-    i2c_device = (unsigned char)Param[0]->Val->Integer;
-    i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
-    i2c_data[1] = (unsigned char)Param[2]->Val->Integer;
-    
-    ReturnValue->Val->Integer = i2cwritex(i2c_device, (unsigned char *)i2c_data, 2, SCCB_OFF);
 }
 
 /* I2C read of 2-byte value from register on device, but with repeated start condition rather than full bus stop/start sequence like readi2c2() has */
@@ -746,11 +755,43 @@ void Creadi2c2rs(struct ParseState *Parser, struct Value *ReturnValue, struct Va
     }
     else
     {
-        ReturnValue->Val->Integer = (((unsigned int)i2c_data[0] << 8) + i2c_data[1]);
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[1] + ((unsigned int)i2c_data[2] << 8));
     }
 }
 
-// Third parameter is taken as 2-byte unsigned int. MSB is sent first over I2C, then LSB is sent second.
+/* I2C read of 3-byte value from register on device, but with repeated start condition rather than full bus stop/start sequence like readi2c3() has */
+void Creadi2c3rs(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   three_byte_val = readi2c3rs(device, register);
+{
+    unsigned char i2c_device, i2c_data[3];
+    int ret = 0;
+
+    i2c_device = (unsigned char)Param[0]->Val->Integer;
+    i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
+    
+    ret = i2creadrs(i2c_device, (unsigned char *)i2c_data, 3, SCCB_OFF);
+    if (ret)
+    {
+        // This indicates an error happened while writing i2c data
+        ReturnValue->Val->Integer = (ret);
+    }
+    else
+    {
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[2] + ((unsigned int)i2c_data[1] << 8) + ((unsigned int)i2c_data[0] << 16));
+    }
+}
+
+void Cwritei2c(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   writei2c(device, register, value);
+{
+    unsigned char i2c_device, i2c_data[2];
+
+    i2c_device = (unsigned char)Param[0]->Val->Integer;
+    i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
+    i2c_data[1] = (unsigned char)Param[2]->Val->Integer;
+    
+    ReturnValue->Val->Integer = i2cwritex(i2c_device, (unsigned char *)i2c_data, 2, SCCB_OFF);
+}
+
+// Third parameter is taken as 2-byte unsigned int. LSB is sent first over I2C, then MSB is sent second.
 void Cwritei2c2(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   writei2c2(device, register, value(2byte));
 {
     unsigned char i2c_device, i2c_data[3];
@@ -761,6 +802,35 @@ void Cwritei2c2(struct ParseState *Parser, struct Value *ReturnValue, struct Val
     i2c_data[2] = (unsigned char)((Param[2]->Val->Integer & 0xFF00) >> 8);
     
     ReturnValue->Val->Integer = i2cwritex(i2c_device, (unsigned char *)i2c_data, 3, SCCB_OFF);
+}
+
+// Third parameter is taken as 3-byte unsigned int. LSB is sent first over I2C, then middle byte, then MSB is sent third.
+void Cwritei2c3(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   writei2c3(device, register, value(3byte));
+{
+    unsigned char i2c_device, i2c_data[4];
+
+    i2c_device = (unsigned char)Param[0]->Val->Integer;
+    i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
+    i2c_data[1] = (unsigned char)(Param[2]->Val->Integer & 0x000000FF);
+    i2c_data[2] = (unsigned char)((Param[2]->Val->Integer & 0x0000FF00) >> 8);
+    i2c_data[3] = (unsigned char)((Param[2]->Val->Integer & 0x00FF0000) >> 16);
+    
+    ReturnValue->Val->Integer = i2cwritex(i2c_device, (unsigned char *)i2c_data, 4, SCCB_OFF);
+}
+
+// Third parameter is taken as 4-byte unsigned int. LSB is sent first over I2C, MSB is sent fourth.
+void Cwritei2c4(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  //  syntax   writei2c4(device, register, value(4byte));
+{
+    unsigned char i2c_device, i2c_data[5];
+
+    i2c_device = (unsigned char)Param[0]->Val->Integer;
+    i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
+    i2c_data[1] = (unsigned char)(Param[2]->Val->Integer & 0x000000FF);
+    i2c_data[2] = (unsigned char)((Param[2]->Val->Integer & 0x0000FF00) >> 8);
+    i2c_data[3] = (unsigned char)((Param[2]->Val->Integer & 0x00FF0000) >> 16);
+    i2c_data[4] = (unsigned char)((Param[2]->Val->Integer & 0xFF000000) >> 24);
+    
+    ReturnValue->Val->Integer = i2cwritex(i2c_device, (unsigned char *)i2c_data, 5, SCCB_OFF);
 }
 
 void Cabs(struct ParseState *Parser, struct Value *ReturnValue, struct Value **Param, int NumArgs)  // abs(int)
@@ -1036,10 +1106,14 @@ struct LibraryFunction PlatformLibrary[] =
     { Cgps,         "void gps();" },
     { Creadi2c,     "int readi2c(int, int);" },
     { Creadi2c2,    "int readi2c2(int, int);" },
+    { Creadi2c3,    "int readi2c3(int, int);" },
     { Creadi2crs,   "int readi2crs(int, int);" },
     { Creadi2c2rs,  "int readi2c2rs(int, int);" },
+    { Creadi2c3rs,  "int readi2c3rs(int, int);" },
     { Cwritei2c,    "void writei2c(int, int, int);" },
-    { Cwritei2c2,    "void writei2c2(int, int, int);" },
+    { Cwritei2c2,   "void writei2c2(int, int, int);" },
+    { Cwritei2c3,   "void writei2c3(int, int, int);" },
+    { Cwritei2c4,   "void writei2c4(int, int, int);" },
 #ifndef PICOC_LIBRARY
     { Cabs,         "int abs(int);" },
     { Csin,         "int sin(int);" },
