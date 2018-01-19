@@ -5,7 +5,7 @@
     </head>
 <body>
 
-<h3>Definition of the RCM-BFin GCC v2.0 Control Protocol (Blackfin Version) - as of September 2017</h3>
+<h3>Definition of the RCM-BFin GCC v2.0 Control Protocol (Blackfin Version) - as of January 2018</h3>
 
 <table>
     <tbody>
@@ -551,14 +551,6 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
     </p></td>
 </tr>
 <tr>
-	<td>'&NBddarbtt'</td><td>'#&NRBdd'</td>
-	<td>
-	<p>Stream data from an I2C register. 'dd' is a 16-bit (2 byte) value that is not used by the BFin firmware, but will be returned in any responses that are generated because of this command. 'a' is a one byte binary I2C address to read. 'r' is a one byte binary I2C register to read (at address 'a'). 'b' is a one byte binary number indicating the number of bytes to be read from 1 to 255. 'tt' is a two byte binary (LSB first) number, indicating the time in milliseconds between sensor streaming packet sends. If tt = 0 then streaming from this combination of I2C address and register is turned off.</p>
-	<p>The sensor data sent every 'tt' ms will consist of '#&NBddarv1v2v3...', where 'dd', 'a', and 'r' are as above, and 'v1' is the first byte returned from the I2C device, 'v2' is the second byte, 'v3' is the third, etc. For example if 'b' = 0x01, then there will only be one return value in the stream reply and it will look like '#NBarv'.</p>
-    <p>This command is typically used to stream data when reading a single byte ('b' = 1) or multiple bytes from a single sensor ('b' &gt; 1). For example, you could stream compass data from a HMC6352 compass at address 0x22, which requires 2 bytes of data to be read out, by setting up the steam as follows (raw hex bytes) : 0x4E 0x42 0x22 0x41 0x02 0x64 0x00. This would ask for a 2-byte read from address 0x22, register 0x41, every 100ms. If the current heading is 180 degrees, the resulting stream reply would look like this : 0x23 0x4E 0x42 0x22 0x41 0x07 0x08.
-	</p></td>
-</tr>
-<tr>
 	<td>'|'</td><td></td><td>If PicoC Background Mode is on, this command will interrupt a running PicoC program</td>
 </tr>
 <tr>
@@ -930,7 +922,7 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
 </tbody>
 </table>
 <br>
-Last updated 1 September 2017, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test54
+Last updated 18 January 2018, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test56
 <br>
 <br>Tan colored cells indicate a change since the last firmware version<br>
 </body></html>
