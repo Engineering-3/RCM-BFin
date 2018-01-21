@@ -693,7 +693,7 @@ void Creadi2c2(struct ParseState *Parser, struct Value *ReturnValue, struct Valu
     }
     else
     {
-        ReturnValue->Val->Integer = ((unsigned int)i2c_data[0] + ((unsigned int)i2c_data[1] << 8));
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[1] | ((unsigned int)i2c_data[0] << 8));
     }
 }
 
@@ -713,7 +713,7 @@ void Creadi2c3(struct ParseState *Parser, struct Value *ReturnValue, struct Valu
     }
     else
     {
-        ReturnValue->Val->Integer = ((unsigned int)i2c_data[2] + ((unsigned int)i2c_data[1] << 8) + ((unsigned int)i2c_data[0] << 16));
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[2] | ((unsigned int)i2c_data[1] << 8) | ((unsigned int)i2c_data[0] << 16));
     }
 }
 
@@ -755,7 +755,7 @@ void Creadi2c2rs(struct ParseState *Parser, struct Value *ReturnValue, struct Va
     }
     else
     {
-        ReturnValue->Val->Integer = ((unsigned int)i2c_data[1] + ((unsigned int)i2c_data[2] << 8));
+        ReturnValue->Val->Integer = ((unsigned int)i2c_data[1] | ((unsigned int)i2c_data[0] << 8));
     }
 }
 
