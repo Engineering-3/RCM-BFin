@@ -427,20 +427,20 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
     </td>
 </tr>
 <tr style="background-color:tan">
-    <td>'iMxxyy'</td>
-    <td>'##iM xx yy vvvv\r\n'</td>
+    <td>'iNxxyy'</td>
+    <td>'##iN xx yy vvvv\r\n'</td>
     <td>
         <b>Read Two Byte From I2C Register</b><br>
         <p>Identical to 'iLxxyy' except that this command uses a repeated start I2C transaction : <a href="https://www.i2c-bus.org/repeated-start-condition/">https://www.i2c-bus.org/repeated-start-condition/</a></p>
-        <b>Command:</b>'iMxxyy'<br>
+        <b>Command:</b>'iNxxyy'<br>
             xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
             yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
             example: "iM327F" would request a read of register 0x7F from I2C address 0x32<br>
-        <b>Response:</b>'##iM xx yy vv\r\n'<br>
+        <b>Response:</b>'##iN xx yy vv\r\n'<br>
             xx is a two character ASCII hexadecimal value from 00 to FF representing the I2C address<br>
             yy is a two character ASCII hexadecimal value from 00 to FF representing the I2C register<br>
             vvvv is a four character ASCII hexadecimal value from 0000 to FFFF representing the value just read<br>
-            example: "##iM 32 7F EF7D\n\r" would be indicating a value of 0xEF7D from register 0x7F of address 0x32<br> 
+            example: "##iN 32 7F EF7D\n\r" would be indicating a value of 0xEF7D from register 0x7F of address 0x32<br> 
     </td>
 </tr>
 <tr>
@@ -922,7 +922,7 @@ return the colors stored in color bin #0 - e.g. '##vr0 127 176 86 111 154 200\r\
 </tbody>
 </table>
 <br>
-Last updated 18 January 2018, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test56
+Last updated 21 January 2018, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test57
 <br>
 <br>Tan colored cells indicate a change since the last firmware version<br>
 </body></html>
