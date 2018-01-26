@@ -23,8 +23,9 @@
  *
  *
  */
+#include "config.h"
 
-#ifdef _DEBUG
+#ifdef DEBUG
 
 #define DebugStr(s)     uart1SendString ((unsigned char *) s)
 #define DebugChar(c)    uart1SendChar ((unsigned char) c)

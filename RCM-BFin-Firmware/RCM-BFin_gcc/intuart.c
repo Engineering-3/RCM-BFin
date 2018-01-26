@@ -195,7 +195,7 @@ volatile static uint32_t DeferredPicoCsend = false;
  * into the same packet, and to handle high priority command
  * responses.
  *
- * It returns 0 on sucess, or -1 for any failure.
+ * It returns 0 on success, or -1 for any failure.
  *
  * You do not need to call this (or PacketEnd()) if you call
  * CreatePacket() as it does it for you.
@@ -224,8 +224,8 @@ int32_t PacketBegin(void)
         else
         {
             /// TODO: Generate error here
-			while(1)
-			{DEBUG_H15_TOGGLE();}
+            while(1)
+            {DEBUG_H15_TOGGLE();}
 //            SendErrorPacket((uint8_t *)"Error: PacketBegin() already in SENDING_PACKET state.\r\n");
             return (-1);
         }
@@ -369,46 +369,46 @@ int32_t GeneratePacket(uint8_t Command, PacketSenderType Sender, uint32_t Length
 #endif
     
 #ifdef UART1_PACKET_DEBUG
-	char tmp[20];
-	
-	// For debugging packet mode, spit out the entire packet
-	// on UART1, as hex bytes
-	uart1SendString((unsigned char *)"-<");
+    char tmp[20];
+    
+    // For debugging packet mode, spit out the entire packet
+    // on UART1, as hex bytes
+    uart1SendString((unsigned char *)"-<");
 #endif
     // First the header
     SyncFieldActive = true;
     uart0SendChar(0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, (char *)"%02x:", (uint8_t)0xFF);
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, (char *)"%02x:", (uint8_t)0xFF);
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar(0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)0xFF);
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)0xFF);
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar(0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)0xFF);
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)0xFF);
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar(0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)0xFF);
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)0xFF);
+    uart1SendString((unsigned char *)tmp);
 #endif
     SyncFieldActive = false;
     // Then the command
     uart0SendChar(Command);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)Command);
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)Command);
+    uart1SendString((unsigned char *)tmp);
 #endif
     // And the sender
     uart0SendChar(Sender);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)Sender);
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)Sender);
+    uart1SendString((unsigned char *)tmp);
 #endif
     // Then the current timestamp
     time = readRTC();
@@ -427,62 +427,62 @@ int32_t GeneratePacket(uint8_t Command, PacketSenderType Sender, uint32_t Length
     uart0SendChar((time >> 24) & 0xFF);
 #endif
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)((time >> 24) & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)((time >> 24) & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar((time >> 16) & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)((time >> 16) & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)((time >> 16) & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar((time >> 8) & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)((time >> 8) & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)((time >> 8) & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar(time & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)(time & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)(time & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     // Next the length
     uart0SendChar((Length >> 8) & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)((Length >> 8) & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)((Length >> 8) & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar(Length & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)(Length & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)(Length & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     // Then the data
     for (x = 0; x <  Length; x++)
     {
         uart0SendChar(Data[x]);
 #ifdef UART1_PACKET_DEBUG
-		sprintf(tmp, "%02x:", (uint8_t)Data[x]);
-		uart1SendString((unsigned char *)tmp);
+        sprintf(tmp, "%02x:", (uint8_t)Data[x]);
+        uart1SendString((unsigned char *)tmp);
 #endif
     }
     // And finally a checksum
     CRC = PacketComputeCRC(Command, Sender, Length, time, Data, MAINLINE_BUFFER);
     uart0SendChar((CRC >> 8) & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)((CRC >> 8) & 0xFF));
-	uart1SendString((unsigned char *)tmp);
+    sprintf(tmp, "%02x:", (uint8_t)((CRC >> 8) & 0xFF));
+    uart1SendString((unsigned char *)tmp);
 #endif
     uart0SendChar(CRC & 0xFF);
 #ifdef UART1_PACKET_DEBUG
-	sprintf(tmp, "%02x:", (uint8_t)(CRC & 0xFF));
-	uart1SendString((unsigned char *)tmp);
-	uart1SendString((unsigned char *)"    ");
-	for (x=0; x < Length; x++) 
-	{
-		sprintf(tmp, "%c", Data[x]);
-		uart1SendString((unsigned char *)tmp);			
-	}
-	uart1SendString((unsigned char *)"\r\n");
+    sprintf(tmp, "%02x:", (uint8_t)(CRC & 0xFF));
+    uart1SendString((unsigned char *)tmp);
+    uart1SendString((unsigned char *)"    ");
+    for (x=0; x < Length; x++)
+    {
+        sprintf(tmp, "%c", Data[x]);
+        uart1SendString((unsigned char *)tmp);
+    }
+    uart1SendString((unsigned char *)"\r\n");
 #endif
     return(0);
 }
@@ -577,11 +577,11 @@ uint32_t PacketComputeCRC(
     
     LocalData = &LocalDataArray[BufferSel][0];
     
-	LocalData[0] = 0xFF;
-	LocalData[1] = 0xFF;
-	LocalData[2] = 0xFF;
-	LocalData[3] = 0xFF;
-	LocalData[4] = (uint8_t)Command;
+    LocalData[0] = 0xFF;
+    LocalData[1] = 0xFF;
+    LocalData[2] = 0xFF;
+    LocalData[3] = 0xFF;
+    LocalData[4] = (uint8_t)Command;
     LocalData[5] = (uint8_t)Sender;
     LocalData[6] = (uint8_t)(Timestamp >> 24);
     LocalData[7] = (uint8_t)((Timestamp >> 16) & 0xFF);
@@ -590,20 +590,20 @@ uint32_t PacketComputeCRC(
     LocalData[10] = (uint8_t)(Length >> 8);
     LocalData[11] = (uint8_t)(Length & 0xFF);
     
-	// Limit length so we don't go beyond the end of our 64K packet size
-	if (Length > 0xFFFF)
-	{
-		Length = 0xFFFF;
-	}
+    // Limit length so we don't go beyond the end of our 64K packet size
+    if (Length > 0xFFFF)
+    {
+        Length = 0xFFFF;
+    }
 
-	// Copy over the rest of the packet
+    // Copy over the rest of the packet
     for (i = 0; i < Length; i++)
     {
         LocalData[i+12] = Data[i];
     }
 
-	CRC = crc16_ccitt((void *)LocalData, Length + 12);
-	
+    CRC = crc16_ccitt((void *)LocalData, Length + 12);
+
     return(CRC);
 }
 
@@ -628,12 +628,12 @@ void init_uart0(uint32_t baudrate) {
     TXBufCount = 0;
     TXBufIn = 0;
     TXBufOut = 0;
-	TXPriorityBufIn = 0;
-	TXPriorityBufOut = 0;
-	TXPriorityBufCount = 0;
-	TXAltBufIn = 0;
-	TXAltBufOut = 0;
-	TXAltBufCount = 0;
+    TXPriorityBufIn = 0;
+    TXPriorityBufOut = 0;
+    TXPriorityBufCount = 0;
+    TXAltBufIn = 0;
+    TXAltBufOut = 0;
+    TXAltBufCount = 0;
     RXBufCount = 0;
     RXBufIn = 0;
     RXBufOut = 0;
@@ -661,19 +661,19 @@ void init_uart1(uint32_t baudrate) {
 // Zero out all pending data in all of our output buffers
 void FlushAllTXBuffers(void)
 {
-	volatile uint32_t IntTemp;
-	
+    volatile uint32_t IntTemp;
+
     disable_interrupts(IntTemp);
     TXBufCount = 0;
     TXBufIn = 0;
     TXBufOut = 0;
-	TXPriorityBufIn = 0;
-	TXPriorityBufOut = 0;
-	TXPriorityBufCount = 0;
-	TXAltBufIn = 0;
-	TXAltBufOut = 0;
-	TXAltBufCount = 0;
-	enable_interrupts(IntTemp);
+    TXPriorityBufIn = 0;
+    TXPriorityBufOut = 0;
+    TXPriorityBufCount = 0;
+    TXAltBufIn = 0;
+    TXAltBufOut = 0;
+    TXAltBufCount = 0;
+    enable_interrupts(IntTemp);
 }
 
 // Call to send a byte out the UART
@@ -921,8 +921,8 @@ int32_t RXAltBufPush(uint8_t Data)
         // And move ahead one byte
         IncrimentRXAltInPtr();
         return (0);
-    } 
-	
+    }
+
     // No room - just drop the character
     // TODO: put in a flag here that we can check from the 
     // mainline code that says we lost a byte.
@@ -950,7 +950,7 @@ int32_t RXBufPull(uint8_t *Data)
 
         IncrimentRXOutPtr();
 
-        enable_interrupts(IntTemp);    
+        enable_interrupts(IntTemp);
     }
     else
     {
@@ -1020,8 +1020,8 @@ int32_t TXBufPush(uint8_t Data)
         // until there is.
         while(TXBufCount >= (TX_BUF_SIZE - 10))
         {
-            DEBUG_H15_TOGGLE()		// TX Buffer Overflow
-			StopAllStreaming();
+            DEBUG_H15_TOGGLE()        // TX Buffer Overflow
+            StopAllStreaming();
         }
 
         /// TODO: Can we just disable the TX interrupt here?
@@ -1040,7 +1040,7 @@ int32_t TXBufPush(uint8_t Data)
     }
     else if (GetTXBuffer() == BUFFER_PRIORITY)
     {
-        // We are using the Prioity buffer now
+        // We are using the Priority buffer now
 
         // Check for full buffer
         // If there is no room in the TX buffer, then wait
@@ -1284,7 +1284,7 @@ inline void TXSendNextByte(void)
     IncrimentTXOutPtr();
 }
 
-void uart0_ISR() 
+void uart0_ISR()
 {
     uint8_t identification_register = *pUART0_IIR;
     uint32_t CTSCounter = 0;
@@ -1294,8 +1294,8 @@ void uart0_ISR()
         {
             // Is our TX buffer empty? (THRE bit in LSR set)
             case 0x02:
-            {                
-            // Yup. If we have another character to send, send it
+            {
+                // Yup. If we have another character to send, send it
                 // If we're being held off by the radio, then don't send
                 // now but wait until the 1ms tick figures out to start
                 // sending again.
@@ -1309,26 +1309,25 @@ void uart0_ISR()
                             CTSCounter++;
                             delayUS(1);
 
+                            if(*pUART0_LSR & DR)
+                            {
+                                // Read data
+                                uint8_t c = *pUART0_RBR;
 
-							if(*pUART0_LSR & DR)
-							{
-								// Read data
-								uint8_t c = *pUART0_RBR;
+                                // Set our last-seen RX byte time to zero ms. 1ms ISR increments this.
+                                UART0LastByteRX = 0;
 
-								// Set our last-seen RX byte time to zero ms. 1ms ISR incriments this.
-								UART0LastByteRX = 0;
-
-								// If we're in packet mode, then handle that here
-								if (GetOption(OPT_PACKET_MODE))
-								{
-									PacketNewByteRX(c);
-								}
-								else
-								{
-									RXBufPush(c);
-								}
-							}
-						}            
+                                // If we're in packet mode, then handle that here
+                                if (GetOption(OPT_PACKET_MODE))
+                                {
+                                  PacketNewByteRX(c);
+                                }
+                                else
+                                {
+                                  RXBufPush(c);
+                                }
+                            }
+                        }
                     }
                     if (!CTS_TRIGGERED)
                     {
@@ -1357,7 +1356,7 @@ void uart0_ISR()
                     // Read data
                     uint8_t c = *pUART0_RBR;
 
-                    // Set our last-seen RX byte time to zero ms. 1ms ISR incriments this.
+                    // Set our last-seen RX byte time to zero ms. 1ms ISR increments this.
                     UART0LastByteRX = 0;
 
                     // If we're in packet mode, then handle that here
@@ -1470,7 +1469,7 @@ _write (int   file,
         uart0SendChar(*buf++);
     }
     
-    // This is totall a hack - if we're running PicoC, then
+    // This is total a hack - if we're running PicoC, then
     // close out a packet (and send what's in the stream) any time
     // we write a CR character.
     if (PicoCRunning || EditorRunning)
@@ -1638,8 +1637,8 @@ int32_t PacketNewByteRX(uint8_t Byte)
     static RXPacketStateType RXPacketState = RX_STATE_SYNC_0;
     uint8_t c = 0;
 #ifdef UART1_PACKET_DEBUG
-	static uint32_t i;
-	static char tmp[20];
+    static uint32_t i;
+    static char tmp[20];
 #endif
         
     // Do a re-sync check. If we see four 0xFF bytes in a row,
@@ -1671,14 +1670,14 @@ int32_t PacketNewByteRX(uint8_t Byte)
                 Sender = 0;
                 CRC = 0;
 #ifdef UART1_PACKET_DEBUG
-				for (RXDebugLen = 0; RXDebugLen < 20; RXDebugLen++)
-				{
-					// With something known
-					RXDebugBuf[RXDebugLen] = 0xEE;
-				}
-				RXDebugLen = 0;
-#endif            
-			}
+                for (RXDebugLen = 0; RXDebugLen < 20; RXDebugLen++)
+                {
+                    // With something known
+                    RXDebugBuf[RXDebugLen] = 0xEE;
+                }
+                RXDebugLen = 0;
+#endif
+            }
         }
     }
     else
@@ -1687,13 +1686,13 @@ int32_t PacketNewByteRX(uint8_t Byte)
     }
     
 #ifdef UART1_PACKET_DEBUG
-	RXDebugBuf[RXDebugLen] = Byte;
-	if (RXDebugLen < 20)
-	{
-		RXDebugLen++;
-	}
+    RXDebugBuf[RXDebugLen] = Byte;
+    if (RXDebugLen < 20)
+    {
+        RXDebugLen++;
+    }
 #endif
-	
+
     // Check to see if we need to discard this byte
     if (ThrowAwayNextByte)
     {
@@ -1882,24 +1881,24 @@ int32_t PacketNewByteRX(uint8_t Byte)
             {
                 /// TODO: Record this error in an error counter
 #ifdef UART1_PACKET_DEBUG
-				// For debugging packet mode, spit out the entire packet
-				// on UART1, as hex bytes
-				uart1SendString((unsigned char *)"->");
-				for(i = 0; i < RXDebugLen; i++)
-				{
-					sprintf(tmp, "%02x:", RXDebugBuf[i]);
-					uart1SendString((unsigned char *)tmp);
-				}
-				uart1SendString((unsigned char *)"    ");
-				for (i=12; i < (RXDebugLen-2); i++) 
-				{
-					sprintf(tmp, "%c", RXDebugBuf[i]);
-					uart1SendString((unsigned char *)tmp);			
-				}
-				uart1SendString((unsigned char *)"\r\n");
-				RXDebugLen = 0;
-				sprintf(tmp, "CRC error %04x != %04x\r\n", (unsigned int)CRC, (unsigned int)RealCRC);
-				uart1SendString((unsigned char *)tmp);
+                // For debugging packet mode, spit out the entire packet
+                // on UART1, as hex bytes
+                uart1SendString((unsigned char *)"->");
+                for(i = 0; i < RXDebugLen; i++)
+                {
+                    sprintf(tmp, "%02x:", RXDebugBuf[i]);
+                    uart1SendString((unsigned char *)tmp);
+                }
+                uart1SendString((unsigned char *)"    ");
+                for (i=12; i < (RXDebugLen-2); i++) 
+                {
+                    sprintf(tmp, "%c", RXDebugBuf[i]);
+                    uart1SendString((unsigned char *)tmp);
+                }
+                uart1SendString((unsigned char *)"\r\n");
+                RXDebugLen = 0;
+                sprintf(tmp, "CRC error %04x != %04x\r\n", (unsigned int)CRC, (unsigned int)RealCRC);
+                uart1SendString((unsigned char *)tmp);
 #endif
             }
             // And clear it out of our alt buffer
@@ -1926,10 +1925,10 @@ int32_t PacketNewByteRX(uint8_t Byte)
 bool GetPacketCommand(uint8_t * Command)
 {
 #ifdef UART1_PACKET_DEBUG
-	uint8_t i;
-	char tmp[10];
-#endif			
-	
+    uint8_t i;
+    char tmp[10];
+#endif
+
     if (GetOption(OPT_PACKET_MODE))
     {
         if (NewPacketReady)
@@ -1937,22 +1936,22 @@ bool GetPacketCommand(uint8_t * Command)
             NewPacketReady--;
             RXBufPull(Command);
 #ifdef UART1_PACKET_DEBUG
-			// For debugging packet mode, spit out the entire packet
-			// on UART1, as hex bytes
-			uart1SendString((unsigned char *)"->");
-			for(i = 0; i < RXDebugLen; i++)
-			{
-				sprintf(tmp, "%02x:", RXDebugBuf[i]);
-				uart1SendString((unsigned char *)tmp);
-			}
-			uart1SendString((unsigned char *)"    ");
-			for (i=12; i < (RXDebugLen-2); i++) 
-			{
-				sprintf(tmp, "%c", RXDebugBuf[i]);
-				uart1SendString((unsigned char *)tmp);			
-			}
-			uart1SendString((unsigned char *)"\r\n");
-			RXDebugLen = 0;
+            // For debugging packet mode, spit out the entire packet
+            // on UART1, as hex bytes
+            uart1SendString((unsigned char *)"->");
+            for(i = 0; i < RXDebugLen; i++)
+            {
+                sprintf(tmp, "%02x:", RXDebugBuf[i]);
+                uart1SendString((unsigned char *)tmp);
+            }
+            uart1SendString((unsigned char *)"    ");
+            for (i=12; i < (RXDebugLen-2); i++) 
+            {
+                sprintf(tmp, "%c", RXDebugBuf[i]);
+                uart1SendString((unsigned char *)tmp);
+            }
+            uart1SendString((unsigned char *)"\r\n");
+            RXDebugLen = 0;
 #endif
             return true;
         }
@@ -1978,12 +1977,12 @@ bool GetPacketCommand(uint8_t * Command)
 
 // Return how many bytes are in each of the buffers
 void ReadBufferStates(
-	uint32_t * RXBufferCount, 
-	uint32_t * RXPriorityBufferCount, 
-	uint32_t * RXAlternateBufferCount, 
-	uint32_t * TXBufferCount, 
-	uint32_t * TXPriorityBufferCount, 
-	uint32_t * TXAlternateBufferCount
+    uint32_t * RXBufferCount, 
+    uint32_t * RXPriorityBufferCount, 
+    uint32_t * RXAlternateBufferCount, 
+    uint32_t * TXBufferCount, 
+    uint32_t * TXPriorityBufferCount, 
+    uint32_t * TXAlternateBufferCount
 )
 {
 	*RXBufferCount = RXBufCount;

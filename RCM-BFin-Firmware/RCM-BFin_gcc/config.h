@@ -37,10 +37,10 @@
 //#define PICOC2_DEBUG
 
 // Define DEBUG if you want H1-H5 and H7 through H15 (I/O pins) to be available as debug outputs. See system.h for the defines.
-#define DEBUG
+//#define DEBUG
 
 // Define if you want the uart1SendString() function to be available
-#define UART1_DEBUG_ENABLE
+//#define UART1_DEBUG_ENABLE
 
 // Define UART1_PACKET_DEBUG if you want packet mode debug to come out UART1 - also define UART1_DEBUG_ENABLE above
 //#define UART1_PACKET_DEBUG
@@ -79,7 +79,7 @@
 /*
  * Version string
  */
-#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test58"
+#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test59"
 
 /*
  * I2C speed

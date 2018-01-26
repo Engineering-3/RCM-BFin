@@ -87,36 +87,36 @@ int main()
 
     // We do this just to test all of the debug I/O pins - normally these would
     // be shut off by undefined #debug in config.h
-    DEBUG_INIT()			// Init
-    DEBUG_H15_LOW()			// Init
-    DEBUG_H14_LOW()			// Init
-    DEBUG_H13_LOW()			// Init
-    DEBUG_H12_LOW()			// Init
-    DEBUG_H11_LOW()			// Init
-    DEBUG_H10_LOW()			// Init
-    DEBUG_H9_LOW()			// Init
-    DEBUG_H8_LOW()			// Init
-    DEBUG_H15_HIGH()		// Init
-    DEBUG_H14_HIGH()		// Init
-    DEBUG_H13_HIGH()		// Init
-    DEBUG_H12_HIGH()		// Init
-    DEBUG_H11_HIGH()		// Init
-    DEBUG_H10_HIGH()		// Init
-    DEBUG_H9_HIGH()			// Init
-    DEBUG_H8_HIGH()			// Init
-    DEBUG_H15_LOW()			// Init
-    DEBUG_H14_LOW()			// Init
-    DEBUG_H13_LOW()			// Init
-    DEBUG_H12_LOW()			// Init
-    DEBUG_H11_LOW()			// Init
-    DEBUG_H10_LOW()			// Init
-    DEBUG_H9_LOW()			// Init
-    DEBUG_H8_LOW()			// Init
+    DEBUG_INIT()
+    DEBUG_H15_LOW()
+    DEBUG_H14_LOW()
+    DEBUG_H13_LOW()
+    DEBUG_H12_LOW()
+    DEBUG_H11_LOW()
+    DEBUG_H10_LOW()
+    DEBUG_H9_LOW()
+    DEBUG_H8_LOW()
+    DEBUG_H15_HIGH()
+    DEBUG_H14_HIGH()
+    DEBUG_H13_HIGH()
+    DEBUG_H12_HIGH()
+    DEBUG_H11_HIGH()
+    DEBUG_H10_HIGH()
+    DEBUG_H9_HIGH()
+    DEBUG_H8_HIGH()
+    DEBUG_H15_LOW()
+    DEBUG_H14_LOW()
+    DEBUG_H13_LOW()
+    DEBUG_H12_LOW()
+    DEBUG_H11_LOW()
+    DEBUG_H10_LOW()
+    DEBUG_H9_LOW()
+    DEBUG_H8_LOW()
 
     // In init.c, LED1 is on and LED2 is off. Here we 
     // turn 1 off and 0 on.
     LED1_OFF();
-    LED0_ON();    
+    LED0_ON();
 
     init_program_clocks();
 
@@ -127,7 +127,7 @@ int main()
 
 #ifdef UART1_DEBUG_ENABLE
     init_uart1(115200);
-    uart1SendString((unsigned char *)"uart1 configured \n\r");	
+    uart1SendString((unsigned char *)"uart1 configured \n\r");
     //superdebug = 1;
     //tmp_buf[0] = 0xFF;
     //tmp_buf[1] = 0xFF;

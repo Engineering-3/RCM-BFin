@@ -29,6 +29,7 @@
 #include "i2c.h"
 #include "rcm-bfin.h"
 #include "system.h"
+#include "debug.h"
 
 #define PRESCALE120M 12         // factor = 12, 120MHz/10MHz
 #define SSYNC asm("ssync;")
@@ -251,7 +252,7 @@ int i2cwrite(unsigned char i2c_device, unsigned char *i2c_data, unsigned int pai
     for (i = 0; i < I2CMaxRetries; i++) 
     { 
         if (i2cwriteSingle(i2c_device, i2c_data, pair_count, sccb_flag) == 0)
-        {   
+        {
             // We were successful, so return PASS
             return (0);
         }
@@ -297,7 +298,7 @@ int i2cwritexSingle(unsigned char i2c_device, unsigned char *i2c_data, unsigned 
     return (WaitForIdleBus());
 }
 
-// Wrapper function for i2cread(). Tries up to I2CMaxRetries before giving up.
+// Wrapper function for i2cwrite(). Tries up to I2CMaxRetries before giving up.
 int i2cwritex(unsigned char i2c_device, unsigned char *i2c_data, unsigned int count, int sccb_flag)
 {
     int i;

@@ -1,4 +1,5 @@
 #include "../interpreter.h"
+#include "../Debug.h"
 
 static int Blobcnt, Blobx1, Blobx2, Bloby1, Bloby2, Iy1, Iy2, Iu1, Iu2, Iv1, Iv2;
 static int GPSlat, GPSlon, GPSalt, GPSfix, GPSsat, GPSutc, Elcount, Ercount;
@@ -521,7 +522,7 @@ void Cwritei2c(struct ParseState *Parser, struct Value *ReturnValue, struct Valu
     i2c_device = (unsigned char)Param[0]->Val->Integer;
     i2c_data[0] = (unsigned char)Param[1]->Val->Integer;
     i2c_data[1] = (unsigned char)Param[2]->Val->Integer;
-    
+
     i2cwritex(i2c_device, (unsigned char *)i2c_data, 2, SCCB_OFF);
 }
 
