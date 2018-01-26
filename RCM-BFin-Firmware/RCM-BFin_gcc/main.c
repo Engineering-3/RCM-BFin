@@ -125,27 +125,27 @@ int main()
 
     init_uart0(UART0_BAUDRATE);
 
-#ifdef UART1_PACKET_DEBUG
-	init_uart1(115200);
-	uart1SendString((unsigned char *)"uart1 configured \n\r");	
-	superdebug = 1;
-	tmp_buf[0] = 0xFF;
-	tmp_buf[1] = 0xFF;
-	tmp_buf[2] = 0xFF;
-	tmp_buf[3] = 0xFF;
-	tmp_buf[4] = 0x54;
-	tmp_buf[5] = 0x80;
-	tmp_buf[6] = 0x00;
-	tmp_buf[7] = 0x00;
-	tmp_buf[8] = 0x00;
-	tmp_buf[9] = 0x2E;
-	tmp_buf[10] = 0x00;
-	tmp_buf[11] = 0x02;
-	tmp_buf[12] = 0x23;
-	tmp_buf[13] = 0x54;
-	sprintf(out_buf, "CRC = %02X\n\r", crc16_ccitt(tmp_buf, 14));
-	uart1SendString(out_buf);
-	superdebug = 0;
+#ifdef UART1_DEBUG_ENABLE
+    init_uart1(115200);
+    uart1SendString((unsigned char *)"uart1 configured \n\r");	
+    //superdebug = 1;
+    //tmp_buf[0] = 0xFF;
+    //tmp_buf[1] = 0xFF;
+    //tmp_buf[2] = 0xFF;
+    //tmp_buf[3] = 0xFF;
+    //tmp_buf[4] = 0x54;
+    //tmp_buf[5] = 0x80;
+    //tmp_buf[6] = 0x00;
+    //tmp_buf[7] = 0x00;
+    //tmp_buf[8] = 0x00;
+    //tmp_buf[9] = 0x2E;
+    //tmp_buf[10] = 0x00;
+    //tmp_buf[11] = 0x02;
+    //tmp_buf[12] = 0x23;
+    //tmp_buf[13] = 0x54;
+    //sprintf(out_buf, "CRC = %02X\n\r", crc16_ccitt(tmp_buf, 14));
+    //uart1SendString(out_buf);
+    //superdebug = 0;
 #endif
 
     InitI2C();
@@ -279,8 +279,8 @@ void ProcessPriorityCommand(uint8_t CharIn)
 
 
 /*
- Typeable characters that have not yet been used in the commands below (as first letters of a command)
- KkUuWwe"#&'(),:;=?@[]\^_`{}~
+ Type-able characters that have not yet been used in the commands below (as first letters of a command)
+ KkUuWwe"#&'(),:;=?@[]\^_`{}~ (note: may not be accurate)
 */
 void ProcessCommands(uint8_t CharIn)
 {
@@ -385,6 +385,7 @@ void ProcessCommands(uint8_t CharIn)
             xmodem_receive((unsigned char *)FLASH_BUFFER, FLASH_BUFFER_SIZE);
             break;
         case '|': // Break out of running PicoC program
+        case 0x1B: // Also do the same for ESC character
             // When we return, PicoC will pick this up and exit
             PicoCRunning = false;
             break;
@@ -523,7 +524,7 @@ void ProcessCommands(uint8_t CharIn)
                                 }
                             }
                             suartPutChar(0);
-                            printf("sent %d characters\r\n", 0x5B*320);                                    
+                            printf("sent %d characters\r\n", 0x5B*320);
                             loop = 0;
                         }
                     }
@@ -762,15 +763,15 @@ void ProcessCommands(uint8_t CharIn)
                                 ch++;
                             }
                             break;
-						case 'b': // Send back current UART buffer fullness
-							{
-								uint32_t RXBuf1, RXBuf2, RXBuf3, TXBuf1, TXBuf2, TXBuf3;
-								ReadBufferStates(&RXBuf1, &RXBuf2, &RXBuf3, &TXBuf1, &TXBuf2, &TXBuf3);
-								PacketBegin();
-								printf("##tb,%d,%d,%d,%d,%d,%d\r\n", (int)RXBuf1, (int)RXBuf2, (int)RXBuf3, (int)TXBuf1, (int)TXBuf2, (int)TXBuf3);
-								PacketEnd(true);
-							}
-							break;
+                        case 'b': // Send back current UART buffer fullness
+                            {
+                                uint32_t RXBuf1, RXBuf2, RXBuf3, TXBuf1, TXBuf2, TXBuf3;
+                                ReadBufferStates(&RXBuf1, &RXBuf2, &RXBuf3, &TXBuf1, &TXBuf2, &TXBuf3);
+                                PacketBegin();
+                                printf("##tb,%d,%d,%d,%d,%d,%d\r\n", (int)RXBuf1, (int)RXBuf2, (int)RXBuf3, (int)TXBuf1, (int)TXBuf2, (int)TXBuf3);
+                                PacketEnd(true);
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -1013,7 +1014,7 @@ void ProcessCommands(uint8_t CharIn)
         case '2':   // back
         case '3':   // back right
         case '0':   // counter clockwise turn
-        case '.':   // clockwise turn                    
+        case '.':   // clockwise turn
             PacketBegin();
             motor_action(CharIn);
             PacketEnd(true);
@@ -1162,6 +1163,7 @@ void ProcessCommands(uint8_t CharIn)
         case 0x0A:  // <LF> Line Feed
             // We just silently ignore these
             break;
+            
         default:
             PacketBegin();
             PrintUnknownCommand(CharIn);

@@ -3594,7 +3594,7 @@ unsigned int CheckForRCMBFINCommand(void)
     
     // BPS: Adding ability to check for serial input to run RCM-Bfin firmware commands _while_ running a PICOC app
     MainLoop(true);
-    
+
     // Check to see if the user typed a "get me out of PICOC" command ("|")
     if (!PicoCRunning)
     {

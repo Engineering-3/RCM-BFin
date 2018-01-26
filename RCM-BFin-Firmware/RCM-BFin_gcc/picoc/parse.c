@@ -491,9 +491,9 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
         DebugCheckStatement(Parser);
 
     // BPS: Adding ability to check for serial input to run RCM-Bfin firmware commands _while_ running a PICOC app
-	CheckForNewCommand();
+    CheckForNewCommand();
 
-    /* take note of where we are and then grab a token to see what statement we have */   
+    /* take note of where we are and then grab a token to see what statement we have */
     ParserCopy(&PreState, Parser);
     Token = LexGetToken(Parser, &LexerValue, TRUE);
     

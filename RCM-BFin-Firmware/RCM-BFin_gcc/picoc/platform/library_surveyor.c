@@ -170,13 +170,13 @@ void Cdelay(struct ParseState *Parser, struct Value *ReturnValue, struct Value *
     if ((del < 0) || (del > 1000000))
         return;
 	
-	// Set up our delay - this gets decrimented every 1ms in the Timer ISR
+	// Set up our delay - this gets decremented every 1ms in the Timer ISR
 	PicoCDelay = del;
     while (PicoCDelay)
     {
-        // BPS: Adding ability to check for serial input to run RCM-Bfin firmware commands _while_ runnign a PICOC app
-		// Problem: These commands (espically video) can take a _long_ time to execute (>50ms) so we need to 
-		// compensate here by measuring overall time rather than 1ms at a time. (10/15/2012)
+        // BPS: Adding ability to check for serial input to run RCM-Bfin firmware commands _while_ running a PICOC app
+        // Problem: These commands (especially video) can take a _long_ time to execute (>50ms) so we need to 
+        // compensate here by measuring overall time rather than 1ms at a time. (10/15/2012)
         CheckForNewCommand();
     }
 }

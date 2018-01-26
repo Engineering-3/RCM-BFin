@@ -85,7 +85,7 @@ volatile uint8_t TXBuf[TX_BUF_SIZE];
 volatile uint8_t TXPriorityBuf[TX_PRIORITY_BUF_SIZE];
 volatile uint8_t TXAltBuf[TX_ALT_BUF_SIZE];
 
-#ifdef UART1_PACKET_DEBUG
+#ifdef UART1_DEBUG_ENABLE
 volatile uint8_t RXDebugBuf[40];
 volatile uint8_t TXDebugBuf[40];
 volatile uint8_t RXDebugLen;
