@@ -76,7 +76,7 @@ double pico_float[PICOC_SHARED_ARRAY_SIZE];
 unsigned int PicoCStreamBufferIn = 0;
 unsigned int PicoCStreamBufferOut = 0;
 unsigned int PicoCStreamBufferLength = 0;
-unsigned char PicoCStreamBuffer[0xFFFF];
+unsigned char PicoCStreamBuffer[PICOC_STREAM_BUFFER_SIZE];
 unsigned char PicoCStreamBufferEnabled = TRUE;
 
 /* Size of frame */
@@ -1881,21 +1881,21 @@ void write_boot_flash ()
 // Reply with #P3
 void PicoCSetPrintfBuffer(void)
 {
-	unsigned char c;
-	c = getch();
-	
-	if (c == '1')
-	{
-		PicoCStreamBufferEnabled = TRUE;
-		printf("#P3");
-	}
-	if (c == '0')
-	{
-		PicoCStreamBufferEnabled = FALSE;
-		printf("#P3");
-	}
-	
-	return;
+    unsigned char c;
+    c = getch();
+
+    if (c == '1')
+    {
+        PicoCStreamBufferEnabled = TRUE;
+        printf("#P3");
+    }
+    if (c == '0')
+    {
+        PicoCStreamBufferEnabled = FALSE;
+        printf("#P3");
+    }
+
+    return;
 }
 
 /* Process PicoC Memory command
@@ -1962,40 +1962,40 @@ void processPicoCMemory()
         return;
     }
 
-	// Check for *B command
-	if (Command[0] == 'B')
-	{
-		char temp[20];
-		sprintf(temp, "#B,%5d,", PicoCStreamBufferLength);
-//		printf("#B,%d,", PicoCStreamBufferLength);
-		i = 0;
-		while (temp[i] != 0x00)
-		{
-			putchar(temp[i]);
-			i++;
-		}
-		// Now output the entire buffer
-		while (PicoCStreamBufferLength)
-		{
-			putchar(PicoCStreamBuffer[PicoCStreamBufferOut]);
-			PicoCStreamBufferOut++;
-			if (PicoCStreamBufferOut > 0xFFFF)
-			{
-				PicoCStreamBufferOut = 0;
-			}
-			PicoCStreamBufferLength--;
-		}
-		// And clear it out
-		PicoCStreamBufferOut = 0;
-		PicoCStreamBufferIn = 0;
-		PicoCStreamBufferLength = 0;
+    // Check for *B command
+    if (Command[0] == 'B')
+    {
+        char temp[20];
+        int len = PicoCStreamBufferLength;
+        sprintf(temp, "#B,%5d,", len);
+        i = 0;
+        while (temp[i] != 0x00)
+        {
+            putchar(temp[i]);
+            i++;
+        }
+        // Now output the entire buffer
+        while (len)
+        {
+            putchar(PicoCStreamBuffer[PicoCStreamBufferOut]);
+            PicoCStreamBufferOut++;
+            if (PicoCStreamBufferOut >= PICOC_STREAM_BUFFER_SIZE)
+            {
+                PicoCStreamBufferOut = 0; 
+            }
+            len--;
+        }
+        // And clear it out
+        PicoCStreamBufferOut = 0;
+        PicoCStreamBufferIn = 0;
+        PicoCStreamBufferLength = 0;
         PacketEnd(true);
-		return;
-	}
+        return;
+    }
 
     // Parse the string, at least as far as we can without knowing Type
     i = sscanf(Command, "%c,%c,%u", &Direction, &Type, &Index); 
-	
+
     // Did we get enough parameters?
     if (i != 3)
     {
@@ -2450,36 +2450,37 @@ void process_autoinc_i2c(void) {
         Serial protocol char: i */
 void process_i2c() {
     unsigned char i2c_device, i2c_data[16], cx, count, c1, c2, i2c_register, i2c_bit;
+    uint16_t i2c_id;
     char buf[100];
     unsigned char cmd;
     
     PacketBegin();
     cmd = (unsigned char)getch();
     switch (cmd) {
-        case 'r':
+        case 'r':   // 'irab'
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
             i2cread(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
             printf("##ir%2x %d\r\n", i2c_device, i2c_data[0]);
             break;
-        case 'R':
+        case 'R':   // 'iRab'
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
             i2cread(i2c_device, (unsigned char *)i2c_data, 2, SCCB_ON);
             printf("##iR%2x %d\r\n",i2c_device, (i2c_data[0] << 8) + i2c_data[1]);
             break;
-        case 'M':
+        case 'M':   // 'iMabc'
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
             count = (unsigned char)getch() & 0x0F;
             i2cread(i2c_device, (unsigned char *)i2c_data, (unsigned int)count, SCCB_ON);
             printf("##iM%2x  ", i2c_device);
             for (cx=0; cx<count; cx++) {
-                printf("%d ", i2c_data[cx]);        
+                printf("%d ", i2c_data[cx]);
             }
             printf("\r\n");
             break;
-        case 'w':
+        case 'w':   // 'iwabc'
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
             i2c_data[1] = (unsigned char)getch();
@@ -2489,7 +2490,7 @@ void process_i2c() {
             }
             printf("##iw%2x\r\n", i2c_device);
             break;
-        case 'W':  // multi-write
+        case 'W':  // 'iWabcd' multi-write
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
             i2c_data[1] = (unsigned char)getch();
@@ -2500,7 +2501,7 @@ void process_i2c() {
             }
             printf("##iW%2x", i2c_device);
             break;
-        case 'd':  // dual channel single byte I2C write
+        case 'd':  // 'idabcef' dual channel single byte I2C write
             i2c_device = (unsigned char)getch();
             i2c_data[0] = (unsigned char)getch();
             i2c_data[1] = (unsigned char)getch();
@@ -2518,8 +2519,8 @@ void process_i2c() {
             }
             printf("##id%2x", i2c_device);
             break;
-        case 'b':
-        case 'c':
+        case 'b': // 'ibxxyyz'
+        case 'c': // 'icxxyyz'
             buf[0] = (unsigned char)getch();
             buf[1] = (unsigned char)getch();
             buf[2] = 0x00;
@@ -2556,8 +2557,8 @@ void process_i2c() {
                 }
             }
             break;
-        case 'l':
-        case 'n':
+        case 'l':   // 'ilxxyy'
+        case 'n':   // 'inxxyy'
             buf[0] = (unsigned char)getch();
             buf[1] = (unsigned char)getch();
             buf[2] = 0x00;
@@ -2578,8 +2579,8 @@ void process_i2c() {
                 printf("##in %02x %02x %02x\r\n", i2c_device, i2c_register, i2c_data[0]);
             }
             break;
-        case 'L':
-        case 'N':
+        case 'L':   // 'iLxxyy'
+        case 'N':   // 'iNxxyy'
             buf[0] = (unsigned char)getch();
             buf[1] = (unsigned char)getch();
             buf[2] = 0x00;
@@ -2600,6 +2601,74 @@ void process_i2c() {
                 printf("##iN %02x %02x %04x\r\n", i2c_device, i2c_register, (i2c_data[0] << 8) + i2c_data[1]);
             }
             break;
+        case '$':   // For commands with ID word parameters
+            cmd = (unsigned char)getch();
+            switch (cmd) {
+                case 'l':   // 'i$lddddxxyy
+                case 'n':   // 'i$nddddxxyy
+                    buf[0] = (unsigned char)getch();
+                    buf[1] = (unsigned char)getch();
+                    buf[2] = (unsigned char)getch();
+                    buf[3] = (unsigned char)getch();
+                    buf[4] = 0x00;
+                    i2c_id = (uint16_t)strtol(buf, NULL, 16);
+                    buf[0] = (unsigned char)getch();
+                    buf[1] = (unsigned char)getch();
+                    buf[2] = 0x00;
+                    i2c_device = (unsigned char)strtol(buf, NULL, 16);
+                    buf[0] = (unsigned char)getch();
+                    buf[1] = (unsigned char)getch();
+                    buf[2] = 0x00;
+                    i2c_register = (unsigned char)strtol(buf, NULL, 16);
+                    i2c_data[0] = i2c_register;
+                    if (cmd == 'l')
+                    {
+                        i2cread(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
+                        printf("##i$l %04x %02x %02x %02x\r\n", i2c_id, i2c_device, i2c_register, i2c_data[0]);
+                    }
+                    else if (cmd == 'n')
+                    {
+                        i2creadrs(i2c_device, (unsigned char *)i2c_data, 1, SCCB_ON);
+                        printf("##i$n %04x %02x %02x %02x\r\n", i2c_id, i2c_device, i2c_register, i2c_data[0]);
+                    }
+                    break;
+                
+                case 'L':   // 'i$Lddddxxyy
+                case 'N':   // 'i$Nddddxxyy
+                    buf[0] = (unsigned char)getch();
+                    buf[1] = (unsigned char)getch();
+                    buf[2] = (unsigned char)getch();
+                    buf[3] = (unsigned char)getch();
+                    buf[4] = 0x00;
+                    i2c_id = (uint16_t)strtol(buf, NULL, 16);
+                    buf[0] = (unsigned char)getch();
+                    buf[1] = (unsigned char)getch();
+                    buf[2] = 0x00;
+                    i2c_device = (unsigned char)strtol(buf, NULL, 16);
+                    buf[0] = (unsigned char)getch();
+                    buf[1] = (unsigned char)getch();
+                    buf[2] = 0x00;
+                    i2c_register = (unsigned char)strtol(buf, NULL, 16);
+                    i2c_data[0] = i2c_register;
+                    if (cmd == 'L')
+                    {
+                        i2cread(i2c_device, (unsigned char *)i2c_data, 2, SCCB_ON);
+                        printf("##i$L %04x %02x %02x %04x\r\n", i2c_id, i2c_device, i2c_register, (i2c_data[0] << 8) + i2c_data[1]);
+                    }
+                    else if (cmd == 'N')
+                    {
+                        i2creadrs(i2c_device, (unsigned char *)i2c_data, 2, SCCB_ON);
+                        printf("##i$N %04x %02x %02x %04x\r\n", i2c_id, i2c_device, i2c_register, (i2c_data[0] << 8) + i2c_data[1]);
+                    }
+                    break;
+
+                default:
+            
+                    break;
+            }
+            
+            break;
+            
         default:
             return;
     }

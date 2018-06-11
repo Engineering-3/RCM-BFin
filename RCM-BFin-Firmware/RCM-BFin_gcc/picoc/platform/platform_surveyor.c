@@ -80,31 +80,36 @@ char *PlatformGetLine(char *Buf, int MaxLen, const char *Prompt)
 /* write a character to the console */
 void PlatformPutc(unsigned char OutCh, union OutputStreamInfo *Stream)
 {
-	/// TODO: I don't think we want this, because we want to allow arbitrary data
-	/// to be printed out to the PC by printf(), right? So don't add \r!
-	//if (OutCh == '\n')
-    //    putchar('\r');
-    
-	// If the user has the printf() buffered stream feature turned on, then store
-	// this byte in that buffer rather than sending directly to the PC.
-	if (PicoCStreamBufferEnabled)
-	{
-		if (PicoCStreamBufferLength < 0xFFF0)
-		{
-			PicoCStreamBuffer[PicoCStreamBufferIn] = OutCh;
-			PicoCStreamBufferIn++;
-			if (PicoCStreamBufferIn > 0xFFFF)
-			{
-				PicoCStreamBufferIn = 0;
-			}
-			PicoCStreamBufferLength++;
-		}
-		// If we're full, then just drop the byte
-	}
-	else
-	{
-		putchar(OutCh);
-	}
+    // If the user has the printf() buffered stream feature turned on, then store
+    // this byte in that buffer rather than sending directly to the PC.
+    if (PicoCStreamBufferEnabled)
+    {
+        /// TODO: Add a timeout here - maybe 5 seconds?
+        while (PicoCStreamBufferLength >= (PICOC_STREAM_BUFFER_SIZE - 5))
+        {
+            // BPS: Adding ability to check for serial input to run RCM-Bfin firmware commands _while_ running a PICOC app
+            // The point of doing this here is to wait for the PC to send the #B command, which will drain out the
+            // PicoCStreamBuffer, which will then make room for the next character we want to put in it.
+            CheckForNewCommand();
+        }
+        if (PicoCStreamBufferLength < (PICOC_STREAM_BUFFER_SIZE - 5))
+        {
+DEBUG_H13_HIGH()
+            PicoCStreamBuffer[PicoCStreamBufferIn] = OutCh;
+            PicoCStreamBufferIn++;
+            if (PicoCStreamBufferIn >= PICOC_STREAM_BUFFER_SIZE)
+            {
+                PicoCStreamBufferIn = 0;
+            }
+            PicoCStreamBufferLength++;
+DEBUG_H13_LOW()
+        }
+        // If we're full, then just drop the byte 
+    }
+    else
+    {
+        putchar(OutCh);
+    }
 }
 
 /* read a character */

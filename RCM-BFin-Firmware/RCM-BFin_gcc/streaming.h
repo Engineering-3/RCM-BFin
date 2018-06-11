@@ -31,6 +31,7 @@
 #include <cdefBF537.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "system.h"
 
 #define STREAMING_MAX_ANALOGS           64
 #define STREAMING_MAX_DIGITAL_BITS      64
@@ -44,6 +45,7 @@ typedef enum {
   I2C_REPEATED_START
 } I2CRead_Type;
 
+
 // Global variables
 /// TODO: Put this in a local function
 extern volatile bool StreamingTickTrigger;
@@ -51,7 +53,7 @@ extern volatile uint32_t StreamingLastTickMS;
 
 void StreamingParseAnalogBit(void);
 void StreamingParseDigitalBit(I2CRead_Type I2CReadMethod);
-void StreamingParseDigitalByte(I2CRead_Type I2CReadMethod);
+void StreamingParseDigitalByte(I2CRead_Type I2CReadMethod, CommandUsesID_Type CommandUsesID);
 void StreamingParseHokuyo(void);
 void StreamingParsePicoC(void);
 uint32_t StreamingProcess(void);

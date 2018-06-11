@@ -206,7 +206,7 @@ int32_t PacketBegin(void)
     // a PicoC program is running) then close out that packet and start our new one.
     if (PicoCRunning && TXPacketState == SENDING_PACKET)
     {
-		PacketEnd(true);
+        PacketEnd(true);
         DeferredPicoCsend = true;
     }
     // Are we already in the middle of sending one packet?
@@ -336,7 +336,7 @@ int32_t PacketEnd(bool CreatePacket)
     {
         while(1)
         {
-            DEBUG_H15_TOGGLE()		// PacketEnd bad state error
+            DEBUG_H15_TOGGLE()        // PacketEnd bad state error
         }
         /// TODO: Generate error here
         SendErrorPacket((uint8_t *)"Error: PacketEnd() already in NO_PACKET state.\r\n");
@@ -678,7 +678,7 @@ void FlushAllTXBuffers(void)
 
 // Call to send a byte out the UART
 // Works in ether interrupt/buffered or not modes
-void uart0SendChar(uint8_t c) 
+void uart0SendChar(uint8_t c)
 {
     static uint32_t FFByteCount = 0;
     if (UART0_INTERRUPTS_ENABLED)
@@ -689,8 +689,9 @@ void uart0SendChar(uint8_t c)
         {
             TXBufPush('!');
         }
+DEBUG_H9_HIGH()
         TXBufPush(c);
-
+DEBUG_H9_LOW()
         // Perform byte stuffing (if we see 3 0xFFs in a row, insert a 0x00)
         // But only if we're writing out into the real output buffer
         if (GetOption(OPT_PACKET_MODE) && GetTXBuffer() == BUFFER_NORMAL)
@@ -912,7 +913,7 @@ int32_t RXBufPush(uint8_t Data)
 //}
 
 int32_t RXAltBufPush(uint8_t Data)
-{            
+{
     // Check for full buffer
     if (RXAltBufCount < RX_ALT_BUF_SIZE - 100)
     {
@@ -1034,21 +1035,22 @@ int32_t TXBufPush(uint8_t Data)
         // then start things off.
         if (TXBufCount && (*pUART0_LSR & THRE) && !CTS_TRIGGERED)
         {
+DEBUG_H10_HIGH()
             TXSendNextByte();
+DEBUG_H10_LOW()
         }
         enable_interrupts(IntTemp);
     }
     else if (GetTXBuffer() == BUFFER_PRIORITY)
     {
         // We are using the Priority buffer now
-
         // Check for full buffer
         // If there is no room in the TX buffer, then wait
         // until there is.
         if(TXPriorityBufCount >= (TX_PRIORITY_BUF_SIZE - 10))
         {
             /// TODO: Generate an error packet here - we have to drop the byte
-            DEBUG_H15_TOGGLE()		// TX Buffer Overflow
+            DEBUG_H15_TOGGLE()        // TX Buffer Overflow
             return(0);
         }
 
@@ -1060,14 +1062,14 @@ int32_t TXBufPush(uint8_t Data)
     else if (GetTXBuffer() == BUFFER_ALT)
     {
         // Send byte to alternate buffer
-
+DEBUG_H12_HIGH()
         // Check for full buffer
         // If there is no room in the TX buffer, then wait
         // until there is.
         if(TXAltBufCount >= (TX_ALT_BUF_SIZE - 10))
         {
             /// TODO: Generate an error packet here - we have to drop the byte
-            DEBUG_H15_TOGGLE()		// TX Buffer Overflow
+            DEBUG_H15_TOGGLE()        // TX Buffer Overflow
             return(0);
         }
 
@@ -1075,6 +1077,7 @@ int32_t TXBufPush(uint8_t Data)
         TXAltBuf[TXAltBufIn] = Data;
         // And move ahead one byte
         IncrimentTXAltInPtr();
+DEBUG_H12_LOW()
     }
     return (1);
 }
@@ -1269,7 +1272,7 @@ uint8_t uart0GetBufferCharWait(uint8_t *data) {
 
 // Call only when buffering/interrupts are enabled
 uint8_t uart0GetBufferCharNoWait(uint8_t *data) {
-    if (RXBufCount) 
+    if (RXBufCount)
     {
         RXBufPull(data);
         return 1;
@@ -1331,7 +1334,9 @@ void uart0_ISR()
                     }
                     if (!CTS_TRIGGERED)
                     {
+DEBUG_H8_HIGH()
                         TXSendNextByte();
+DEBUG_H8_LOW()
                     }
                 }
                 break;

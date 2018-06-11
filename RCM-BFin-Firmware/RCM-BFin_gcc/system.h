@@ -148,25 +148,25 @@
 #define LED0_BIT        (0x0100)
 #define LED1_BIT        (0x0200)
 
-#define INIT_LED_IO()     		*pPORTGIO_DIR = (LED0_BIT | LED1_BIT);   // LEDs (PG8 and PG9)
-#define LED0_OFF() 				*pPORTGIO_SET = LED0_BIT;
-#define LED1_OFF() 				*pPORTGIO_SET = LED1_BIT;
-#define LED0_ON()  				*pPORTGIO_CLEAR = LED0_BIT;
-#define LED1_ON()  				*pPORTGIO_CLEAR = LED1_BIT; 
-#define LED0_TOGGLE() 			*pPORTGIO_TOGGLE = LED0_BIT;
-#define LED1_TOGGLE() 			*pPORTGIO_TOGGLE = LED1_BIT;
+#define INIT_LED_IO()           *pPORTGIO_DIR = (LED0_BIT | LED1_BIT);   // LEDs (PG8 and PG9)
+#define LED0_OFF()              *pPORTGIO_SET = LED0_BIT;
+#define LED1_OFF()              *pPORTGIO_SET = LED1_BIT;
+#define LED0_ON()               *pPORTGIO_CLEAR = LED0_BIT;
+#define LED1_ON()               *pPORTGIO_CLEAR = LED1_BIT; 
+#define LED0_TOGGLE()           *pPORTGIO_TOGGLE = LED0_BIT;
+#define LED1_TOGGLE()           *pPORTGIO_TOGGLE = LED1_BIT;
 
-#define disable_interrupts(x)	asm volatile("cli %0" : "=r"(x))
-#define enable_interrupts(x)	asm volatile("sti %0" : : "r"(x))
+#define disable_interrupts(x)   asm volatile("cli %0" : "=r"(x))
+#define enable_interrupts(x)    asm volatile("sti %0" : : "r"(x))
 
-	
+
 // FLOW_CTRL_IN (RCM2) = PORTH0 (Blackfin) = RTS0 (Matchport). When low, OK to send bytes out. When high, stop.
 #define BIT_RTS0        (1 << 0)
 // FLOW_CTRL_OUT (RCM2) = PORTH6 (Blackfin) = CTS0 (Matchport). Clear to allow data to come in from Radio to Blackfin.
 #define BIT_CTS0        (1 << 6)
 
-#define ALLOW_RX()       		*pPORTHIO_CLEAR = BIT_CTS0;  // allow incoming data 
-#define DISALLOW_RX()    		*pPORTHIO_SET = BIT_CTS0;
+#define ALLOW_RX()              *pPORTHIO_CLEAR = BIT_CTS0;  // allow incoming data 
+#define DISALLOW_RX()           *pPORTHIO_SET = BIT_CTS0;
 
 #ifndef TRUE
 #define TRUE    true
@@ -203,8 +203,8 @@
  * PLL and clock definitions
  */
 
-#define MASTER_CLOCK        22118000	// Crystal speed 22.118 MHz
-#define CCLK_DIVIDER        1			// NOTE: not actually used anywhere - default value
+#define MASTER_CLOCK        22118000    // Crystal speed 22.118 MHz
+#define CCLK_DIVIDER        1           // NOTE: not actually used anywhere - default value
  
 #define CONFIG_PLL_LOCKCNT_VAL  0x0300
 #define CONFIG_VR_CTL_VAL       0x40fb
@@ -212,19 +212,19 @@
 // Set up the VCO and SCLK values to give us the best baud rate match possible
 // for the UARTs.
 #if defined(ROUTERBOARD_RADIO_2500000)
-	#define VCO_MULTIPLIER  	20
-	#define SCLK_DIVIDER    	4
+    #define VCO_MULTIPLIER      20
+    #define SCLK_DIVIDER        4
 #elif defined(ROUTERBOARD_RADIO_921600)
-	#define VCO_MULTIPLIER  	20
-	#define SCLK_DIVIDER    	5
+    #define VCO_MULTIPLIER      20
+    #define SCLK_DIVIDER        5
 #elif defined(MATCHPORT_RADIO)
-	#define VCO_MULTIPLIER  	22
-	#define SCLK_DIVIDER    	4
+    #define VCO_MULTIPLIER      22
+    #define SCLK_DIVIDER        4
 #elif defined(MATCHPORT_RADIO_19200)
-	#define VCO_MULTIPLIER  	22
-	#define SCLK_DIVIDER    	4
+    #define VCO_MULTIPLIER      22
+    #define SCLK_DIVIDER        4
 #else
-	#error You need to define a radio type in config.h
+    #error You need to define a radio type in config.h
 #endif
 
 // MSEL[5:0] = 010110 means VCO = CLKIN * 22
@@ -235,7 +235,7 @@
 // STOPCK = 0 means CLCK on
 // PLL_OFF = 0 means enable power to PLL
 // DF = 0 means pass CLKIN to PLL
-#define CONFIG_PLL_CTL_VAL		(VCO_MULTIPLIER << 9)
+#define CONFIG_PLL_CTL_VAL      (VCO_MULTIPLIER << 9)
 
 // CSEL[1:0] = 00 means CCLK = VCO
 // SSEL[3:0] = 0100 means SCLK = VCO/4
@@ -254,6 +254,17 @@
 // clock rates for various things (like baud rates, or timers, etc.)
 #define CORE_CLOCK (MASTER_CLOCK * VCO_MULTIPLIER / CCLK_DIVIDER)
 #define PERIPHERAL_CLOCK  (CORE_CLOCK / SCLK_DIVIDER)
+
+
+//--------------------------------------------------------------------------//
+// Typedefs
+//--------------------------------------------------------------------------//
+
+/* Some commands can have ID words in their parameters. This enum allows functions the choice. */
+typedef enum {
+  ID_NONE = 0,
+  ID_PRESENT,
+} CommandUsesID_Type;
 
 
 //--------------------------------------------------------------------------//

@@ -40,26 +40,26 @@
 #define SSYNC    asm("ssync;")
 
 // Comment out to use no flow control
-#define UART0_USE_HARDWARE_FLOWCONTROL  
-#define RX_BUF_SIZE                     0x20000		// 128KB
-#define RX_PRIORITY_BUF_SIZE            0x1000		// 4KB
-#define RX_ALT_BUF_SIZE					0x20000		// 128KB
-#define TX_BUF_SIZE                     0x20000		// 128KB
-#define TX_PRIORITY_BUF_SIZE            0x1000		// 4KB
-#define TX_ALT_BUF_SIZE					0x20000		// 128KB
-#define RTS_ASSERT			*pPORTHIO_CLEAR	= PH6;	// Pin 23 of RCM-Bfin header, tied to CTS of radio
-#define RTS_DEASSERT		*pPORTHIO_SET	= PH6;	//    Force low to receive data from radio
-#define CTS_TRIGGERED		(*pPORTHIO & PH0)		// Pin 17 of RCM-Bfin header, tied to RTS of radio
-#define CTS_CLEAR_TRIGGER	*pPORTHIO_CLEAR = PH0;	//    Radio will set low when OK to send data to it
-#define UART0_INTERRUPTS_ENABLED  (*pUART0_IER & (ERBFI || ETBEI || ELSI))
-#define PRIORITY_COMMAND_HEADER '['
-#define PRIORITY_COMMAND_TRAILER ']'
+#define UART0_USE_HARDWARE_FLOWCONTROL
+#define RX_BUF_SIZE                     0x20000   // 128KB
+#define RX_PRIORITY_BUF_SIZE            0x1000    // 4KB
+#define RX_ALT_BUF_SIZE                 0x20000   // 128KB
+#define TX_BUF_SIZE                     0x20000   // 128KB
+#define TX_PRIORITY_BUF_SIZE            0x1000    // 4KB
+#define TX_ALT_BUF_SIZE                 0x20000   // 128KB
+#define RTS_ASSERT                      *pPORTHIO_CLEAR = PH6;  // Pin 23 of RCM-Bfin header, tied to CTS of radio
+#define RTS_DEASSERT                    *pPORTHIO_SET   = PH6;    //    Force low to receive data from radio
+#define CTS_TRIGGERED                   (*pPORTHIO & PH0)       // Pin 17 of RCM-Bfin header, tied to RTS of radio
+#define CTS_CLEAR_TRIGGER               *pPORTHIO_CLEAR = PH0;  //    Radio will set low when OK to send data to it
+#define UART0_INTERRUPTS_ENABLED        (*pUART0_IER & (ERBFI || ETBEI || ELSI))
+#define PRIORITY_COMMAND_HEADER         '['
+#define PRIORITY_COMMAND_TRAILER        ']'
 
 typedef enum
 {
-	SENDER_PC = 0,
-	SENDER_RCM_BFIN = 0x80,
-	SENDER_RCM_BFIN_ERROR,
+  SENDER_PC = 0,
+  SENDER_RCM_BFIN = 0x80,
+  SENDER_RCM_BFIN_ERROR,
 } PacketSenderType;
 
 // Public function prototypes
@@ -85,12 +85,12 @@ uint8_t uart1GetCh();
 uint8_t uart1GetChar(uint8_t *s);
 uint8_t uart1Signal();
 void ReadBufferStates(
-	uint32_t * RXBufferCount, 
-	uint32_t * RXPriorityBufferCount, 
-	uint32_t * RXAlternateBufferCount, 
-	uint32_t * TXBufferCount, 
-	uint32_t * TXPriorityBufferCount, 
-	uint32_t * TXAlternateBufferCount
+  uint32_t * RXBufferCount, 
+  uint32_t * RXPriorityBufferCount, 
+  uint32_t * RXAlternateBufferCount, 
+  uint32_t * TXBufferCount, 
+  uint32_t * TXPriorityBufferCount, 
+  uint32_t * TXAlternateBufferCount
 );
 void FlushAllTXBuffers(void);
 

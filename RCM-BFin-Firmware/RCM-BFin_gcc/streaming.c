@@ -48,12 +48,14 @@ typedef struct
 
 typedef struct 
 {
-    uint32_t I2CAddress;
-    uint32_t I2CRegister;
-    uint32_t Bytes;
-    uint32_t Rate;                // if zero, this stream is off
-    uint32_t RateCounter;
-    I2CRead_Type Type;            // I2C_NORMAL or I2C_REPEATED_START
+    uint32_t            I2CAddress;
+    uint32_t            I2CRegister;
+    uint32_t            Bytes;
+    uint32_t            Rate;           // if zero, this stream is off
+    uint32_t            RateCounter;
+    I2CRead_Type        Type;           // I2C_NORMAL or I2C_REPEATED_START
+    CommandUsesID_Type  UsesID;         // ID_NONE or ID_PRESENT
+    uint16_t            ID;             // If UsesID = ID_PRESENT then this will contain the ID value
 } StreamingDigitalByteType;
 
 /* Structure to hold analog sensor streaming into */
@@ -243,49 +245,100 @@ void StreamingParseDigitalBit(I2CRead_Type I2CReadMethod)
  * Returns "#NRB" (or "#NRb" for repeated-start) when the NB or Nb command is received
  * And starts (or stops) #NB responses at the desired streaming interval
  */
-void StreamingParseDigitalByte(I2CRead_Type I2CReadMethod)
+void StreamingParseDigitalByte(I2CRead_Type I2CReadMethod, CommandUsesID_Type CommandUsesID)
 {
-    uint32_t Address, Register, Bytes, Rate, i;
+    uint32_t Address = 0, Register = 0, Bytes = 0, Rate = 0, i;
+    uint16_t ID = 0;
+    char tmp[10];
     
-    Address = getch();
-    Register = getch();
-    Bytes = getch();
+    if (CommandUsesID == ID_PRESENT)
+    {
+        // Get ID as 4-character hex value
+        tmp[0] = getch();
+        tmp[1] = getch();
+        tmp[2] = getch();
+        tmp[3] = getch();
+        tmp[4] = 0;
+        ID = (uint16_t)strtol(tmp, NULL, 16);
+        // Get address as 2-character hex value
+        tmp[0] = getch();
+        tmp[1] = getch();
+        tmp[2] = 0;
+        Address = (uint8_t)strtol(tmp, NULL, 16);
+        // Get register as 2-character hex value
+        tmp[0] = getch();
+        tmp[1] = getch();
+        tmp[2] = 0;
+        Register = (uint8_t)strtol(tmp, NULL, 16);
+        // Get bytes as 2-character hex value
+        tmp[0] = getch();
+        tmp[1] = getch();
+        tmp[2] = 0;
+        Bytes = (uint8_t)strtol(tmp, NULL, 16);
+        // Get rate as 4-character hex value
+        tmp[0] = getch();
+        tmp[1] = getch();
+        tmp[2] = getch();
+        tmp[3] = getch();
+        tmp[4] = 0;
+        Rate = (uint16_t)strtol(tmp, NULL, 16);
+    }
+    else if (CommandUsesID == ID_NONE)
+    {
+        Address = getch();
+        Register = getch();
+        Bytes = getch();
+        Rate = getch() + (getch() * 256);
+    }
     // Always have at least 1 byte to read
     if (Bytes == 0)
-    { 
+    {
         Bytes = 1;
     }
-    Rate = getch() + (getch() * 256);
     
     // Now search to see if we've used this set of values before
     for (i = 0; i < STREAMING_MAX_DIGITAL_BYTES; i++)
     {
         if (
-            Address == DigitalBytes[i].I2CAddress
-            &&
-            Register == DigitalBytes[i].I2CRegister
-            &&
-            Bytes == DigitalBytes[i].Bytes
+            (
+                Address == DigitalBytes[i].I2CAddress
+                &&
+                Register == DigitalBytes[i].I2CRegister
+                &&
+                Bytes == DigitalBytes[i].Bytes
+                &&
+                CommandUsesID == ID_NONE
+            )
+            ||
+            (
+                CommandUsesID == ID_PRESENT
+                &&
+                ID == DigitalBytes[i].ID
+            )
         )
         {
-            // All we need to do is update the rate
             // If Rate is zero, this will effectively shut this channel off
+            DigitalBytes[i].I2CAddress = Address;
+            DigitalBytes[i].I2CRegister = Register;
+            DigitalBytes[i].Bytes = Bytes;
             DigitalBytes[i].Rate = Rate;
-            DigitalBytes[i].RateCounter = 0;    // Force a reload
-            DigitalBytes[i].Type = I2CReadMethod; // Always update the I2C read type
+            DigitalBytes[i].RateCounter = 0;            // Force a reload
+            DigitalBytes[i].Type = I2CReadMethod;       // Always update the I2C read type
+            DigitalBytes[i].UsesID = CommandUsesID;
+            DigitalBytes[i].ID = ID;
+            
             // Now we're done
             if (I2CReadMethod == I2C_NORMAL)
             {
               printf("#NRB");
             }
-            else
+            else if (I2CReadMethod == I2C_REPEATED_START)
             {
               printf("#NRb");
             }
             return;
         }
     }
-
     // Didn't find it, so this one must be new.
     for (i = 0; i < STREAMING_MAX_DIGITAL_BYTES; i++)
     {
@@ -297,22 +350,24 @@ void StreamingParseDigitalByte(I2CRead_Type I2CReadMethod)
             DigitalBytes[i].I2CAddress = Address;
             DigitalBytes[i].I2CRegister = Register;
             DigitalBytes[i].Bytes = Bytes;
-            DigitalBytes[i].Rate = Rate;
-            DigitalBytes[i].RateCounter = 0;    // Force a reload
             DigitalBytes[i].Type = I2CReadMethod; // Always update the I2C read type
+            DigitalBytes[i].UsesID = CommandUsesID;
+            DigitalBytes[i].ID = ID;
             // Now we're done
             if (I2CReadMethod == I2C_NORMAL)
             {
               printf("#NRB");
             }
-            else
+            else if (I2CReadMethod == I2C_REPEATED_START)
             {
               printf("#NRb");
             }
+            DigitalBytes[i].RateCounter = 0;    // Force a reload 
+            DigitalBytes[i].Rate = Rate;        // Last thing update the rate - this is what turn this channel 'on'
             return;
         }
     }
-    
+
     // This is an error - we've used up all of the available slots
     // So fail silently
     if (I2CReadMethod == I2C_NORMAL)
@@ -589,7 +644,7 @@ uint32_t StreamingProcess(void)
         // Handle all of the digital bytes
         for (i = 0; i < STREAMING_MAX_DIGITAL_BYTES; i++)
         {
-            // Is this one even turned on?
+            // Is this one even turned on bro?
             if (DigitalBytes[i].Rate != 0)
             {
                 // Is this one ready to send?
@@ -615,21 +670,59 @@ uint32_t StreamingProcess(void)
                     PacketBegin();
                     if (DigitalBytes[i].Type == I2C_NORMAL)
                     {
-                      printf("#NB%c%c",
-                          (uint8_t)DigitalBytes[i].I2CAddress,
-                          (uint8_t)DigitalBytes[i].I2CRegister
-                      );
+                        // Check for ID
+                        if (DigitalBytes[i].UsesID == ID_PRESENT)
+                        {
+                            printf("##N$B %04x %02x %02x",
+                                DigitalBytes[i].ID,
+                                (uint8_t)DigitalBytes[i].I2CAddress,
+                                (uint8_t)DigitalBytes[i].I2CRegister
+                            );
+                            for (j=0; j < DigitalBytes[i].Bytes; j++)
+                            {
+                                printf(" %02x", i2c_data[j]);
+                            }
+                            printf("\r\n");
+                        }
+                        else if (DigitalBytes[i].UsesID == ID_NONE)
+                        {
+                            printf("#NB%c%c",
+                              (uint8_t)DigitalBytes[i].I2CAddress,
+                              (uint8_t)DigitalBytes[i].I2CRegister
+                            );
+                            for (j=0; j < DigitalBytes[i].Bytes; j++)
+                            {
+                                printf("%c", i2c_data[j]);
+                            }
+                        }
                     }
-                    else
+                    else if (DigitalBytes[i].Type == I2C_REPEATED_START)
                     {
-                      printf("#Nb%c%c",
-                          (uint8_t)DigitalBytes[i].I2CAddress,
-                          (uint8_t)DigitalBytes[i].I2CRegister
-                      );
-                    }
-                    for (j=0; j < DigitalBytes[i].Bytes; j++)
-                    {
-                        printf("%c", i2c_data[j]);
+                        // Check for ID
+                        if (DigitalBytes[i].UsesID == ID_PRESENT)
+                        {
+                            printf("##N$b %04x %02x %02x",
+                                DigitalBytes[i].ID,
+                                (uint8_t)DigitalBytes[i].I2CAddress,
+                                (uint8_t)DigitalBytes[i].I2CRegister
+                            );
+                            for (j=0; j < DigitalBytes[i].Bytes; j++)
+                            {
+                                printf(" %02x", i2c_data[j]);
+                            }
+                            printf("\r\n");
+                        }
+                        else if (DigitalBytes[i].UsesID == ID_NONE)
+                        {
+                            printf("#Nb%c%c",
+                              (uint8_t)DigitalBytes[i].I2CAddress,
+                              (uint8_t)DigitalBytes[i].I2CRegister
+                            );
+                            for (j=0; j < DigitalBytes[i].Bytes; j++)
+                            {
+                                printf("%c", i2c_data[j]);
+                            }
+                        }
                     }
                     PacketEnd(true);
                 }

@@ -48,58 +48,58 @@
 
 static inline void init_program_clocks(void)
 {
-	/* Disable all peripheral wakeups except for the PLL event. */
-	*pSIC_IWR = 1;
+    /* Disable all peripheral wakeups except for the PLL event. */
+    *pSIC_IWR = 1;
 
-	*pPLL_LOCKCNT = CONFIG_PLL_LOCKCNT_VAL;
+    *pPLL_LOCKCNT = CONFIG_PLL_LOCKCNT_VAL;
 
-	/* Only reprogram when needed to avoid triggering unnecessary
-	 * PLL relock sequences.
-	 */
-	if (*pVR_CTL != CONFIG_VR_CTL_VAL) {
-		*pVR_CTL = CONFIG_VR_CTL_VAL;
-		asm("idle;");
-	}
+    /* Only reprogram when needed to avoid triggering unnecessary
+     * PLL relock sequences.
+     */
+    if (*pVR_CTL != CONFIG_VR_CTL_VAL) {
+        *pVR_CTL = CONFIG_VR_CTL_VAL;
+        asm("idle;");
+    }
 
-	*pPLL_DIV = CONFIG_PLL_DIV_VAL;
+    *pPLL_DIV = CONFIG_PLL_DIV_VAL;
 
-	/* Only reprogram when needed to avoid triggering unnecessary
-	 * PLL relock sequences.
-	 */
-	if (*pPLL_CTL != CONFIG_PLL_CTL_VAL) {
-		*pPLL_CTL = CONFIG_PLL_CTL_VAL;
-		asm("idle;");
-	}
+    /* Only reprogram when needed to avoid triggering unnecessary
+     * PLL relock sequences.
+     */
+    if (*pPLL_CTL != CONFIG_PLL_CTL_VAL) {
+        *pPLL_CTL = CONFIG_PLL_CTL_VAL;
+        asm("idle;");
+    }
 
-	/* Restore all peripheral wakeups. */
-	*pSIC_IWR = -1;
+    /* Restore all peripheral wakeups. */
+    *pSIC_IWR = -1;
 }
 
 static inline void init_program_memory_controller(void)
 {
-	/* Program the external memory controller. */
-	*pEBIU_SDRRC  = CONFIG_EBIU_SDRRC_VAL;
-	*pEBIU_SDBCTL = CONFIG_EBIU_SDBCTL_VAL;
-	*pEBIU_SDGCTL = CONFIG_EBIU_SDGCTL_VAL;
+    /* Program the external memory controller. */
+    *pEBIU_SDRRC  = CONFIG_EBIU_SDRRC_VAL;
+    *pEBIU_SDBCTL = CONFIG_EBIU_SDBCTL_VAL;
+    *pEBIU_SDGCTL = CONFIG_EBIU_SDGCTL_VAL;
 }
 
 __attribute__((saveall))
 void initcode(void)
 {
-	DEBUG_INIT()
-	DEBUG_H15_HIGH()	// System Init
-	DEBUG_H14_LOW()		// System Init
-	DEBUG_H13_HIGH()	// System Init
-	DEBUG_H12_LOW()		// System Init
-			
-	init_program_clocks();
-	init_program_memory_controller();
-	
-	// Set SPI Baud rate for maximum boot speed
-	*pSPI_BAUD = CONFIG_SPI_BAUD_VAL;
+    DEBUG_INIT()
+    DEBUG_H15_HIGH()    // System Init
+    DEBUG_H14_LOW()	    // System Init
+    DEBUG_H13_HIGH()    // System Init
+    DEBUG_H12_LOW()	    // System Init
 
-	// Turn LED1 on, and LED0 off to show that we're booting
-	INIT_LED_IO()
-	LED0_OFF()
-	LED1_ON()
+    init_program_clocks();
+    init_program_memory_controller();
+
+    // Set SPI Baud rate for maximum boot speed
+    *pSPI_BAUD = CONFIG_SPI_BAUD_VAL;
+
+    // Turn LED1 on, and LED0 off to show that we're booting
+    INIT_LED_IO()
+    LED0_OFF()
+    LED1_ON()
 }

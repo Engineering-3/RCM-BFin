@@ -169,9 +169,9 @@ void Cdelay(struct ParseState *Parser, struct Value *ReturnValue, struct Value *
     del = Param[0]->Val->Integer;
     if ((del < 0) || (del > 1000000))
         return;
-	
-	// Set up our delay - this gets decremented every 1ms in the Timer ISR
-	PicoCDelay = del;
+
+    // Set up our delay - this gets decremented every 1ms in the Timer ISR
+    PicoCDelay = del;
     while (PicoCDelay)
     {
         // BPS: Adding ability to check for serial input to run RCM-Bfin firmware commands _while_ running a PICOC app

@@ -74,11 +74,11 @@ void Timer0_ISR (void)
     if (LEDCounterMS) {LEDCounterMS--;}
     if (XMODEMTimeoutMS) {XMODEMTimeoutMS--;}
     if (I2CTimeoutMS) {I2CTimeoutMS--;}
-	if (PicoCDelay) {PicoCDelay--;}
-	if (I2CDelayTimeoutMS) {I2CDelayTimeoutMS--;}
-	if (I2CAutoincTimeoutMS) {I2CAutoincTimeoutMS--;}
+    if (PicoCDelay) {PicoCDelay--;}
+    if (I2CDelayTimeoutMS) {I2CDelayTimeoutMS--;}
+    if (I2CAutoincTimeoutMS) {I2CAutoincTimeoutMS--;}
     UART0LastByteRX++;
-	StreamingLastTickMS++;
+    StreamingLastTickMS++;
     
     // If we are not transmitting a byte right now,
     // then start things off.

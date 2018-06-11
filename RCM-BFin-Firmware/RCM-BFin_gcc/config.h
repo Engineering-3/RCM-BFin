@@ -37,7 +37,7 @@
 //#define PICOC2_DEBUG
 
 // Define DEBUG if you want H1-H5 and H7 through H15 (I/O pins) to be available as debug outputs. See system.h for the defines.
-//#define DEBUG
+#define DEBUG
 
 // Define if you want the uart1SendString() function to be available
 //#define UART1_DEBUG_ENABLE
@@ -63,23 +63,23 @@
 // overrides everything else.
 // Otherwise, the choose of radio define (See above) choose the baudrate of UART0. 
 #if defined(__RCM_BFIN_UART0_BAUDRATE_115200)
-	#define UART0_BAUDRATE 115200
+    #define UART0_BAUDRATE 115200
 #else
-	#if defined(MATCHPORT_RADIO)
-		#define UART0_BAUDRATE 2500000
-	#elif defined(ROUTERBOARD_RADIO_2500000)
-		#define UART0_BAUDRATE 2500000
-	#elif defined(ROUTERBOARD_RADIO_921600)
-		#define UART0_BAUDRATE 921600
-	#elif defined(MATCHPORT_RADIO_19200)
-		#define UART0_BAUDRATE 19200
-	#endif
+    #if defined(MATCHPORT_RADIO)
+        #define UART0_BAUDRATE 2500000
+    #elif defined(ROUTERBOARD_RADIO_2500000)
+        #define UART0_BAUDRATE 2500000
+    #elif defined(ROUTERBOARD_RADIO_921600)
+        #define UART0_BAUDRATE 921600
+    #elif defined(MATCHPORT_RADIO_19200)
+        #define UART0_BAUDRATE 19200
+    #endif
 #endif
 
 /*
  * Version string
  */
-#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test59"
+#define RCM_BFIN_GCC_V1_VERSION_STRING "RCM_BFIN GCC Blackfin w/PicoC " PICOC_VERSION " built:" __TIME__ " - " __DATE__ " v2.0test60"
 
 /*
  * I2C speed
@@ -87,5 +87,10 @@
 // Define this to stay slow, undefine to default to 400Khz
 #define TWI_100KHZ
 
+
+/*
+ * PicoC Stream Buffer Size in bytes
+ */
+#define PICOC_STREAM_BUFFER_SIZE    0x10000
 
 #endif

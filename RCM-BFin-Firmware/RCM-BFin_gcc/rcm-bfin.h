@@ -26,6 +26,7 @@
 
 #ifndef RCMBFIN_H
 #define RCMBINF_H
+#include "config.h"
 
 #define SSYNC asm("ssync;")
 
@@ -339,7 +340,7 @@ extern double pico_float[PICOC_SHARED_ARRAY_SIZE];
 extern unsigned int PicoCStreamBufferIn;
 extern unsigned int PicoCStreamBufferOut;
 extern unsigned int PicoCStreamBufferLength;
-extern unsigned char PicoCStreamBuffer[0xFFFF];
+extern unsigned char PicoCStreamBuffer[PICOC_STREAM_BUFFER_SIZE];
 extern unsigned char PicoCStreamBufferEnabled;
 
 #endif

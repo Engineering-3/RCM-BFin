@@ -1122,11 +1122,23 @@ void ProcessCommands(uint8_t CharIn)
                 case 'd':    // For single bit digital sensors - repeated start I2C
                     StreamingParseDigitalBit(I2C_REPEATED_START);
                     break;
-                case 'B':    // For byte (single or multiple) digital sensors - normal I2C
-                    StreamingParseDigitalByte(I2C_NORMAL);
+                case 'B':    // For byte (single or multiple) digital sensors - normal I2C, no ID word
+                    StreamingParseDigitalByte(I2C_NORMAL, ID_NONE);
                     break;
-                case 'b':    // For byte (single or multiple) digital sensors - repeated start I2C
-                    StreamingParseDigitalByte(I2C_REPEATED_START);
+                case 'b':    // For byte (single or multiple) digital sensors - repeated start I2C, no ID word
+                    StreamingParseDigitalByte(I2C_REPEATED_START, ID_NONE);
+                    break;
+                case '$':    // For commands that use the ID word
+                    switch (getch()) {
+                        case 'B':    // For byte (single or multiple) digital sensors - normal I2C, no ID word
+                            StreamingParseDigitalByte(I2C_NORMAL, ID_PRESENT);
+                            break;
+                        case 'b':    // For byte (single or multiple) digital sensors - repeated start I2C, no ID word
+                            StreamingParseDigitalByte(I2C_REPEATED_START, ID_PRESENT);
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case 'A':    // For analog sensors
                     StreamingParseAnalogBit();
