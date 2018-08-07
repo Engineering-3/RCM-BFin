@@ -1425,6 +1425,7 @@
                     <td>&NP,</td>
                     <td>#&NRP,[dddd]</td>
                     <td>
+                        <p><b>NOTE: THIS COMMAND IS NOT YET IMPLEMENTED. IT WILL BE ADDED IN A FUTURE FIRMWARE VERSION.</b></p>
                         <p>[a] is one byte type:'F' (for float), 'I' (for integer) or 'S' (for string)</p>
                         <p>[dddd] is an ASCII decimal number, from 0 to 65535, which the BFin firmware does not use, but 
                             simply sends back with any returned results.</p> 
@@ -1485,6 +1486,59 @@
                         <p>[s3] through [sn] are the rest of the strings (if present)</p>
                         <p>So for a command "NP,S,1000,15,16[CR]" a streaming response packet might be:</p>
                         <p>"##NP,S,15,abc how are you? Fine!,Robot Has Died. Sensor 4 = 55.[CR][LF]"</p>
+                        <p>The main restriction  here is that you may not use commas or [LF] or [CR] in your 
+                        strings or the PC parser will get confused.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">##&NP,F,[dddd],[b],[f1],[f2],[f3],...[CR][LF]</td>
+                    <td colspan="2">
+                        <p><b>NOTE: THIS COMMAND IS NOT YET IMPLEMENTED. IT WILL BE ADDED IN A FUTURE FIRMWARE VERSION.</b></p>
+                        <p>For Float values:</p>
+                        <p>[dddd] is an ASCII decimal number, from 0 to 65535, which the BFin firmware does not use, but 
+                            simply sends back with any returned results. This value of this number is whatever was sent in the
+                            initial &NP command. This value allows the PC to keep track of the replies associated with a
+                            certain command.</p> 
+                        <p>[b] is the starting index of [f1]</p>
+                        <p>[f1] is the first floating point value</p>
+                        <p>[f2] is the second floating point value (if present)</p>
+                        <p>[f3] through 'fn' are the rest of the floating point values (if present)</p>
+                        <p>So for a command "NP,F,2000,96,101[CR]" a streaming response packet might be:</p>
+                        <p>"##&NP,F,123,96,2.15,-69291.2131,.6,10.0,.000012,99.99[CR][LF]"</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">##&NP,I,[dddd],[b],[i1],[i2],[i3],...[CR][LF]</td>
+                    <td colspan="2">
+                        <p><b>NOTE: THIS COMMAND IS NOT YET IMPLEMENTED. IT WILL BE ADDED IN A FUTURE FIRMWARE VERSION.</b></p>
+                        <p>For Integer values:</p>
+                        <p>[dddd] is an ASCII decimal number, from 0 to 65535, which the BFin firmware does not use, but 
+                            simply sends back with any returned results. This value of this number is whatever was sent in the
+                            initial &NP command. This value allows the PC to keep track of the replies associated with a
+                            certain command.</p> 
+                        <p>[b] is the starting index of [i1]</p>
+                        <p>[i1] is the first integer value</p>
+                        <p>[i2] is the second integer value (if present)</p>
+                        <p>[i3] through [in] are the rest of the integer values (if present)</p>
+                        <p>So for a command "NP,I,1000,41[CR]" a streaming response packet might be:</p>
+                        <p>"##&NP,I,123,41,1234[CR][LF]"</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">##&NP,S,[dddd],[b],[s1],[s2],[s3],...[CR][LF]</td>
+                    <td colspan="2">
+                        <p><b>NOTE: THIS COMMAND IS NOT YET IMPLEMENTED. IT WILL BE ADDED IN A FUTURE FIRMWARE VERSION.</b></p>
+                        <p>For String values:</p>
+                        <p>[dddd] is an ASCII decimal number, from 0 to 65535, which the BFin firmware does not use, but 
+                            simply sends back with any returned results. This value of this number is whatever was sent in the
+                            initial &NP command. This value allows the PC to keep track of the replies associated with a
+                            certain command.</p> 
+                        <p>[b] is the starting index of [s1]</p>
+                        <p>[s1] is the first string</p>
+                        <p>[s2] is the second string(if present)</p>
+                        <p>[s3] through [sn] are the rest of the strings (if present)</p>
+                        <p>So for a command "NP,S,1000,15,16[CR]" a streaming response packet might be:</p>
+                        <p>"##&NP,S,123,15,abc how are you? Fine!,Robot Has Died. Sensor 4 = 55.[CR][LF]"</p>
                         <p>The main restriction  here is that you may not use commas or [LF] or [CR] in your 
                         strings or the PC parser will get confused.</p>
                     </td>
@@ -1586,7 +1640,7 @@
             </tbody>
         </table>
         <p>
-            Last updated 7 June 2018, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test60
+            Last updated 6 August 2018, valid for RCM-BFin firmware: RCM-BFin GCC built:xx:xx:xx - xxx xx 2012 v2.0test60
         </p>
         <p>
             Tan colored cells indicate a change since the last firmware version
