@@ -60,5 +60,7 @@ uint32_t StreamingProcess(void);
 void StreamingTick(void);
 void StreamingShutdown(void);
 void StopAllStreaming(void);
+void PauseStreaming(void);
+void UnpauseStreaming(void);
 
 #endif

@@ -50,6 +50,7 @@
 #include "gps.h"
 #include "picoc\picoc.h"
 #include "options.h"
+#include "streaming.h"
 
 #ifdef STEREO
 #include "stereo.h"
@@ -1709,6 +1710,7 @@ void scale_image_to_80x64_planar (unsigned char *src, unsigned char *dst, unsign
 void xmodem_receive (unsigned char * BufferPtr, unsigned int BufferSize) 
 {
     unsigned char * ix;
+    PauseStreaming();
     for (ix = BufferPtr; ix < (BufferPtr + BufferSize); ix++)
     {
         *ix = 0;   // clear the read buffer
@@ -1723,6 +1725,7 @@ void xmodem_receive (unsigned char * BufferPtr, unsigned int BufferSize)
         printf("##Xmodem success. Count: %d\r\n", err1);
         PacketEnd(true);
     }
+    UnpauseStreaming();
 }
 
 void launch_editor() {

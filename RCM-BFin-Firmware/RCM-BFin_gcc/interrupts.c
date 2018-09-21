@@ -67,8 +67,8 @@ void Timer0_ISR (void)
     // confirm interrupt handling
     *pTIMER_STATUS = 0x0001;
 
-    // Countdown all registerd countdown timer variables
-    /// TODO: Make this some type of registerd callback thing
+    // Countdown all registered countdown timer variables
+    /// TODO: Make this some type of registered callback thing
     if (Counter0) {Counter0--;}
     if (CounterStreamVideoTimout) {CounterStreamVideoTimout--;}
     if (LEDCounterMS) {LEDCounterMS--;}

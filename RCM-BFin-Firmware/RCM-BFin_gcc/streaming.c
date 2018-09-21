@@ -84,6 +84,18 @@ static volatile StreamingAnalogType          Analogs[STREAMING_MAX_ANALOGS];
  
 volatile bool StreamingTickTrigger = false;
 volatile uint32_t StreamingLastTickMS = 0;
+/* Set true to 'pause' streaming - like during PicoC upload */
+volatile bool StreamingPaused = false;
+
+void PauseStreaming(void)
+{
+  StreamingPaused = true;
+}
+
+void UnpauseStreaming(void)
+{
+  StreamingPaused = false;
+}
 
 /*
  * Handle the NA command.
@@ -578,7 +590,7 @@ uint32_t StreamingProcess(void)
     uint8_t i2c_data[256];
 
     // Every 1ms (when StreamingTickTrigger fires), decrement all streaming variable's counters
-    if (StreamingTickTrigger)
+    if (StreamingTickTrigger && !StreamingPaused)
     {
         StreamingTickTrigger = false;
         StreamingTick();
