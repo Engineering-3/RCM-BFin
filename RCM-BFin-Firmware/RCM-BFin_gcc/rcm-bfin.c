@@ -261,7 +261,7 @@ int CopyPicoCOut(void)
 
         PicoCBSSEnd = outp;
     
-        // Then intialize the data section
+        // Then initialize the data section
         // And copy the bss section over
         inp = (unsigned int *)PICOC1_BUF_DATA;
         outp = &_picoc_data_start;
@@ -640,7 +640,7 @@ void check_for_autorun(void)
     if (strncmp("autorun", cp, 7) == 0) 
     {
         printf("autorun() found - launching picoC\r\n");
-        // We found something interesting, so read in the entier 2 sectors
+        // We found something interesting, so read in the entire 2 sectors
         spi_read(USER_FLASH, (unsigned char *)FLASH_BUFFER, TWO_SECTORS);  // read flash sector #4 & #5
         picoc((char *)FLASH_BUFFER, FALSE);
     } 
@@ -648,7 +648,7 @@ void check_for_autorun(void)
     {
         if (strncmp("runback", cp, 7) == 0) 
         {
-            // We found something interesting, so read in the entier 2 sectors
+            // We found something interesting, so read in the entire 2 sectors
             spi_read(USER_FLASH, (unsigned char *)FLASH_BUFFER, TWO_SECTORS);  // read flash sector #4 & #5
             printf("autorun() found - launching picoC\r\n");
             picoc((char *)FLASH_BUFFER, TRUE);
@@ -680,7 +680,7 @@ void serial_out_flashbuffer (void)
         }
         uart0SendChar(*cp++);
     }
-	// Always end with a CR
+    // Always end with a CR
     printf("\r\n");
 }
 

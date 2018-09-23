@@ -76,8 +76,7 @@ int picoc(char *SourceStr, unsigned char AllowBackgroundMode)
     char *pos;
     gAllowBackgroundMode = AllowBackgroundMode;
 
-    PicocInitialise(HEAP_SIZE);
-
+    // For some reason we turn all 0x1A's into 0x20's  (space) before running. Not sure how 0x1As can get . . .
     if (SourceStr)
     {
         for (pos = SourceStr; *pos != 0; pos++)
@@ -88,6 +87,21 @@ int picoc(char *SourceStr, unsigned char AllowBackgroundMode)
             }
         }
     }
+    
+    // Fix for RCM-Bfin issue #4 :
+    // If user tries to execute PicoC program, and first character in SourceStr is not printable ASCII, then
+    // there is no PicoC program to run, and we will just exit.
+    if (SourceStr)
+    {
+      if (*SourceStr < 0x20 || *SourceStr > 0x7E)
+      {
+        printf("Leaving PicoC\r\n");
+        PicocCleanup();
+        return PicocExitValue;
+      }
+    }
+
+    PicocInitialise(HEAP_SIZE);
 
     PicocExitBuf[40] = 0;
     PicocPlatformSetExitPoint();
@@ -105,5 +119,5 @@ int picoc(char *SourceStr, unsigned char AllowBackgroundMode)
     
     return PicocExitValue;
 }
-# endif
+#endif
 #endif
