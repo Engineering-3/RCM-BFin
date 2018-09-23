@@ -95,6 +95,7 @@ int picoc(char *SourceStr, unsigned char AllowBackgroundMode)
     {
       if (*SourceStr < 0x20 || *SourceStr > 0x7E)
       {
+        printf("Error: Attempted to run PicoC with no PicoC program loaded.\r\n");
         printf("Leaving PicoC\r\n");
         PicocCleanup();
         return PicocExitValue;
