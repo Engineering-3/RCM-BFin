@@ -143,6 +143,7 @@ static int32_t RXBufPull(uint8_t *Data);
 static int32_t TXBufPush(uint8_t Data);
 static int32_t TXAltBufPull(uint8_t *Data);
 static inline void IncrimentRXInPtr(void);
+static inline void DecrimentRXInPtr(void);
 static inline void IncrimentRXOutPtr(void);
 static inline void IncrimentRXPriorityInPtr(void);
 static inline void IncrimentRXPriorityOutPtr(void);
@@ -689,9 +690,9 @@ void uart0SendChar(uint8_t c)
         {
             TXBufPush('!');
         }
-DEBUG_H9_HIGH()
+//DEBUG_H9_HIGH()
         TXBufPush(c);
-DEBUG_H9_LOW()
+//DEBUG_H9_LOW()
         // Perform byte stuffing (if we see 3 0xFFs in a row, insert a 0x00)
         // But only if we're writing out into the real output buffer
         if (GetOption(OPT_PACKET_MODE) && GetTXBuffer() == BUFFER_NORMAL)
@@ -1035,9 +1036,9 @@ int32_t TXBufPush(uint8_t Data)
         // then start things off.
         if (TXBufCount && (*pUART0_LSR & THRE) && !CTS_TRIGGERED)
         {
-DEBUG_H10_HIGH()
+//DEBUG_H10_HIGH()
             TXSendNextByte();
-DEBUG_H10_LOW()
+//DEBUG_H10_LOW()
         }
         enable_interrupts(IntTemp);
     }
@@ -1191,6 +1192,22 @@ inline void IncrimentRXInPtr(void)
     RXBufCount++;
 }
 
+inline void DecrimentRXInPtr(void)
+{
+    if (RXBufIn == 0)
+    {
+       RXBufIn = (RX_BUF_SIZE - 1);
+    }
+    else
+    {
+        RXBufIn--;
+    }
+    if (RXBufCount)
+    {
+        RXBufCount--;
+    }
+}
+
 inline void IncrimentRXOutPtr(void)
 {
     RXBufCount--;
@@ -1291,6 +1308,7 @@ void uart0_ISR()
 {
     uint8_t identification_register = *pUART0_IIR;
     uint32_t CTSCounter = 0;
+DEBUG_H10_HIGH()
     while (identification_register != 0x01)
     {
         switch (identification_register)
@@ -1437,6 +1455,7 @@ DEBUG_H8_LOW()
 
         identification_register = *pUART0_IIR;
     }
+DEBUG_H10_LOW()
     return;
 }
 
@@ -1640,12 +1659,16 @@ int32_t PacketNewByteRX(uint8_t Byte)
     static uint32_t RXFFCount = 0;
     static uint32_t SyncFieldCounter = 0;
     static RXPacketStateType RXPacketState = RX_STATE_SYNC_0;
-    uint8_t c = 0;
+//    uint8_t c = 0;
+    static uint32_t PushedBytes = 0;    // Keep track of how many bytes we've pushed onto the normal TX buffer in case we need to take them back if something goes wrong
+//    static uint8_t RXTempBuf[
 #ifdef UART1_PACKET_DEBUG
     static uint32_t i;
     static char tmp[20];
 #endif
-        
+
+DEBUG_H9_HIGH()
+
     // Do a re-sync check. If we see four 0xFF bytes in a row,
     // at ANY point in the data stream, it means we just saw a sync
     // field, so, if we're in the middle of a packet, then record
@@ -1653,13 +1676,13 @@ int32_t PacketNewByteRX(uint8_t Byte)
     if (Byte == 0xFF)
     {
         SyncFieldCounter++;
-        if (SyncFieldCounter >= 4) 
+        if (SyncFieldCounter >= 4)
         {
             // We have a sync field - are we in the right place?
             if (RXPacketState == RX_STATE_SYNC_3)
             {
                 // Yup, so we don't really need to do anything
-                SyncFieldCounter = 0;            
+                SyncFieldCounter = 0;
             }
             else
             {
@@ -1674,6 +1697,7 @@ int32_t PacketNewByteRX(uint8_t Byte)
                 Length = 0;
                 Sender = 0;
                 CRC = 0;
+                PushedBytes = 0;
 #ifdef UART1_PACKET_DEBUG
                 for (RXDebugLen = 0; RXDebugLen < 20; RXDebugLen++)
                 {
@@ -1747,8 +1771,9 @@ int32_t PacketNewByteRX(uint8_t Byte)
     // Run a state machine based upon where we are in the packet
     switch (RXPacketState)
     {
+DEBUG_H10_HIGH()
         case RX_STATE_SYNC_0:
-            if (Byte == 0xFF) 
+            if (Byte == 0xFF)
             {
                 RXPacketState = RX_STATE_SYNC_1;
                 // Clear out our packet stuff
@@ -1757,6 +1782,8 @@ int32_t PacketNewByteRX(uint8_t Byte)
                 Sender = 0;
                 CRC = 0;
                 PacketTime = 0;
+                PushedBytes = 0;
+                RXAltBufPush(Byte);
             }
             
             // As a special case, we also accept a single 'V' here
@@ -1783,6 +1810,7 @@ int32_t PacketNewByteRX(uint8_t Byte)
             if (Byte == 0xFF) 
             {
                 RXPacketState = RX_STATE_SYNC_2;
+                RXAltBufPush(Byte);
             }
             else
             {
@@ -1794,6 +1822,7 @@ int32_t PacketNewByteRX(uint8_t Byte)
             if (Byte == 0xFF) 
             {
                 RXPacketState = RX_STATE_SYNC_3;
+                RXAltBufPush(Byte);
             }
             else
             {
@@ -1805,6 +1834,7 @@ int32_t PacketNewByteRX(uint8_t Byte)
             if (Byte == 0xFF) 
             {
                 RXPacketState = RX_STATE_COMMAND;
+                RXAltBufPush(Byte);
             }
             else
             {
@@ -1815,46 +1845,56 @@ int32_t PacketNewByteRX(uint8_t Byte)
         case RX_STATE_COMMAND:
             Command = Byte;
             RXPacketState = RX_STATE_SENDER;
+            RXAltBufPush(Byte);
             break;
 
         case RX_STATE_SENDER:
             Sender = Byte;
             RXPacketState = RX_STATE_TIME_0;
+            RXAltBufPush(Byte);
             break;
             
         case RX_STATE_TIME_0:
             PacketTime = Byte << 24;
             RXPacketState = RX_STATE_TIME_1;
+            RXAltBufPush(Byte);
             break;
             
         case RX_STATE_TIME_1:
             PacketTime = PacketTime | (Byte << 16);
             RXPacketState = RX_STATE_TIME_2;
+            RXAltBufPush(Byte);
             break;
 
         case RX_STATE_TIME_2:
             PacketTime = PacketTime | (Byte << 8);
             RXPacketState = RX_STATE_TIME_3;
+            RXAltBufPush(Byte);
             break;
 
         case RX_STATE_TIME_3:
             PacketTime = PacketTime | Byte;
             RXPacketState = RX_STATE_LENGTH_0;
+            RXAltBufPush(Byte);
             break;
 
         case RX_STATE_LENGTH_0:
             Length = Byte;
             RXPacketState = RX_STATE_LENGTH_1;
+            RXAltBufPush(Byte);
             break;
             
         case RX_STATE_LENGTH_1:
             Length = (Length << 8) + Byte;
             RXPacketState = RX_STATE_DATA;
+            RXAltBufPush(Byte);
             break;
             
         case RX_STATE_DATA:
+            RXBufPush(Byte);
+            PushedBytes++;
             RXAltBufPush(Byte);
-            if (RXAltBufCount == Length)
+            if (PushedBytes == Length)
             {
                 RXPacketState = RX_STATE_CRC_0;
             }
@@ -1866,24 +1906,36 @@ int32_t PacketNewByteRX(uint8_t Byte)
             break;
             
         case RX_STATE_CRC_1:
+DEBUG_H11_HIGH()
             CRC = (CRC << 8) + Byte;
             // Compute CRC here and compare with CRC in packet
-            RealCRC = PacketComputeCRC(Command, Sender, Length, PacketTime, (uint8_t *)RXAltBuf, ISR_BUFFER);
-            
+//            RealCRC = PacketComputeCRC(Command, Sender, Length, PacketTime, (uint8_t *)RXAltBuf, ISR_BUFFER);
+            RealCRC = crc16_ccitt((void *)RXAltBuf, Length + 12);
+
             if (CRC == RealCRC)
             {
-                // Copy over the entire packet into the real RX buffer (now that
-                // we know it's good) so that functions can get at the data.
-                while(RXAltBufCount)
-                {
-                    RXAltBufPull(&c);
-                    RXBufPush(c);
-                }
-                // And tell GetPacketCommand() that there's a new packet ready
+//                // Copy over the entire packet into the real RX buffer (now that
+//                // we know it's good) so that functions can get at the data.
+//                while(RXAltBufCount)
+//                {
+//DEBUG_H12_HIGH()
+//                    RXAltBufPull(&c);
+//DEBUG_H12_LOW()
+//                    RXBufPush(c);
+//                }
+                // Since we've been pushing our RXed bytes into the RX buffer this whole time,
+                // we can just tell GetPacketCommand() that there's a new packet ready since we know it's good.
                 NewPacketReady++;
             }
             else
             {
+                // If we have a bad CRC, we need to remove all of the bytes that we've 
+                // pushed into the normal RX buffer, since this packet is 'bad'.
+                while (PushedBytes)
+                {
+                  DecrimentRXInPtr();
+                  PushedBytes--;
+                }
                 /// TODO: Record this error in an error counter
 #ifdef UART1_PACKET_DEBUG
                 // For debugging packet mode, spit out the entire packet
@@ -1914,11 +1966,17 @@ int32_t PacketNewByteRX(uint8_t Byte)
             CRC = 0;
             PacketTime = 0;
             RXPacketState = RX_STATE_SYNC_0;
+            PushedBytes = 0;
             break;
         
         default:
             break;
     }
+
+DEBUG_H9_LOW()
+DEBUG_H10_LOW()
+DEBUG_H11_LOW()
+DEBUG_H12_LOW()
 
     return 0;
 }
@@ -1990,12 +2048,12 @@ void ReadBufferStates(
     uint32_t * TXAlternateBufferCount
 )
 {
-	*RXBufferCount = RXBufCount;
-	*RXPriorityBufferCount = RXPriorityBufCount;
-	*RXAlternateBufferCount = RXAltBufCount;
-	*TXBufferCount = TXBufCount;
-	*TXPriorityBufferCount = TXPriorityBufCount;
-	*TXAlternateBufferCount = TXAltBufCount;
+    *RXBufferCount = RXBufCount;
+    *RXPriorityBufferCount = RXPriorityBufCount;
+    *RXAlternateBufferCount = RXAltBufCount;
+    *TXBufferCount = TXBufCount;
+    *TXPriorityBufferCount = TXPriorityBufCount;
+    *TXAlternateBufferCount = TXAltBufCount;
 }
 
 
