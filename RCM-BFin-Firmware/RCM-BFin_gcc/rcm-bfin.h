@@ -208,6 +208,7 @@ void set_edge_thresh();
 void grab_code_send();
 void recv_grab_code();
 void disable_frame_diff ();
+void enable_qr_code_detection();
 void overlay_on ();
 void overlay_off ();
 void camera_setup ();

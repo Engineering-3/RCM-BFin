@@ -122,6 +122,7 @@ unsigned int blob_display_flag;
 unsigned int blob_display_num;
 unsigned int edge_thresh;
 unsigned int invert_flag;
+unsigned int qr_code_detect_flag;
 unsigned char *output_start, *output_end; /* Framebuffer addresses */
 unsigned int image_size; /* JPEG image size */
 char imgHead[11]; /* image frame header for I command */
@@ -423,6 +424,7 @@ void init_io() {
     obstacle_detect_flag = 0;
     segmentation_flag = 0;
     blob_display_flag = 0;
+    qr_code_detect_flag = 0;
     invert_flag = 0;
     encoder_flag = 0;
 
@@ -1196,6 +1198,11 @@ void enable_blob_display() {
     blob_display_num = ix;
 }
 
+void enable_qr_code_detection() {
+  printf("##g7");
+  qr_code_detect_flag = 1;
+}
+
 #ifdef STEREO
 void enable_stereo_processing() {
     if (master) {
@@ -1223,6 +1230,7 @@ void disable_frame_diff() {  // disables frame differencing, edge detect and col
     horizon_detect_flag = 0;
     obstacle_detect_flag = 0;
     blob_display_flag = 0;
+    qr_code_detect_flag = 0;
     #ifdef STEREO
     stereo_processing_flag = 0;
     #endif /* STEREO */
@@ -1230,45 +1238,47 @@ void disable_frame_diff() {  // disables frame differencing, edge detect and col
 }
 
 void grab_frame () {
-    unsigned int vect[16];
-    int slope, intercept;
-    unsigned int ix, ii;
-    
-    #ifdef STEREO
-    if (stereo_processing_flag != 0) {
-        svs_stereo(0);
-        return;
-    }
-    #endif /* STEREO */
+  unsigned int vect[16];
+  int slope, intercept;
+  unsigned int ix, ii;
+  
+  #ifdef STEREO
+  if (stereo_processing_flag != 0) {
+    svs_stereo(0);
+    return;
+  }
+  #endif /* STEREO */
 
-    if (invert_flag)
-        move_inverted((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab and flip new frame
-            (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
-    else
-        move_image((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab new frame
-            (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
-    if (frame_diff_flag) {
-        compute_frame_diff((unsigned char *)FRAME_BUF, 
-                (unsigned char *)FRAME_BUF2, imgWidth, imgHeight);
-    } else if (segmentation_flag) {
-        color_segment((unsigned char *)FRAME_BUF);
-    } else if (edge_detect_flag) {
-        svs_segcode((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh);
-        svs_segview((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF);
-    } else if (horizon_detect_flag) {
-        vhorizon((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 
-                16, &vect[0], &slope, &intercept, 5);
-        addline((unsigned char *)FRAME_BUF, slope, intercept);
-    } else if (obstacle_detect_flag) {
-        vscan((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 16, &vect[0]);
-        addvect((unsigned char *)FRAME_BUF, 16, &vect[0]);
-    } else if (blob_display_flag) {
-        ix = vblob((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, blob_display_num);
-        if (ix > 7)  // only show 8 largest blobs
-            ix = 7;
-        for (ii=0; ii<ix; ii++) 
-            addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
-    }
+  if (invert_flag)
+    move_inverted((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab and flip new frame
+        (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
+  else
+    move_image((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab new frame
+        (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
+  if (frame_diff_flag) {
+    compute_frame_diff((unsigned char *)FRAME_BUF, 
+            (unsigned char *)FRAME_BUF2, imgWidth, imgHeight);
+  } else if (segmentation_flag) {
+    color_segment((unsigned char *)FRAME_BUF);
+  } else if (edge_detect_flag) {
+    svs_segcode((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh);
+    svs_segview((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF);
+  } else if (horizon_detect_flag) {
+    vhorizon((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 
+            16, &vect[0], &slope, &intercept, 5);
+    addline((unsigned char *)FRAME_BUF, slope, intercept);
+  } else if (obstacle_detect_flag) {
+    vscan((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 16, &vect[0]);
+    addvect((unsigned char *)FRAME_BUF, 16, &vect[0]);
+  } else if (blob_display_flag) {
+    ix = vblob((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, blob_display_num);
+    if (ix > 7)  // only show 8 largest blobs
+        ix = 7;
+    for (ii=0; ii<ix; ii++) 
+        addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
+  } else if (qr_code_detect_flag) {
+    process_qr_detect((unsigned char *)FRAME_BUF);
+  }
 }
 
 
@@ -1477,7 +1487,7 @@ void overlay_off () {
 /* Camera initial setup */
 void camera_setup () {
     
-    /* Initialise camera-related globals */
+    /* Initialize camera-related globals */
     framecount = 0;
     overlay_flag = 0;
     quality = 4; // Default JPEG quality - range is 1-8 (1 is highest)

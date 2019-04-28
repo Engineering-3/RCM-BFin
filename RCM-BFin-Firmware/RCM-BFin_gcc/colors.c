@@ -26,12 +26,16 @@
  
 #include "colors.h"
 #include <stdio.h>
+#include "quirc\quirc.h"
+#include "intuart.h"
 
 extern unsigned int imgWidth, imgHeight;
 
 unsigned int ymax[MAX_COLORS], ymin[MAX_COLORS], umax[MAX_COLORS], umin[MAX_COLORS], vmax[MAX_COLORS], vmin[MAX_COLORS];
 unsigned int blobx1[MAX_BLOBS], blobx2[MAX_BLOBS], bloby1[MAX_BLOBS], bloby2[MAX_BLOBS], blobcnt[MAX_BLOBS], blobix[MAX_BLOBS];
 unsigned int hist0[256], hist1[256], mean[3];
+
+static struct quirc *qr;
 
 void init_colors() {
     unsigned int ii;
@@ -43,6 +47,16 @@ void init_colors() {
         umin[ii] = 0;
         vmax[ii] = 0;
         vmin[ii] = 0;
+    }
+    
+    qr = quirc_new();
+    if (!qr) {
+      printf("Failed to allocate QR struct");
+    }
+    
+    if (quirc_resize(qr, imgWidth, imgHeight) < 0)
+    {
+      printf("Failed to resize QR struct");
     }
 }
 
@@ -322,7 +336,7 @@ unsigned int vfind(unsigned char *frame_buf, unsigned int clr,
     unsigned int ix, xx, yy, y, u, v, count;
     
     count = 0;
-    for (xx=x1; xx<x2; xx+=2) {   
+    for (xx=x1; xx<x2; xx+=2) {
         for (yy=y1; yy<y2; yy++) {
             ix = index(xx,yy);
             y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
@@ -618,3 +632,55 @@ void addbox(unsigned char *outbuf, unsigned int x1, unsigned int x2, unsigned in
     }
 }
 
+void process_qr_detect(unsigned char *frame_buf) 
+{
+  uint8_t *image;
+  int w,h;
+  int num_codes;
+//  int i;
+  int ix;
+  unsigned int *ip1;
+  
+  image = quirc_begin(qr, &w, &h);
+  
+  // Fill out image here with greyscale pixels
+  ip1 = (unsigned int *)frame_buf;
+  for (ix=0; ix < ((imgWidth*imgHeight)/2); ix++)
+  {
+    ip1[ix] = ip1[ix] & 0x00FF00FF;
+  }
+  
+  quirc_end(qr);
+
+  /* We've previously fed an image to the decoder via
+   * quirc_begin/quirc_end.
+   */
+
+  num_codes = quirc_count(qr);
+  PacketBegin();
+  printf("Found %d QR codes\n", num_codes);
+  PacketEnd(true);
+#if 0
+  
+  for (i = 0; i < num_codes; i++) 
+  {
+    struct quirc_code code;
+    struct quirc_data data;
+    quirc_decode_error_t err;
+
+    quirc_extract(qr, i, &code);
+
+    /* Decoding stage */
+    err = quirc_decode(&code, &data);
+    if (err)
+    {
+      printf("DECODE FAILED: %s\n", quirc_strerror(err));
+    }
+    else
+    {
+      printf("Data: %s\n", data.payload);
+    }
+  }
+  PacketEnd(true);
+#endif
+}

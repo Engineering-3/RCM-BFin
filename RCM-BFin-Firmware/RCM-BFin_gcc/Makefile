@@ -30,7 +30,8 @@
   picoc/heap.o picoc/type.o picoc/variable.o picoc/clibrary.o picoc/debug.o \
   picoc/platform/library_surveyor.o picoc/platform.o picoc/platform/platform_surveyor.o \
   picoc/include.o interrupts.o sysinit.o system.o \
-  r8x8dct.o motionvect.o cache.o basiccrt.o options.o streaming.o 
+  r8x8dct.o motionvect.o cache.o basiccrt.o options.o streaming.o \
+  quirc/decode.o quirc/identify.o quirc/quirc.o quirc/version_db.o
 TARGET=rcm-bfin_gcc_v2
   
   
@@ -82,7 +83,7 @@ $(TARGET)_115k.ldr: $(TARGET)_115k.bin init.o $(TARGET).x
 
 .PHONY : clean
 clean:
-	rm -f *.o *.s *.bin $(TARGET)_115k.ldr $(TARGET).ldr picoc/*.o picoc/platform/*.o
+	rm -f *.o *.s *.bin $(TARGET)_115k.ldr $(TARGET).ldr picoc/*.o picoc/platform/*.o quirc/*.o
 
 .PHONY : load
 load: $(TARGET).ldr
