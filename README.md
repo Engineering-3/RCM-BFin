@@ -3,7 +3,7 @@ RCM-BFin
 
 ![RCM-BFin](http://engineering3.org/wp-content/uploads/GitHub/RCM-BFin.jpg)
 
-This is the primary processing board for the RCM Control Stack.
+This is the primary processing board for the RCM Control Stack. It handles all primary processes including Machine Vision elements. Please see [Engineering3](http://engineering3.org/) for more information on the complete RCM Control Stack project.
 
 
 Repository Contents
