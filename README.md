@@ -1,7 +1,7 @@
 RCM-BFin
 ========================
 
-![RCM-BFin](http://engineering3.org/wp-content/uploads/2015/02/RCM-BFin_small.jpg)
+![RCM-BFin](http://engineering3.org/wp-content/uploads/GitHub/RCM-BFin.jpg)
 
 This is the primary processing board for the RCM Control Stack.
 
