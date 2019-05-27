@@ -690,9 +690,9 @@ void uart0SendChar(uint8_t c)
         {
             TXBufPush('!');
         }
-//DEBUG_H9_HIGH()
+///DEBUG_H9_HIGH()
         TXBufPush(c);
-//DEBUG_H9_LOW()
+///DEBUG_H9_LOW()
         // Perform byte stuffing (if we see 3 0xFFs in a row, insert a 0x00)
         // But only if we're writing out into the real output buffer
         if (GetOption(OPT_PACKET_MODE) && GetTXBuffer() == BUFFER_NORMAL)
@@ -1036,9 +1036,9 @@ int32_t TXBufPush(uint8_t Data)
         // then start things off.
         if (TXBufCount && (*pUART0_LSR & THRE) && !CTS_TRIGGERED)
         {
-//DEBUG_H10_HIGH()
+///DEBUG_H10_HIGH()
             TXSendNextByte();
-//DEBUG_H10_LOW()
+///DEBUG_H10_LOW()
         }
         enable_interrupts(IntTemp);
     }
@@ -1063,7 +1063,7 @@ int32_t TXBufPush(uint8_t Data)
     else if (GetTXBuffer() == BUFFER_ALT)
     {
         // Send byte to alternate buffer
-DEBUG_H12_HIGH()
+///DEBUG_H12_HIGH()
         // Check for full buffer
         // If there is no room in the TX buffer, then wait
         // until there is.
@@ -1078,7 +1078,7 @@ DEBUG_H12_HIGH()
         TXAltBuf[TXAltBufIn] = Data;
         // And move ahead one byte
         IncrimentTXAltInPtr();
-DEBUG_H12_LOW()
+///DEBUG_H12_LOW()
     }
     return (1);
 }
@@ -1308,7 +1308,7 @@ void uart0_ISR()
 {
     uint8_t identification_register = *pUART0_IIR;
     uint32_t CTSCounter = 0;
-DEBUG_H10_HIGH()
+///DEBUG_H10_HIGH()
     while (identification_register != 0x01)
     {
         switch (identification_register)
@@ -1352,9 +1352,9 @@ DEBUG_H10_HIGH()
                     }
                     if (!CTS_TRIGGERED)
                     {
-DEBUG_H8_HIGH()
+///DEBUG_H8_HIGH()
                         TXSendNextByte();
-DEBUG_H8_LOW()
+///DEBUG_H8_LOW()
                     }
                 }
                 break;
@@ -1455,7 +1455,7 @@ DEBUG_H8_LOW()
 
         identification_register = *pUART0_IIR;
     }
-DEBUG_H10_LOW()
+///DEBUG_H10_LOW()
     return;
 }
 
@@ -1667,7 +1667,7 @@ int32_t PacketNewByteRX(uint8_t Byte)
     static char tmp[20];
 #endif
 
-DEBUG_H9_HIGH()
+///DEBUG_H9_HIGH()
 
     // Do a re-sync check. If we see four 0xFF bytes in a row,
     // at ANY point in the data stream, it means we just saw a sync
@@ -1771,7 +1771,7 @@ DEBUG_H9_HIGH()
     // Run a state machine based upon where we are in the packet
     switch (RXPacketState)
     {
-DEBUG_H10_HIGH()
+///DEBUG_H10_HIGH()
         case RX_STATE_SYNC_0:
             if (Byte == 0xFF)
             {
@@ -1906,7 +1906,7 @@ DEBUG_H10_HIGH()
             break;
             
         case RX_STATE_CRC_1:
-DEBUG_H11_HIGH()
+///DEBUG_H11_HIGH()
             CRC = (CRC << 8) + Byte;
             // Compute CRC here and compare with CRC in packet
 //            RealCRC = PacketComputeCRC(Command, Sender, Length, PacketTime, (uint8_t *)RXAltBuf, ISR_BUFFER);
@@ -1918,9 +1918,9 @@ DEBUG_H11_HIGH()
 //                // we know it's good) so that functions can get at the data.
 //                while(RXAltBufCount)
 //                {
-//DEBUG_H12_HIGH()
+///DEBUG_H12_HIGH()
 //                    RXAltBufPull(&c);
-//DEBUG_H12_LOW()
+///DEBUG_H12_LOW()
 //                    RXBufPush(c);
 //                }
                 // Since we've been pushing our RXed bytes into the RX buffer this whole time,
@@ -1973,10 +1973,10 @@ DEBUG_H11_HIGH()
             break;
     }
 
-DEBUG_H9_LOW()
-DEBUG_H10_LOW()
-DEBUG_H11_LOW()
-DEBUG_H12_LOW()
+///DEBUG_H9_LOW()
+///DEBUG_H10_LOW()
+///DEBUG_H11_LOW()
+///DEBUG_H12_LOW()
 
     return 0;
 }

@@ -1198,8 +1198,9 @@ void enable_blob_display() {
     blob_display_num = ix;
 }
 
+extern int qr_result;
 void enable_qr_code_detection() {
-  printf("##g7");
+  printf("##g7 %d", qr_result);
   qr_code_detect_flag = 1;
 }
 

@@ -87,10 +87,10 @@ __attribute__((saveall))
 void initcode(void)
 {
     DEBUG_INIT()
-    DEBUG_H15_HIGH()    // System Init
-    DEBUG_H14_LOW()	    // System Init
-    DEBUG_H13_HIGH()    // System Init
-    DEBUG_H12_LOW()	    // System Init
+///    DEBUG_H15_HIGH()    // System Init
+///    DEBUG_H14_LOW()	    // System Init
+///    DEBUG_H13_HIGH()    // System Init
+///    DEBUG_H12_LOW()	    // System Init
 
     init_program_clocks();
     init_program_memory_controller();

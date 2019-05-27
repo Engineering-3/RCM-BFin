@@ -36,6 +36,7 @@ unsigned int blobx1[MAX_BLOBS], blobx2[MAX_BLOBS], bloby1[MAX_BLOBS], bloby2[MAX
 unsigned int hist0[256], hist1[256], mean[3];
 
 static struct quirc *qr;
+int qr_result = 0;
 
 void init_colors() {
     unsigned int ii;
@@ -52,11 +53,21 @@ void init_colors() {
     qr = quirc_new();
     if (!qr) {
       printf("Failed to allocate QR struct");
+      qr_result = 1;
     }
-    
-    if (quirc_resize(qr, imgWidth, imgHeight) < 0)
+    else
     {
-      printf("Failed to resize QR struct");
+      if (quirc_resize(qr, 320, 240) < 0)
+  //    if (quirc_resize(qr, imgWidth, imgHeight) < 0)
+      {
+        printf("Failed to resize QR struct");
+        qr_result = 2;
+      }
+      else
+      {
+        printf("quirc_resize() worked!");
+        qr_result = 3;
+      }
     }
 }
 
@@ -637,18 +648,25 @@ void process_qr_detect(unsigned char *frame_buf)
   uint8_t *image;
   int w,h;
   int num_codes;
-//  int i;
+  int i;
   int ix;
   unsigned int *ip1;
   
   image = quirc_begin(qr, &w, &h);
-  
+  i = 0;
   // Fill out image here with greyscale pixels
   ip1 = (unsigned int *)frame_buf;
   for (ix=0; ix < ((imgWidth*imgHeight)/2); ix++)
   {
-    ip1[ix] = ip1[ix] & 0x00FF00FF;
+    *image = (uint8_t)(ip1[ix] >> 8);
+    image++;
+    *image = (uint8_t)(ip1[ix] >> 24);
+    image++;
+    // Set U and V to 128 and let Y pass through for both pixels
+    //ip1[ix] = (ip1[ix] & 0xFF00FF00) | 0x00800080;
   }
+
+printf("##Made it to X\r\n");
   
   quirc_end(qr);
 

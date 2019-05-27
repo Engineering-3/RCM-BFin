@@ -94,7 +94,7 @@ void PlatformPutc(unsigned char OutCh, union OutputStreamInfo *Stream)
         }
         if (PicoCStreamBufferLength < (PICOC_STREAM_BUFFER_SIZE - 5))
         {
-DEBUG_H13_HIGH()
+///DEBUG_H13_HIGH()
             PicoCStreamBuffer[PicoCStreamBufferIn] = OutCh;
             PicoCStreamBufferIn++;
             if (PicoCStreamBufferIn >= PICOC_STREAM_BUFFER_SIZE)
@@ -102,7 +102,7 @@ DEBUG_H13_HIGH()
                 PicoCStreamBufferIn = 0;
             }
             PicoCStreamBufferLength++;
-DEBUG_H13_LOW()
+///DEBUG_H13_LOW()
         }
         // If we're full, then just drop the byte 
     }
