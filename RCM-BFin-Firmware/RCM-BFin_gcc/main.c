@@ -1056,6 +1056,7 @@ void ProcessCommands(uint8_t CharIn)
                     // g4 = enable obstacle detection
                     // g5 = enable stereo processing (SVS only)
                     // g6 = enable blob display
+                    // g7 = enable QR code detection
                     // g_ = anything else turns them all off
             PacketBegin();
             switch (getch()) {

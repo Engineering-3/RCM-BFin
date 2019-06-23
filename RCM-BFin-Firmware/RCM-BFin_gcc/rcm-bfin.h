@@ -47,20 +47,20 @@
  * SPI Flash allocation
  * 
  * Flash is a 32Mbit (4MB) flash M25P32-VMF6P from 0x00000000 to 
- * 0x00400000 (SPI chip addresses -  not in processor's memory map)
+ * 0x00400000 (SPI chip addresses - not in processor's memory map)
  * Uses sectors that are 0xFFFF in size
  * 64 total sectors - first 4 are reserved for boot image (code)
  * Note that this chip can use a clock speed of 40MHz to 50Mhz 
  */
 #define BOOT_FLASH          0x00000000  // address in SPI flash of boot image
-#define BOOT_FLASH_SIZE     0x00040000  // 256KB - four sectors worth
-#define USER_FLASH          0x00040000  // address in SPI flash of user flash sector
-#define USER_FLASH_SIZE 	0x003C0000 	// 3840KB - entire rest of Flash chip
-#define USER_FLASH_SECTOR_BEGIN 4		// first sector for users to use for their stuff
-#define USER_FLASH_SECTOR_END 63		// Last sector users can use for their stuff
+#define BOOT_FLASH_SIZE     0x00080000  // 512KB - eight sectors worth
+#define USER_FLASH          0x00080000  // address in SPI flash of user flash sector
+#define USER_FLASH_SIZE     0x00380000  // 3584 - entire rest of Flash chip
+#define USER_FLASH_SECTOR_BEGIN      8  // first sector for users to use for their stuff
+#define USER_FLASH_SECTOR_END       63  // Last sector users can use for their stuff
 
-#define ONE_SECTOR			0x00010000	// One sector's size in bytes
-#define TWO_SECTORS			(ONE_SECTOR * 2)
+#define ONE_SECTOR          0x00010000  // One sector's size in bytes
+#define TWO_SECTORS         (ONE_SECTOR * 2)
 /* 
  * SDRAM allocation
  * 
@@ -76,27 +76,27 @@
 // this is important for setting up the CPLBs in cache.c and the linker
 // script needs to know this too. SDRAM_DATA is used by the linker for C variables and such.
 // This next 15MB is data cached
-#define SDRAM_DATA			0x00100000	// Holds data memory for code running in SDRAM_CODE section (cached)
-#define SDRAM_DATA_SIZE		0x00100000	// 1MB in size
+#define SDRAM_DATA          0x00100000  // Holds data memory for code running in SDRAM_CODE section (cached)
+#define SDRAM_DATA_SIZE     0x00100000  // 1MB in size
 
 // From here on to the end of SDRAM is all managed by the RCM-Bfin firmware - NOT the compiler
 #define HEAPSTART           0x00200000  // For malloc and such - heap grows UP from here
 #define HEAPSIZE            0x00100000  // 1MB for now - leave 1MB for JPEG buffer
-#define SDRAM_CLEAR_START	0x00300000	// Address to start SDRAM clear operation
-#define FLASH_BUFFER        0x00300000	// address in SDRAM for buffering flash and xmodem  (primary PicoC program storage)
+#define SDRAM_CLEAR_START   0x00300000  // Address to start SDRAM clear operation
+#define FLASH_BUFFER        0x00300000  // address in SDRAM for buffering flash and xmodem  (primary PicoC program storage)
 #define FLASH_BUFFER_SIZE   0x00080000  // 512KB in size
 #define FLASH_BUFFER2       0x00380000  // address in SDRAM for buffering flash and xmodem  (second PicoC program storage)
 #define FLASH_BUFFER2_SIZE  0x00080000  // 512KB in size
 #define C_HEAPSTART         0x00400000  // Buffer for picoC
 #define C_HEAPSIZE          0x00080000  // 512KB in size
 #define SPI_BUFFER1         0x00480000  // Buffer for transfer of data via SPI bus
-#define SPI_BUFFER1_SIZE	0x00040000	// 256KB
+#define SPI_BUFFER1_SIZE    0x00040000  // 256KB
 #define SPI_BUFFER2         0x004C0000  // Buffer for transfer of data via SPI bus
-#define SPI_BUFFER2_SIZE	0x00040000	// 256KB
+#define SPI_BUFFER2_SIZE    0x00040000  // 256KB
 #define HTTP_BUFFER         0x00500000  // Buffer also used for receiving and sending HTTP messages
-#define HTTP_BUFFER_SIZE    0x00040000	// 256KB
+#define HTTP_BUFFER_SIZE    0x00040000  // 256KB
 #define HTTP_BUFFER2        0x00540000  // additional 256kB buffer for HTTP content
-#define HTTP_BUFFER2_SIZE   0x00040000	// 256KB
+#define HTTP_BUFFER2_SIZE   0x00040000  // 256KB
 #define EMPTY_RAM           0x00580000  // Not used yet
 #define EMPTY_RAM_SIZE      0x00280000  // 2.5MB for now
 #define PICOC1_BUF          0x00800000  // C_HEAPSTART, PicoC Data section,  goes here when 2nd PicoC program runs
@@ -114,11 +114,11 @@
 
 #define JPEG_BUF            0x00F00000  // address in SDRAM for JPEG compressed image
 #define DISP_BUF            0x00F00000  // buffer used to send disparity data
-#define SDRAM_END			0x02000000	// End of SDRAM chip
+#define SDRAM_END           0x02000000  // End of SDRAM chip
 
-/* Stack info (this is on-chip scratchpad RAM in the BF) 4KB*/
-#define STACK_TOP    0xFFB01000
-#define STACK_BOTTOM 0xFFB00000
+/* Stack is now 512KB in normal SDRAM (coordinate with rcm-bfin_gcc_v2.x)*/
+#define STACK_TOP           0x00280000
+#define STACK_BOTTOM        0x00200000
 
 /* PicoC shared array variable constants */
 #define PICOC_SHARED_ARRAY_SIZE             256

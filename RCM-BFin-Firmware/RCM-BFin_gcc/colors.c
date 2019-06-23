@@ -24,6 +24,7 @@
  *
  */
  
+#include "system.h"
 #include "colors.h"
 #include <stdio.h>
 #include "quirc\quirc.h"
@@ -643,7 +644,9 @@ void addbox(unsigned char *outbuf, unsigned int x1, unsigned int x2, unsigned in
     }
 }
 
-void process_qr_detect(unsigned char *frame_buf) 
+// Return true if there's a QR code in frame_buf, and fill in output string with the decoded value
+// Return false if there's not a QR code in frame_buf
+bool process_qr_detect(unsigned char *frame_buf, char * output)
 {
   uint8_t *image;
   int w,h;
@@ -651,6 +654,7 @@ void process_qr_detect(unsigned char *frame_buf)
   int i;
   int ix;
   unsigned int *ip1;
+  bool RetVal = false;
   
   image = quirc_begin(qr, &w, &h);
   i = 0;
@@ -666,8 +670,6 @@ void process_qr_detect(unsigned char *frame_buf)
     //ip1[ix] = (ip1[ix] & 0xFF00FF00) | 0x00800080;
   }
 
-printf("##Made it to X\r\n");
-  
   quirc_end(qr);
 
   /* We've previously fed an image to the decoder via
@@ -675,30 +677,58 @@ printf("##Made it to X\r\n");
    */
 
   num_codes = quirc_count(qr);
-  PacketBegin();
-  printf("Found %d QR codes\n", num_codes);
-  PacketEnd(true);
-#if 0
   
-  for (i = 0; i < num_codes; i++) 
-  {
+  if (num_codes) {
+    //PacketBegin();
+    //printf("Found %d QR codes\n", num_codes);
+    //PacketEnd(true);
+
+    PacketBegin();
+    // Assume only one QR code
     struct quirc_code code;
     struct quirc_data data;
     quirc_decode_error_t err;
 
-    quirc_extract(qr, i, &code);
+    quirc_extract(qr, 0, &code);
 
     /* Decoding stage */
     err = quirc_decode(&code, &data);
     if (err)
     {
-      printf("DECODE FAILED: %s\n", quirc_strerror(err));
+      printf("QR code found, but decode failed due to %s\n", quirc_strerror(err));
     }
     else
     {
-      printf("Data: %s\n", data.payload);
+      int maxX = 0, minX = 1000, maxY = 0, minY = 1000, i = 0;
+      printf("QR code found, decoded = '%s'\n", data.payload);
+      // Copy over the string that's contained in the decoded QR code
+      strncpy((char *)output, (char *)data.payload, 40);
+      // And set up the bounding box values to display on the image frame
+      // Find the actual bounding box based on the four corners of the QR code
+      for (i=0; i < 4; i++)
+      {
+        //printf("corner %d x=%d y=%d\n", i, code.corners[i].x, code.corners[i].y);
+        if (code.corners[i].x > maxX) {
+          maxX = code.corners[i].x;
+        }
+        if (code.corners[i].y > maxY) {
+          maxY = code.corners[i].y;
+        }
+        if (code.corners[i].x < minX) {
+          minX = code.corners[i].x;
+        }
+        if (code.corners[i].y < minY) {
+          minY = code.corners[i].y;
+        }
+      }
+      blobx1[0] = minX;
+      blobx2[0] = maxX;
+      bloby1[0] = minY;
+      bloby2[0] = maxY;
+      //printf("x1=%d y1=%d x2=%d y2=%d\n", blobx1[0], bloby1[0], blobx2[0], bloby2[0]);
+      RetVal = true;
     }
+    PacketEnd(true);
   }
-  PacketEnd(true);
-#endif
+  return(RetVal);
 }

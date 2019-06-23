@@ -123,6 +123,7 @@ unsigned int blob_display_num;
 unsigned int edge_thresh;
 unsigned int invert_flag;
 unsigned int qr_code_detect_flag;
+char QRValue[41];   /* Holds the decoded string of the QR code */
 unsigned char *output_start, *output_end; /* Framebuffer addresses */
 unsigned int image_size; /* JPEG image size */
 char imgHead[11]; /* image frame header for I command */
@@ -1198,10 +1199,10 @@ void enable_blob_display() {
     blob_display_num = ix;
 }
 
-extern int qr_result;
 void enable_qr_code_detection() {
-  printf("##g7 %d", qr_result);
+  printf("##g7");
   qr_code_detect_flag = 1;
+  overlay_flag = 1;
 }
 
 #ifdef STEREO
@@ -1275,10 +1276,19 @@ void grab_frame () {
     ix = vblob((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, blob_display_num);
     if (ix > 7)  // only show 8 largest blobs
         ix = 7;
-    for (ii=0; ii<ix; ii++) 
-        addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
+    for (ii=0; ii<ix; ii++) {
+      addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
+    }
   } else if (qr_code_detect_flag) {
-    process_qr_detect((unsigned char *)FRAME_BUF);
+    if (process_qr_detect((unsigned char *)FRAME_BUF, QRValue)) {
+      // We found a valid QR code!
+      addbox((unsigned char *)FRAME_BUF, blobx1[0], blobx2[0], bloby1[0], bloby2[0]);
+    }
+    else
+    {
+      // No QR code found
+      QRValue[0] = 0x00;    // Clear out the overlay text string
+    }
   }
 }
 
@@ -1362,14 +1372,17 @@ void compute_frame_diff(unsigned char *fcur, unsigned char *fref, int w1, int h1
 /* JPEG compress and send frame captured by grab_frame()
    Serial protocol char: I */
 void send_frame () {
+#if 0
     unsigned char i2c_data[2];
     unsigned int ix;
-    
+#endif
+
     if (overlay_flag) {
         //frame[9] = (framecount % 10) + 0x30;
         //frame[8] = ((framecount/10)% 10) + 0x30;
         //frame[7] = ((framecount/100)% 10) + 0x30;
 
+#if 0 // We don't need any of this 'old' stuff to be on the display rihgt now
         i2c_data[0] = 0x41;  // read compass twice to clear last reading
         i2cread(0x22, (unsigned char *)i2c_data, 2, SCCB_ON);
         i2c_data[0] = 0x41;
@@ -1397,7 +1410,8 @@ void send_frame () {
         frame[28] = (ix % 10) + 0x30;
         frame[27] = ((ix/10)% 10) + 0x30;
         frame[26] = ((ix/100)% 10) + 0x30;
-        
+#endif
+        strncpy((char *)frame, (char *)QRValue, 40);
         set_caption(frame, imgWidth);
     }
     output_start = (unsigned char *)JPEG_BUF;
