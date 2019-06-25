@@ -1239,7 +1239,7 @@ void disable_frame_diff() {  // disables frame differencing, edge detect and col
     printf("#g_");
 }
 
-void grab_frame () {
+void grab_frame() {
   unsigned int vect[16];
   int slope, intercept;
   unsigned int ix, ii;
@@ -1283,6 +1283,9 @@ void grab_frame () {
     if (process_qr_detect((unsigned char *)FRAME_BUF, QRValue)) {
       // We found a valid QR code!
       addbox((unsigned char *)FRAME_BUF, blobx1[0], blobx2[0], bloby1[0], bloby2[0]);
+      PacketBegin();
+      printf("##g:7 '%s'", QRValue);
+      PacketEnd(true);
     }
     else
     {
@@ -1290,6 +1293,16 @@ void grab_frame () {
       QRValue[0] = 0x00;    // Clear out the overlay text string
     }
   }
+  ///// JUST FOR TESTING ////
+  // I don't know why these next three lines are necessary. But right before going to Australia 
+  // (6/24/2019) while adding the QR code functions, we had to move the BFin stack from the fast
+  // scratch pad RAM (4K) to normal SDRAM (512K) because we needed more of it. This somehow
+  // affected the video buffer coming from the camera, where it would get out of sync and
+  // the images would get shifted to the right and up. Adding these three lines appears to 
+  // solve that problem. It is unknown if this actually affects performance, but I'm guessing not.
+  camera_stop();
+  camera_init((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2, imgWidth, imgHeight);
+  camera_start();
 }
 
 
@@ -1371,7 +1384,7 @@ void compute_frame_diff(unsigned char *fcur, unsigned char *fref, int w1, int h1
 
 /* JPEG compress and send frame captured by grab_frame()
    Serial protocol char: I */
-void send_frame () {
+void send_frame() {
 #if 0
     unsigned char i2c_data[2];
     unsigned int ix;

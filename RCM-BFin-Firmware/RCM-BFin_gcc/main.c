@@ -1081,10 +1081,10 @@ void ProcessCommands(uint8_t CharIn)
                     break;
                 #endif /* STEREO */
                 case '6':
-                    enable_blob_display(); 
+                    enable_blob_display();
                     break;
                 case '7':
-                    enable_qr_code_detection(); 
+                    enable_qr_code_detection();
                     break;
                 default:  // no match - turn them all off
                     disable_frame_diff();

@@ -44,13 +44,13 @@
 #define DMA_ENABLE       0x0001
 
 typedef struct {
-    void *pNext;
-    unsigned char *pBuf;
-    short dConfig;
+    volatile void *pNext;
+    volatile unsigned char *pBuf;
+    volatile short dConfig;
 } dma_desc_list;
 
-dma_desc_list dlist1;
-dma_desc_list dlist2;
+volatile dma_desc_list dlist1;
+volatile dma_desc_list dlist2;
 
 int camera_init(unsigned char *buf1, unsigned char *buf2, short pixels, short lines)
 {
@@ -70,11 +70,11 @@ int camera_init(unsigned char *buf1, unsigned char *buf2, short pixels, short li
 
     dlist1.dConfig = FLOW_LARGE | NDSIZE_5 | DMA_WDSIZE_16 | DMA_2D | DMA_WNR | DMA_ENABLE ;
     dlist1.pBuf = buf1;
-    dlist1.pNext = &dlist2;
+    dlist1.pNext = (volatile void*)&dlist2;
 
     dlist2.dConfig = FLOW_LARGE | NDSIZE_5 | DMA_WDSIZE_16 | DMA_2D | DMA_WNR | DMA_ENABLE ;
     dlist2.pBuf = buf2;
-    dlist2.pNext = &dlist1;
+    dlist2.pNext = (volatile void*)&dlist1;
 
     //*pDMA0_CONFIG = DMA_FLOW_MODE | DMA_WDSIZE_16 | DMA_2D | DMA_WNR;
     //*pDMA0_START_ADDR = buf1;
@@ -84,8 +84,8 @@ int camera_init(unsigned char *buf1, unsigned char *buf2, short pixels, short li
     *pDMA0_Y_MODIFY = 2;  
     SSYNC;
 
-    *pDMA0_CURR_DESC_PTR = &dlist1;
-    *pDMA0_NEXT_DESC_PTR = &dlist2;
+    *pDMA0_CURR_DESC_PTR = (void*)&dlist1;
+    *pDMA0_NEXT_DESC_PTR = (void*)&dlist2;
     SSYNC;
     *pDMA0_CONFIG = FLOW_LARGE | NDSIZE_5 | DMA_WDSIZE_16 | DMA_2D | DMA_WNR;
 
