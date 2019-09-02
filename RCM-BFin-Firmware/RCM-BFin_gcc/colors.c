@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "quirc\quirc.h"
 #include "intuart.h"
+#include "rcm-bfin.h"
 
 extern unsigned int imgWidth, imgHeight;
 
@@ -39,37 +40,40 @@ unsigned int hist0[256], hist1[256], mean[3];
 static struct quirc *qr;
 int qr_result = 0;
 
-void init_colors() {
-    unsigned int ii;
-    
-    for(ii = 0; ii<MAX_COLORS; ii++) {
-        ymax[ii] = 0;
-        ymin[ii] = 0;
-        umax[ii] = 0;
-        umin[ii] = 0;
-        vmax[ii] = 0;
-        vmin[ii] = 0;
-    }
-    
-    qr = quirc_new();
-    if (!qr) {
-      printf("Failed to allocate QR struct");
-      qr_result = 1;
+void init_colors(void)
+{
+  unsigned int ii;
+  
+  for(ii = 0; ii < MAX_COLORS; ii++)
+  {
+    ymax[ii] = 0;
+    ymin[ii] = 0;
+    umax[ii] = 0;
+    umin[ii] = 0;
+    vmax[ii] = 0;
+    vmin[ii] = 0;
+  }
+  
+  qr = quirc_new();
+  if (!qr)
+  {
+    printf("Failed to allocate QR struct");
+    qr_result = 1;
+  }
+  else
+  {
+    if (quirc_resize(qr, 320, 240) < 0)
+//    if (quirc_resize(qr, imgWidth, imgHeight) < 0)
+    {
+      printf("Failed to resize QR struct");
+      qr_result = 2;
     }
     else
     {
-      if (quirc_resize(qr, 320, 240) < 0)
-  //    if (quirc_resize(qr, imgWidth, imgHeight) < 0)
-      {
-        printf("Failed to resize QR struct");
-        qr_result = 2;
-      }
-      else
-      {
-        printf("quirc_resize() worked!");
-        qr_result = 3;
-      }
+      printf("quirc_resize() worked!");
+      qr_result = 3;
     }
+  }
 }
 
 unsigned int vpix(unsigned char *frame_buf, unsigned int xx, unsigned int yy) {
@@ -83,175 +87,231 @@ unsigned int vpix(unsigned char *frame_buf, unsigned int xx, unsigned int yy) {
 
 
 // return number of blobs found that match the search color
-unsigned int vblob(unsigned char *frame_buf, unsigned char *blob_buf, unsigned int ii) {
-    unsigned int jj, ix, xx, yy, y, u, v, count, bottom, top, tmp;
-    unsigned int maxx, maxy;
-    unsigned char *bbp, ctmp;
-    int itmp, jtmp;
-    int y1, y2, u1, u2, v1, v2;
-    
-    y1 = ymin[ii];
-    y2 = ymax[ii];
-    u1 = umin[ii];
-    u2 = umax[ii];
-    v1 = vmin[ii];
-    v2 = vmax[ii];
-    
-    for (ix=0; ix<MAX_BLOBS; ix++) {
-        blobcnt[ix] = 0;
-        blobx1[ix] = imgWidth;
-        blobx2[ix] = 0;
-        bloby1[ix] = imgHeight;
-        bloby2[ix] = 0;
-        blobix[ix] = 0;
-    }
+unsigned int vblob(unsigned char *frame_buf, unsigned char *blob_buf, unsigned int ii)
+{
+  unsigned int jj, ix, xx, yy, y, u, v, count, bottom, top, tmp;
+  unsigned int maxx, maxy;
+  unsigned char *bbp, ctmp;
+  int itmp, jtmp;
+  int y1, y2, u1, u2, v1, v2;
+  
+  y1 = ymin[ii];
+  y2 = ymax[ii];
+  u1 = umin[ii];
+  u2 = umax[ii];
+  v1 = vmin[ii];
+  v2 = vmax[ii];
+  
+  // Initialize each blob with default (no blob) values
+  for (ix = 0; ix < MAX_BLOBS; ix++)
+  {
+    blobcnt[ix] = 0;
+    blobx1[ix] = imgWidth;
+    blobx2[ix] = 0;
+    bloby1[ix] = imgHeight;
+    bloby2[ix] = 0;
+    blobix[ix] = 0;
+  }
 
-    bbp = blob_buf;
-    for (ix=0; ix<imgWidth*imgHeight; ix++)
-        *bbp++ = 0;
+  // Zero out the blob buffer (image buffer where blobs are recorded)
+  bbp = blob_buf;
+  for (ix = 0; ix < imgWidth*imgHeight*2; ix++)
+  {
+    *bbp++ = 0;
+  }
 
-    /* tag all pixels in blob_buf[]    
-         matching = 1  
-         no color match = 0
-       thus all matching pixels will belong to blob #1 */
-    bbp = blob_buf;
-    for (ix=0; ix<(imgWidth*imgHeight*2); ix+=4) {
-        y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
-        u = (unsigned int)frame_buf[ix];
-        v = (unsigned int)frame_buf[ix+2];
+  /* tag all pixels in blob_buf[]
+       matching = 0xFF
+       no color match = 0
+     thus all matching pixels will belong to blob #1 */
+#if 0
+  bbp = blob_buf;
+  for (ix = 0; ix < (imgWidth*imgHeight*2); ix += 4)
+  {
+    y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
+    u = (unsigned int)frame_buf[ix];
+    v = (unsigned int)frame_buf[ix+2];
 
-        if ((y >= y1) && (y <= y2) && (u >= u1) && (u <= u2) && (v >= v1) && (v <= v2))
-            *bbp = 1;
-        bbp += 2;
+    if ((y >= y1) && (y <= y2) && (u >= u1) && (u <= u2) && (v >= v1) && (v <= v2))
+    {
+      *bbp = 0x88;
+      *(bbp+1) = 0x88;
+      *(bbp+2) = 0x88;
+      *(bbp+3) = 0x88;
     }
+    bbp += 2;
+  }
+#endif
+  bbp = blob_buf;
+  for (ix = 0; ix < (imgWidth*imgHeight*2); ix += 4)
+  {
+    y = (unsigned int)frame_buf[ix+1];
+    u = (unsigned int)frame_buf[ix];
+    v = (unsigned int)frame_buf[ix+2];
 
-    ix = imgWidth * (imgHeight-1);
-    for (xx=0; xx<imgWidth; xx++) {
-        blob_buf[xx] = 0;
-        blob_buf[xx+ix] = 0;
+    if ((y >= y1) && (y <= y2) && (u >= u1) && (u <= u2) && (v >= v1) && (v <= v2))
+    {
+      *bbp = 0x80;
+      *(bbp+1) = 0xFF;
     }
-    ix = imgWidth-1;
-    for (yy=0; yy<imgHeight; yy++) {
-        blob_buf[yy*imgWidth] = 0;
-        blob_buf[yy*imgWidth + ix] = 0;
+    bbp += 2;
+
+    y = (unsigned int)frame_buf[ix+3];
+
+    if ((y >= y1) && (y <= y2) && (u >= u1) && (u <= u2) && (v >= v1) && (v <= v2))
+    {
+      *bbp = 0x80;
+      *(bbp+1) = 0xFF;
     }
-    
-    /* clear out orphan pixels */
-    itmp = 0;
-    jtmp = 0;
-    for (ix=0; ix<(imgWidth*imgHeight); ix+=2) {
-        if (blob_buf[ix]) {
-            itmp++;
-            ctmp = 
-                blob_buf[(ix-imgWidth)-2] +
-                blob_buf[ix-imgWidth] +
-                blob_buf[(ix-imgWidth)+2] +
-                blob_buf[ix-2] +
-                blob_buf[ix+2] +
-                blob_buf[(ix+imgWidth)-2] +
-                blob_buf[ix+imgWidth] +
-                blob_buf[(ix+imgWidth)+2];
-            if (ctmp < 4) {
-                jtmp++;
-                blob_buf[ix] = 0;
-            }
+    bbp += 2;
+  }
+
+  // Set blob pixels at outer edges of image to zero (no color match - no blobs)
+  ix = (imgWidth*2) * (imgHeight-1);
+  for (xx = 0; xx < imgWidth*2; xx++)
+  {
+    blob_buf[xx] = 0;
+    blob_buf[xx+ix] = 0;
+  }
+  ix = (imgWidth*2)-1;
+  for (yy = 0; yy < imgHeight; yy++)
+  {
+    blob_buf[yy*imgWidth*2] = 0;
+    blob_buf[(yy*imgWidth*2) + ix] = 0;
+  }
+
+  /* Clear out orphan pixels. Walk through blob image. For each pixel,
+   * count the number of pixels around it that are also part of a blob.
+   * If less than four, then set this pixel to zero (i.e. no color match)
+   */
+  itmp = 0;
+  jtmp = 0;
+  for (ix = 0; ix < (imgWidth*imgHeight*2); ix += 4)
+  {
+    if (blob_buf[ix])
+    {
+      itmp++;
+      ctmp = 
+        blob_buf[(ix-imgWidth)-2] +
+        blob_buf[ix-imgWidth] +
+        blob_buf[(ix-imgWidth)+2] +
+        blob_buf[ix-2] +
+        blob_buf[ix+2] +
+        blob_buf[(ix+imgWidth)-2] +
+        blob_buf[ix+imgWidth] +
+        blob_buf[(ix+imgWidth)+2];
+      if (ctmp < 4)
+      {
+        jtmp++;
+        blob_buf[ix] = 0;
+      }
+    }
+  }
+  //printf("cleared %d out of %d matching pixels\r\n", jtmp, itmp);
+
+  /// For testing - copy over blob frame to display frame
+  copy_image((unsigned char *)blob_buf, (unsigned char *)frame_buf, imgWidth, imgHeight);
+
+  maxx = imgWidth;
+  maxy = imgHeight;
+
+  for (jj = 0; jj < MAX_BLOBS; jj++)
+  {
+    blobcnt[jj] = 0;      // Zero means this blob is not valid
+    blobx1[jj] = maxx;    // Make each blob take up the entire image size by default
+    blobx2[jj] = 0;
+    bloby1[jj] = maxy;
+    bloby2[jj] = 0;
+  }
+  
+  jj = 0;    // jj indicates the current blob being processed
+  for (xx = 0; xx < (maxx*2); xx += 2)    // xx is the first byte of the vertical column of pixels we are looking at
+  {
+    count = 0;
+    bottom = maxy;
+    top = 0;
+    for (yy = 0; yy < maxy; yy++)     // yy is the horizontal row of pixels we are looking at
+    {
+      ix = xx + yy*imgWidth*2;
+      if (blob_buf[ix])
+      {
+        count++;
+        if (bottom > yy)
+        {
+          bottom = yy;
         }
-    }
-    //printf("cleared %d out of %d matching pixels\r\n", jtmp, itmp);
-
-    /* clear out orphan pixels */
-    itmp = 0;
-    jtmp = 0;
-    for (ix=0; ix<(imgWidth*imgHeight); ix+=2) {
-        if (blob_buf[ix]) {
-            itmp++;
-            ctmp = 
-                blob_buf[(ix-imgWidth)-2] +
-                blob_buf[ix-imgWidth] +
-                blob_buf[(ix-imgWidth)+2] +
-                blob_buf[ix-2] +
-                blob_buf[ix+2] +
-                blob_buf[(ix+imgWidth)-2] +
-                blob_buf[ix+imgWidth] +
-                blob_buf[(ix+imgWidth)+2];
-            if (ctmp < 4) {
-                jtmp++;
-                blob_buf[ix] = 0;
-            }
+        if (top < yy)
+        {
+          top = yy;
         }
+      }
     }
-    //printf("cleared %d out of %d matching pixels\r\n", jtmp, itmp);
-
-    maxx = imgWidth;
-    maxy = imgHeight;
-
-    for (jj=0; jj<MAX_BLOBS; jj++) {
-        blobcnt[jj] = 0;
-        blobx1[jj] = maxx;
-        blobx2[jj] = 0;
-        bloby1[jj] = maxy;
-        bloby2[jj] = 0;
+    if (count)
+    {
+      if (bloby1[jj] > bottom)
+      {
+        bloby1[jj] = bottom;
+      }
+      if (bloby2[jj] < top)
+      {
+        bloby2[jj] = top;
+      }
+      if (blobx1[jj] > (xx/2))
+      {
+        blobx1[jj] = (xx/2);
+      }
+      if (blobx2[jj] < (xx/2))
+      {
+        blobx2[jj] = (xx/2);
+      }
+      blobcnt[jj] += count;
     }
-        
-    jj = 0;    // jj indicates the current blob being processed
-    for (xx=0; xx<maxx; xx+=2) {
-        count = 0;
-        bottom = maxy;
-        top = 0;
-        for (yy=0; yy<maxy; yy++) {
-            ix = xx + yy*imgWidth;
-            if (blob_buf[ix]) {
-                count++;
-                if (bottom > yy)
-                    bottom = yy;
-                if (top < yy)
-                    top = yy;
-            }
-        }
-        if (count) {
-            if (bloby1[jj] > bottom)
-                bloby1[jj] = bottom;
-            if (bloby2[jj] < top)
-                bloby2[jj] = top;
-            if (blobx1[jj] > xx)
-                blobx1[jj] = xx;
-            if (blobx2[jj] < xx)
-                blobx2[jj] = xx;
-            blobcnt[jj] += count;
-        } else {
-            if (blobcnt[jj])    // move to next blob if a gap is found
-                jj++;
-            if (jj > (MAX_BLOBS-2))
-                goto blobbreak;
-        }
+    else
+    {
+      if (blobcnt[jj])    // move to next blob if a gap is found
+      {
+        jj++;
+      }
+      if (jj > (MAX_BLOBS-2))   // Break out of the loop if we've found too many blobs
+      {
+        goto blobbreak;
+      }
     }
+  }
 blobbreak:     // now sort blobs by size, largest to smallest pixel count
-    for (xx=0; xx<=jj; xx++) {
-        if (blobcnt[xx] == 0)    // no more blobs, so exit
-            return xx;
-        for (yy=xx; yy<=jj; yy++) {
-            if (blobcnt[yy] == 0)
-                break;
-            if (blobcnt[xx] < blobcnt[yy]) {
-                tmp = blobcnt[xx];
-                blobcnt[xx] = blobcnt[yy];
-                blobcnt[yy] = tmp;
-                tmp = blobx1[xx];
-                blobx1[xx] = blobx1[yy];
-                blobx1[yy] = tmp;
-                tmp = blobx2[xx];
-                blobx2[xx] = blobx2[yy];
-                blobx2[yy] = tmp;
-                tmp = bloby1[xx];
-                bloby1[xx] = bloby1[yy];
-                bloby1[yy] = tmp;
-                tmp = bloby2[xx];
-                bloby2[xx] = bloby2[yy];
-                bloby2[yy] = tmp;
-            }
-        }
+  for (xx = 0; xx <= jj; xx++)
+  {
+    if (blobcnt[xx] == 0)    // no more blobs, so exit
+    {
+      return xx;
     }
-    return xx;
+    for (yy = xx; yy <= jj; yy++)
+    {
+      if (blobcnt[yy] == 0)
+      {
+        break;
+      }
+      if (blobcnt[xx] < blobcnt[yy])
+      {
+        tmp = blobcnt[xx];
+        blobcnt[xx] = blobcnt[yy];
+        blobcnt[yy] = tmp;
+        tmp = blobx1[xx];
+        blobx1[xx] = blobx1[yy];
+        blobx1[yy] = tmp;
+        tmp = blobx2[xx];
+        blobx2[xx] = blobx2[yy];
+        blobx2[yy] = tmp;
+        tmp = bloby1[xx];
+        bloby1[xx] = bloby1[yy];
+        bloby1[yy] = tmp;
+        tmp = bloby2[xx];
+        bloby2[xx] = bloby2[yy];
+        bloby2[yy] = tmp;
+      }
+    }
+  }
+  return xx;
 }
 
 // histogram function - 
@@ -303,69 +363,92 @@ void vmean(unsigned char *frame_buf) {
     mean[2] = ((mv*2) / imgWidth) / imgHeight;
 }
 
-void color_segment(unsigned char *frame_buf) {
-    unsigned int ix, xx, yy, y, u, v, clr;
-    unsigned int ymid[MAX_COLORS], umid[MAX_COLORS], vmid[MAX_COLORS];
-    
-    for (ix=0; ix<MAX_COLORS; ix++) {
-        ymid[ix] = (ymax[ix] + ymin[ix]) >> 1;
-        umid[ix] = (umax[ix] + umin[ix]) >> 1;
-        vmid[ix] = (vmax[ix] + vmin[ix]) >> 1;
-    }
-    for (xx=0; xx<imgWidth; xx+=2) {   
-        for (yy=0; yy<imgHeight; yy++) {
-            ix = index(xx,yy);
-            y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
-            //y = (unsigned int)frame_buf[ix+1];
-            u = (unsigned int)frame_buf[ix];
-            v = (unsigned int)frame_buf[ix+2];
-            for (clr=0; clr<MAX_COLORS; clr++) {
-                if (ymax[clr] == 0)    // skip this color if not defined
-                    continue;
-                if ((y >= ymin[clr])
-                  && (y <= ymax[clr]) 
-                  && (u >= umin[clr]) 
-                  && (u <= umax[clr]) 
-                  && (v >= vmin[clr]) 
-                  && (v <= vmax[clr])) {
-                    frame_buf[ix+1] = frame_buf[ix+3] = ymid[clr];
-                    frame_buf[ix] = umid[clr];
-                    frame_buf[ix+2] = vmid[clr];
-                    break;
-                }
-            }
-            if (clr == MAX_COLORS) {  // if no match, black out the pixel
-                frame_buf[ix+1] = frame_buf[ix+3] = 0;
-                frame_buf[ix] = frame_buf[ix+2] = 128;
-            }
+void color_segment(unsigned char *frame_buf)
+{
+  unsigned int ix, xx, yy, y, u, v, clr;
+  unsigned int ymid[MAX_COLORS], umid[MAX_COLORS], vmid[MAX_COLORS];
+
+  for (ix = 0; ix < MAX_COLORS; ix++)
+  {
+    ymid[ix] = (ymax[ix] + ymin[ix]) >> 1;
+    umid[ix] = (umax[ix] + umin[ix]) >> 1;
+    vmid[ix] = (vmax[ix] + vmin[ix]) >> 1;
+  }
+  for (xx = 0; xx < imgWidth; xx += 2)
+  {
+    for (yy = 0; yy < imgHeight; yy++)
+    {
+      ix = index(xx,yy);
+      y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
+      //y = (unsigned int)frame_buf[ix+1];
+      u = (unsigned int)frame_buf[ix];
+      v = (unsigned int)frame_buf[ix+2];
+      for (clr = 0; clr < MAX_COLORS; clr++)
+      {
+        if (ymax[clr] == 0)    // skip this color if not defined
+        {
+          continue;
         }
+        if (
+             (y >= ymin[clr])
+          && (y <= ymax[clr])
+          && (u >= umin[clr])
+          && (u <= umax[clr])
+          && (v >= vmin[clr])
+          && (v <= vmax[clr])
+        )
+        {
+          frame_buf[ix+1] = frame_buf[ix+3] = ymid[clr];
+          frame_buf[ix] = umid[clr];
+          frame_buf[ix+2] = vmid[clr];
+          break;
+        }
+      }
+      if (clr == MAX_COLORS)  // if no match, black out the pixel
+      {
+        frame_buf[ix+1] = frame_buf[ix+3] = 0;
+        frame_buf[ix] = frame_buf[ix+2] = 128;
+      }
     }
+  }
 }
 
 /* count number of pixels matching 'clr' bin in range [x1,y1] to [x2,y2] */
-unsigned int vfind(unsigned char *frame_buf, unsigned int clr, 
-                   unsigned int x1, unsigned int x2, unsigned int y1, unsigned int y2) {
-    unsigned int ix, xx, yy, y, u, v, count;
-    
-    count = 0;
-    for (xx=x1; xx<x2; xx+=2) {
-        for (yy=y1; yy<y2; yy++) {
-            ix = index(xx,yy);
-            y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
-            //y = (unsigned int)frame_buf[ix+1];
-            u = (unsigned int)frame_buf[ix];
-            v = (unsigned int)frame_buf[ix+2];
-            if ((y >= ymin[clr])
-              && (y <= ymax[clr]) 
-              && (u >= umin[clr]) 
-              && (u <= umax[clr]) 
-              && (v >= vmin[clr]) 
-              && (v <= vmax[clr])) {
-                count++;
-            }
-        }
+unsigned int vfind (
+  unsigned char *frame_buf,
+  unsigned int clr,
+  unsigned int x1,
+  unsigned int x2,
+  unsigned int y1,
+  unsigned int y2
+)
+{
+  unsigned int ix, xx, yy, y, u, v, count;
+  
+  count = 0;
+  for (xx = x1; xx < x2; xx += 2)
+  {
+    for (yy = y1; yy < y2; yy++)
+    {
+      ix = index(xx,yy);
+      y = (((unsigned int)frame_buf[ix+1] + (unsigned int)frame_buf[ix+3])) >> 1;
+      //y = (unsigned int)frame_buf[ix+1];
+      u = (unsigned int)frame_buf[ix];
+      v = (unsigned int)frame_buf[ix+2];
+      if (
+           (y >= ymin[clr])
+        && (y <= ymax[clr])
+        && (u >= umin[clr])
+        && (u <= umax[clr])
+        && (v >= vmin[clr])
+        && (v <= vmax[clr])
+      )
+      {
+        count++;
+      }
     }
-    return count;
+  }
+  return count;
 }
 
 void edge_detect(unsigned char *inbuf, unsigned char *outbuf, int thresh) {
@@ -620,28 +703,28 @@ void addline(unsigned char *outbuf, int slope, int intercept)
 /* display a box as red pixels (YUV = 72 84 255) or yellow pixels (YUV = 194 18 145) */
 void addbox(unsigned char *outbuf, unsigned int x1, unsigned int x2, unsigned int y1, unsigned int y2)
 {
-    unsigned int xx, yy, ix;
+  unsigned int xx, yy, ix;
 
-    for (xx=x1; xx<=x2; xx+=2) {
-        ix = index(xx, y1);
-        outbuf[ix+1] =  outbuf[ix+3] = 194;
-        outbuf[ix] = 18;
-        outbuf[ix+2] = 145;
-        ix = index(xx, y2);
-        outbuf[ix+1] =  outbuf[ix+3] = 194;
-        outbuf[ix] = 18;
-        outbuf[ix+2] = 145;
-    }
-    for (yy=y1; yy<=y2; yy++) {
-        ix = index(x1, yy);
-        outbuf[ix+1] =  outbuf[ix+3] = 194;
-        outbuf[ix] = 18;
-        outbuf[ix+2] = 145;
-        ix = index(x2, yy);
-        outbuf[ix+1] =  outbuf[ix+3] = 194;
-        outbuf[ix] = 18;
-        outbuf[ix+2] = 145;
-    }
+  for (xx=x1; xx<=x2; xx+=2) {
+    ix = index(xx, y1);
+    outbuf[ix+1] =  outbuf[ix+3] = 194;
+    outbuf[ix] = 18;
+    outbuf[ix+2] = 145;
+    ix = index(xx, y2);
+    outbuf[ix+1] =  outbuf[ix+3] = 194;
+    outbuf[ix] = 18;
+    outbuf[ix+2] = 145;
+  }
+  for (yy=y1; yy<=y2; yy++) {
+    ix = index(x1, yy);
+    outbuf[ix+1] =  outbuf[ix+3] = 194;
+    outbuf[ix] = 18;
+    outbuf[ix+2] = 145;
+    ix = index(x2, yy);
+    outbuf[ix+1] =  outbuf[ix+3] = 194;
+    outbuf[ix] = 18;
+    outbuf[ix+2] = 145;
+  }
 }
 
 // Return true if there's a QR code in frame_buf, and fill in output string with the decoded value

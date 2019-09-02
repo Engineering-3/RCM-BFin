@@ -1239,48 +1239,77 @@ void disable_frame_diff() {  // disables frame differencing, edge detect and col
     printf("#g_");
 }
 
-void grab_frame() {
+void grab_frame() 
+{
   unsigned int vect[16];
   int slope, intercept;
   unsigned int ix, ii;
   
   #ifdef STEREO
-  if (stereo_processing_flag != 0) {
+  if (stereo_processing_flag != 0)
+  {
     svs_stereo(0);
     return;
   }
   #endif /* STEREO */
 
   if (invert_flag)
+  {
     move_inverted((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab and flip new frame
         (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
+  }
   else
+  {
     move_image((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab new frame
-        (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
-  if (frame_diff_flag) {
+        (unsigned char *)FRAME_BUF, imgWidth, imgHeight);
+  }
+  
+  if (frame_diff_flag)
+  {
     compute_frame_diff((unsigned char *)FRAME_BUF, 
             (unsigned char *)FRAME_BUF2, imgWidth, imgHeight);
-  } else if (segmentation_flag) {
+  }
+  else if (segmentation_flag)
+  {
     color_segment((unsigned char *)FRAME_BUF);
-  } else if (edge_detect_flag) {
+  }
+  else if (edge_detect_flag)
+  {
     svs_segcode((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh);
     svs_segview((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF);
-  } else if (horizon_detect_flag) {
+  }
+  else if (horizon_detect_flag)
+  {
     vhorizon((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 
             16, &vect[0], &slope, &intercept, 5);
     addline((unsigned char *)FRAME_BUF, slope, intercept);
-  } else if (obstacle_detect_flag) {
+  }
+  else if (obstacle_detect_flag)
+  {
     vscan((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 16, &vect[0]);
     addvect((unsigned char *)FRAME_BUF, 16, &vect[0]);
-  } else if (blob_display_flag) {
+  }
+  else if (blob_display_flag)
+  {
     ix = vblob((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, blob_display_num);
-    if (ix > 7)  // only show 8 largest blobs
-        ix = 7;
-    for (ii=0; ii<ix; ii++) {
+//    if (ix > 7)  // only show 8 largest blobs
+//    {
+//      ix = 7;
+//    }
+    PacketBegin();
+    printf("Blobs:");
+    for (ii=0; ii<ix; ii++)
+    {
+      printf("%04d ", blobcnt[ii]);
       addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
     }
-  } else if (qr_code_detect_flag) {
-    if (process_qr_detect((unsigned char *)FRAME_BUF, QRValue)) {
+    printf("\n");
+    PacketEnd(true);
+  }
+  else if (qr_code_detect_flag)
+  {
+    if (process_qr_detect((unsigned char *)FRAME_BUF, QRValue))
+    {
       // We found a valid QR code!
       addbox((unsigned char *)FRAME_BUF, blobx1[0], blobx2[0], bloby1[0], bloby2[0]);
       PacketBegin();
@@ -1518,7 +1547,8 @@ void camera_setup () {
     /* Initialize camera-related globals */
     framecount = 0;
     overlay_flag = 0;
-    quality = 4; // Default JPEG quality - range is 1-8 (1 is highest)
+///    quality = 4; // Default JPEG quality - range is 1-8 (1 is highest)
+    quality = 6; // Default JPEG quality - range is 1-8 (1 is highest)
     frame_diff_flag = 0;
     segmentation_flag = 0;
     imgWidth = 320;
@@ -3771,22 +3801,22 @@ void ReadPicoCProgram(char * BufferPtr, unsigned int BufferSize)
 
 void ProcessPipeTest(void)
 {
-    int i = 0;
-    char c;
-    uint8_t Buffer[301];
-    
-    // Wait for ESC
-    while ((c = getch()) != 0x1B)
+  int i = 0;
+  char c;
+  uint8_t Buffer[301];
+  
+  // Wait for ESC
+  while ((c = getch()) != 0x1B)
+  {
+    if (i < 300)
     {
-        if (i < 300)
-        {
-            Buffer[i] = c;
-            i++;
-        }
+      Buffer[i] = c;
+      i++;
     }
-    Buffer[i] = 0x00;
-    
-    printf("%s",(char *)Buffer);
+  }
+  Buffer[i] = 0x00;
+  
+  printf("%s",(char *)Buffer);
 }
 
 // Print the string that indicates we don't understand the current command.
@@ -3796,7 +3826,7 @@ void ProcessPipeTest(void)
 // parameter out of value, etc.)
 void PrintUnknownCommand(char Command)
 {
-	// For debugging, print out the entire command that we just got
-    printf("#?");  // unknown command
-	printf(" %02X:'%c'", Command, Command);
+  // For debugging, print out the entire command that we just got
+  printf("#?");  // unknown command
+  printf(" %02X:'%c'", Command, Command);
 }
