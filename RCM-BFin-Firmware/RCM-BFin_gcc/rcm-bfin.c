@@ -1291,7 +1291,7 @@ void grab_frame()
   }
   else if (blob_display_flag)
   {
-    ix = vblob((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, blob_display_num);
+    ix = vblob2((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, (unsigned char *)FRAME_BUF4, blob_display_num);
 //    if (ix > 7)  // only show 8 largest blobs
 //    {
 //      ix = 7;

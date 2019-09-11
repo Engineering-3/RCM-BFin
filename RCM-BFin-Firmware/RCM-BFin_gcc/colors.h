@@ -27,13 +27,18 @@
  
 #define MAX_BLOBS  63
 #define MAX_COLORS 17  // reserve color #16 for internal use
-#define MIN_BLOB_SIZE 10
 
 #define index(xx, yy)  ((yy * imgWidth + xx) * 2) & 0xFFFFFFFC  // always a multiple of 4
+// Return the X or Y co-ordinate of a pixel when given a byte index into the frame buffer
+#define X_FROM_BYTE(b)  ((b/2) % imgWidth)
+#define Y_FROM_BYTE(b)  (b/2/imgWidth)
+// Return the byte index into a frame buffer given X and Y coordinates
+#define INDEX_FROM_X_Y(x, y)  ((y * imgWidth + x) * 2)
 
 //#define index(xx, yy)   (scaling_enabled > 0) ? ((imgWidth * (xx + ((63-yy) * imgWidth))) / 40) : ((yy * imgWidth + xx) * 2)
 
 extern unsigned int vblob(unsigned char *, unsigned char *, unsigned int);
+extern unsigned int vblob2(unsigned char *, unsigned char *, unsigned char *, unsigned int);
 extern unsigned int vpix(unsigned char *, unsigned int, unsigned int);
 extern unsigned int vfind(unsigned char *frame_buf, unsigned int clr, unsigned int x1, unsigned int x2, unsigned int y1, unsigned int y2);
 extern void init_colors();
@@ -56,4 +61,5 @@ void svs_segview(unsigned char *inbuf, unsigned char *outbuf);
 void addvect(unsigned char *outbuf, unsigned int columns, unsigned int *vect);
 void addline(unsigned char *outbuf, int slope, int intercept);
 void addbox(unsigned char *outbuf, unsigned int x1, unsigned int x2, unsigned int y1, unsigned int y2);
+void addblackbox(unsigned char *outbuf, unsigned int x1, unsigned int x2, unsigned int y1, unsigned int y2);
 bool process_qr_detect(unsigned char *frame_buf, char * output);
