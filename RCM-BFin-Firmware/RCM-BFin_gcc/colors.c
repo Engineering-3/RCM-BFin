@@ -311,13 +311,13 @@ blobbreak:     // now sort blobs by size, largest to smallest pixel count
 // lines making up the rectangle are all NOT of the chosen color.
 unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned char *ignore_buf, unsigned int color_bin_index)
 {
-  unsigned int current_blob, ix, xx = 0, yy, y, u, v, count, bottom, top, tmp, x;
+  unsigned int current_blob, ix, xx = 0, yy, y, tmp, x;
   unsigned char test_u, test_v, test_y1, test_y2;
   bool expand_top, expand_right, expand_bottom, expand_left;
-  unsigned int maxx, maxy;
   unsigned char *bbp;
   int y1, y2, u1, u2, v1, v2;
   unsigned int test_pixel_byte;
+  bool this_blob_is_done;
   
   y1 = ymin[color_bin_index];
   y2 = ymax[color_bin_index];
@@ -368,9 +368,9 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
       &&
       ((test_y2 >= y1) && (test_y2 <= y2))
       &&
-      ((u >= u1) && (u <= u2))
+      ((test_u >= u1) && (test_u <= u2))
       &&
-      ((v >= v1) && (v <= v2))
+      ((test_v >= v1) && (test_v <= v2))
     )
     {
       *(bbp+0) = 0x80;
@@ -427,168 +427,137 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
     if (blob_buf[test_pixel_byte] && !ignore_buf[test_pixel_byte])
     {
       // We've now found the start of a blob. Initialize this blob's values
+      this_blob_is_done = false;
       blobcnt[current_blob] = 1;                              // We have one pixel in this blob so far
-      blobx1[current_blob] = X_FROM_BYTE(test_pixel_byte)-1;  // Draw a square bounding box around the pixel we've found
-      blobx2[current_blob] = X_FROM_BYTE(test_pixel_byte)+1;
-      bloby1[current_blob] = Y_FROM_BYTE(test_pixel_byte)-1;
-      bloby2[current_blob] = Y_FROM_BYTE(test_pixel_byte)+1;
+      blobx1[current_blob] = X_FROM_BYTE(test_pixel_byte)-1;  // Defines where the left side of the bounding box is
+      blobx2[current_blob] = X_FROM_BYTE(test_pixel_byte)+1;  // Defines where the right side of the bounding box is
+      bloby1[current_blob] = Y_FROM_BYTE(test_pixel_byte)-1;  // Defines where the top of the bounding box is
+      bloby2[current_blob] = Y_FROM_BYTE(test_pixel_byte)+1;  // Defines where the bottom of the bounding box is
       // Mark this pixel in the ignore frame
       ignore_buf[test_pixel_byte] = 1;
       
-      // Walk around the bounding box, looking for more pixels that are in the blob
-      expand_top = false;
-      expand_right = false;
-      expand_bottom = false;
-      expand_left = false;
-      
-      // First the top line (from x1 to x2 along y1)
-      for (x = blobx1[current_blob]; x <= blobx2[current_blob]; x++)
+      while (!this_blob_is_done)
       {
-        // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
-        ignore_buf[INDEX_FROM_X_Y(x, bloby1[current_blob])] = 1;
-        if (blob_buf[INDEX_FROM_X_Y(x, bloby1[current_blob])])
+        // Walk around the bounding box, looking for more pixels that are in the blob
+        expand_top = false;
+        expand_right = false;
+        expand_bottom = false;
+        expand_left = false;
+        
+        // First the top line (from x1 to x2 along y1)
+        for (x = blobx1[current_blob]; x <= blobx2[current_blob]; x++)
         {
-          // Yup, found another pixel in the blob, so count it
-          blobcnt[current_blob]++;
-          // And mark this 'side' of the bounding box for expansion
-          expand_top = true;
+          // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
+          ignore_buf[INDEX_FROM_X_Y(x, bloby1[current_blob])] = 1;
+          if (blob_buf[INDEX_FROM_X_Y(x, bloby1[current_blob])])
+          {
+            // Yup, found another pixel in the blob, so count it
+            blobcnt[current_blob]++;
+            // And mark this 'side' of the bounding box for expansion
+            expand_top = true;
+          }
         }
-      }
-      
-      // Then the right hand side (from y1 to y2 along x2)
-      for (y = bloby1[current_blob]; y <= bloby2[current_blob]; y++)
-      {
-        // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
-        ignore_buf[INDEX_FROM_X_Y(blobx2[current_blob], y)] = 1;
-        if (blob_buf[INDEX_FROM_X_Y(blobx2[current_blob], y)])
+        
+        // Then the right hand side (from y1 to y2 along x2)
+        for (y = bloby1[current_blob]; y <= bloby2[current_blob]; y++)
         {
-          // Yup, found another pixel in the blob, so count it
-          blobcnt[current_blob]++;
-          // And mark this 'side' of the bounding box for expansion
-          expand_right = true;
+          // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
+          ignore_buf[INDEX_FROM_X_Y(blobx2[current_blob], y)] = 1;
+          if (blob_buf[INDEX_FROM_X_Y(blobx2[current_blob], y)])
+          {
+            // Yup, found another pixel in the blob, so count it
+            blobcnt[current_blob]++;
+            // And mark this 'side' of the bounding box for expansion
+            expand_right = true;
+          }
         }
-      }
-      
-      // Next the bottom line (from x1 to x2 along y2)
-      for (x = blobx1[current_blob]; x <= blobx2[current_blob]; x++)
-      {
-        // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
-        ignore_buf[INDEX_FROM_X_Y(x, bloby2[current_blob])] = 1;
-        if (blob_buf[INDEX_FROM_X_Y(x, bloby2[current_blob])])
+        
+        // Next the bottom line (from x1 to x2 along y2)
+        for (x = blobx1[current_blob]; x <= blobx2[current_blob]; x++)
         {
-          // Yup, found another pixel in the blob, so count it
-          blobcnt[current_blob]++;
-          // And mark this 'side' of the bounding box for expansion
-          expand_top = true;
+          // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
+          ignore_buf[INDEX_FROM_X_Y(x, bloby2[current_blob])] = 1;
+          if (blob_buf[INDEX_FROM_X_Y(x, bloby2[current_blob])])
+          {
+            // Yup, found another pixel in the blob, so count it
+            blobcnt[current_blob]++;
+            // And mark this 'side' of the bounding box for expansion
+            expand_top = true;
+          }
         }
-      }
-      
-      // Then the left hand side (from y1 to y2 along x1)
-      for (y = bloby1[current_blob]; y <= bloby2[current_blob]; y++)
-      {
-        // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
-        ignore_buf[INDEX_FROM_X_Y(blobx1[current_blob], y)] = 1;
-        if (blob_buf[INDEX_FROM_X_Y(blobx1[current_blob], y)])
+        
+        // Then the left hand side (from y1 to y2 along x1)
+        for (y = bloby1[current_blob]; y <= bloby2[current_blob]; y++)
         {
-          // Yup, found another pixel in the blob, so count it
-          blobcnt[current_blob]++;
-          // And mark this 'side' of the bounding box for expansion
-          expand_right = true;
+          // Always mark this pixel as "we've already checked it, so we can ignore it from now on"
+          ignore_buf[INDEX_FROM_X_Y(blobx1[current_blob], y)] = 1;
+          if (blob_buf[INDEX_FROM_X_Y(blobx1[current_blob], y)])
+          {
+            // Yup, found another pixel in the blob, so count it
+            blobcnt[current_blob]++;
+            // And mark this 'side' of the bounding box for expansion
+            expand_right = true;
+          }
         }
-      }
-      
-      // Do we need to expand any sides of the blob's bounding box?
-      if (expand_top == true || expand_right == true || expand_bottom == true || expand_left == true)
-      {
-        // Yes. Based on which sides need expanding, expand them
-        if (expand_top)
+        
+        // Do we need to expand any sides of the blob's bounding box because we 
+        // found part of the blob on the bounding box lines?
+        if (expand_top == true || expand_right == true || expand_bottom == true || expand_left == true)
         {
-          
+          // Yes. Based on which sides need expanding, expand them
+          // But make sure they don't go beyond the bounds of our image
+          if (expand_top)
+          {
+            if (bloby1[current_blob] > 0)
+            {
+              bloby1[current_blob]--;
+            }
+          }
+          if (expand_right)
+          {
+            if (blobx2[current_blob] < (imgWidth-1))
+            {
+              blobx2[current_blob]++;
+            }
+          }
+          if (expand_bottom)
+          {
+            if (bloby2[current_blob] < (imgHeight-1))
+            {
+              bloby2[current_blob]++;
+            }
+          }
+          if (expand_left)
+          {
+            if (blobx1[current_blob] > 0)
+            {
+              blobx1[current_blob]--;
+            }
+          }
         }
-      }
-      else
-      {
-        // No, so this blob is now completely bounded by empty space and is completely done.
+        else
+        {
+          // No, so this blob is now completely bounded by empty space and is completely done.
+          this_blob_is_done = true;
+          // Start working on the next blob, but if we're run out of blobs to record, then bail
+          current_blob++;
+          if (current_blob >= MAX_BLOBS)
+          {
+            goto blobbreak;
+          }
+        }
       }
     }
   }
   
-#if 0
-  maxx = imgWidth;
-  maxy = imgHeight;
-
-  for (jj = 0; jj < MAX_BLOBS; jj++)
-  {
-    blobcnt[jj] = 0;      // Zero means this blob is not valid
-    blobx1[jj] = maxx;    // Make each blob take up the entire image size by default
-    blobx2[jj] = 0;
-    bloby1[jj] = maxy;
-    bloby2[jj] = 0;
-  }
-
-  
-  jj = 0;    // jj indicates the current blob being processed
-  for (xx = 0; xx < (maxx*2); xx += 2)    // xx is the first byte of the vertical column of pixels we are looking at
-  {
-    count = 0;
-    bottom = maxy;
-    top = 0;
-    for (yy = 0; yy < maxy; yy++)     // yy is the horizontal row of pixels we are looking at
-    {
-      ix = xx + yy*imgWidth*2;
-      if (blob_buf[ix])
-      {
-        count++;
-        if (bottom > yy)
-        {
-          bottom = yy;
-        }
-        if (top < yy)
-        {
-          top = yy;
-        }
-      }
-    }
-    if (count)
-    {
-      if (bloby1[jj] > bottom)
-      {
-        bloby1[jj] = bottom;
-      }
-      if (bloby2[jj] < top)
-      {
-        bloby2[jj] = top;
-      }
-      if (blobx1[jj] > (xx/2))
-      {
-        blobx1[jj] = (xx/2);
-      }
-      if (blobx2[jj] < (xx/2))
-      {
-        blobx2[jj] = (xx/2);
-      }
-      blobcnt[jj] += count;
-    }
-    else
-    {
-      if (blobcnt[jj])    // move to next blob if a gap is found
-      {
-        jj++;
-      }
-      if (jj > (MAX_BLOBS-2))   // Break out of the loop if we've found too many blobs
-      {
-        goto blobbreak;
-      }
-    }
-  }
 blobbreak:     // now sort blobs by size, largest to smallest pixel count
-  for (xx = 0; xx <= jj; xx++)
+  for (xx = 0; xx <= current_blob; xx++)
   {
     if (blobcnt[xx] == 0)    // no more blobs, so exit
     {
       return xx;
     }
-    for (yy = xx; yy <= jj; yy++)
+    for (yy = xx; yy <= current_blob; yy++)
     {
       if (blobcnt[yy] == 0)
       {
@@ -614,7 +583,7 @@ blobbreak:     // now sort blobs by size, largest to smallest pixel count
       }
     }
   }
-#endif
+
   return xx;
 }
 
