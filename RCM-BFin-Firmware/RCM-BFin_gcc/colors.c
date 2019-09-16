@@ -296,6 +296,67 @@ blobbreak:     // now sort blobs by size, largest to smallest pixel count
   return xx;
 }
 
+/* Just for vblob2 
+ * For any non-zero pixels in the ignore buffer, set the dst color to red
+ * for any non-zero pixels in the src buffer, set the dst color to green
+*/
+void debug_blob_image(unsigned char *src, unsigned char *dst, unsigned char *ignore, unsigned int width, unsigned int height)
+{
+  int x, y;
+  unsigned int pixel_byte_index;
+
+  // First go through all of the ignore buffer
+  for (y = 0; y < height; y++)
+  {
+    for (x = 0; x < width; x += 2)
+    {
+      pixel_byte_index = INDEX_FROM_X_Y(x, y);
+      if (
+        (ignore[pixel_byte_index + 0] != 0)
+        ||
+        (ignore[pixel_byte_index + 1] != 0)
+        ||
+        (ignore[pixel_byte_index + 2] != 0)
+        ||
+        (ignore[pixel_byte_index + 3] != 0)
+      )
+      {
+        // Set this pair of pixels in the destination buffer to red
+        dst[pixel_byte_index + 0] = 84;
+        dst[pixel_byte_index + 1] = 76;
+        dst[pixel_byte_index + 2] = 255;
+        dst[pixel_byte_index + 3] = 76;
+      }
+    }
+  }
+#if 0
+  // First go through all of the src (blob) buffer
+  for (y = 0; y < height; y++)
+  {
+    for (x = 0; x < width; x += 2)
+    {
+      pixel_byte_index = INDEX_FROM_X_Y(x, y);
+      if (
+        (src[pixel_byte_index + 0] != 0)
+        ||
+        (src[pixel_byte_index + 1] != 0)
+        ||
+        (src[pixel_byte_index + 2] != 0)
+        ||
+        (src[pixel_byte_index + 3] != 0)
+      )
+        // Set this pair of pixels in the destination buffer to green
+        dst[pixel_byte_index + 0] = 43;
+        dst[pixel_byte_index + 1] = 149;
+        dst[pixel_byte_index + 2] = 21;
+        dst[pixel_byte_index + 3] = 149;
+      }
+    }
+  }
+#endif
+}
+
+
 // return number of blobs found that match the search color
 // Use Brian's Enhanced Algorithm for finding blobs.
 // This algorithm is really looking for the rectangular bounding box that has
@@ -319,11 +380,13 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
   unsigned int test_pixel_byte;
   bool this_blob_is_done;
   
+  xx = 0;
+  
   y1 = ymin[color_bin_index];
   y2 = ymax[color_bin_index];
   u1 = umin[color_bin_index];
-  u2 = umax[color_bin_index];
   v1 = vmin[color_bin_index];
+  u2 = umax[color_bin_index];
   v2 = vmax[color_bin_index];
   
   // Initialize each blob with default (no blob) values
@@ -351,7 +414,7 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
   }
 
  /* Walk through entire input frame. Look at the two pixels
-  * together and if both of them match the selected bin 
+  * together and if both of them match the selected bin
   * (color_bin_index) in the input frame, then set the
   * blob detect frame pixel value to something other than zero.
   */
@@ -414,9 +477,6 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
   //printf("cleared %d out of %d matching pixels\r\n", jtmp, itmp);
 #endif
 
-  /// For testing - copy over blob frame to display frame
-  copy_image((unsigned char *)blob_buf, (unsigned char *)frame_buf, imgWidth, imgHeight);
-
   // Keep track of which blob we're on. Goes up to MAX_BLOBS then we stop looking.
   current_blob = 0;
 
@@ -435,7 +495,7 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
       bloby2[current_blob] = Y_FROM_BYTE(test_pixel_byte)+1;  // Defines where the bottom of the bounding box is
       // Mark this pixel in the ignore frame
       ignore_buf[test_pixel_byte] = 1;
-      
+
       while (!this_blob_is_done)
       {
         // Walk around the bounding box, looking for more pixels that are in the blob
@@ -512,12 +572,22 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             {
               bloby1[current_blob]--;
             }
+            else
+            {
+            goto blobbreak;
+              this_blob_is_done = true;
+            }
           }
           if (expand_right)
           {
             if (blobx2[current_blob] < (imgWidth-1))
             {
               blobx2[current_blob]++;
+            }
+            else
+            {
+            goto blobbreak;
+              this_blob_is_done = true;
             }
           }
           if (expand_bottom)
@@ -526,12 +596,22 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             {
               bloby2[current_blob]++;
             }
+            else
+            {
+            goto blobbreak;
+              this_blob_is_done = true;
+            }
           }
           if (expand_left)
           {
             if (blobx1[current_blob] > 0)
             {
               blobx1[current_blob]--;
+            }
+            else
+            {
+            goto blobbreak;
+              this_blob_is_done = true;
             }
           }
         }
@@ -541,16 +621,17 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
           this_blob_is_done = true;
           // Start working on the next blob, but if we're run out of blobs to record, then bail
           current_blob++;
-          if (current_blob >= MAX_BLOBS)
-          {
+//          if (current_blob >= MAX_BLOBS)
+//          {
             goto blobbreak;
-          }
+//          }
         }
       }
     }
   }
   
 blobbreak:     // now sort blobs by size, largest to smallest pixel count
+#if 0
   for (xx = 0; xx <= current_blob; xx++)
   {
     if (blobcnt[xx] == 0)    // no more blobs, so exit
@@ -583,6 +664,10 @@ blobbreak:     // now sort blobs by size, largest to smallest pixel count
       }
     }
   }
+#endif
+  /// For testing - copy over blob frame to display frame
+  debug_blob_image((unsigned char *)blob_buf, (unsigned char *)frame_buf, (unsigned char *)ignore_buf, imgWidth, imgHeight);
+
 
   return xx;
 }
