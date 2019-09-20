@@ -298,9 +298,9 @@ blobbreak:     // now sort blobs by size, largest to smallest pixel count
 
 /* Just for vblob2 
  * For any non-zero pixels in the ignore buffer, set the dst color to red
- * for any non-zero pixels in the src buffer, set the dst color to green
+ * for any non-zero pixels in the blob buffer, set the dst color to green
 */
-void debug_blob_image(unsigned char *src, unsigned char *dst, unsigned char *ignore, unsigned int width, unsigned int height)
+void debug_blob_image(unsigned char *blob, unsigned char *dst, unsigned char *ignore, unsigned int width, unsigned int height)
 {
   int x, y;
   unsigned int pixel_byte_index;
@@ -329,22 +329,23 @@ void debug_blob_image(unsigned char *src, unsigned char *dst, unsigned char *ign
       }
     }
   }
-#if 0
-  // First go through all of the src (blob) buffer
+
+  // Then go through all of the src (blob) buffer
   for (y = 0; y < height; y++)
   {
     for (x = 0; x < width; x += 2)
     {
       pixel_byte_index = INDEX_FROM_X_Y(x, y);
       if (
-        (src[pixel_byte_index + 0] != 0)
+        (blob[pixel_byte_index + 0] != 0)
         ||
-        (src[pixel_byte_index + 1] != 0)
+        (blob[pixel_byte_index + 1] != 0)
         ||
-        (src[pixel_byte_index + 2] != 0)
+        (blob[pixel_byte_index + 2] != 0)
         ||
-        (src[pixel_byte_index + 3] != 0)
+        (blob[pixel_byte_index + 3] != 0)
       )
+      {
         // Set this pair of pixels in the destination buffer to green
         dst[pixel_byte_index + 0] = 43;
         dst[pixel_byte_index + 1] = 149;
@@ -353,7 +354,6 @@ void debug_blob_image(unsigned char *src, unsigned char *dst, unsigned char *ign
       }
     }
   }
-#endif
 }
 
 
@@ -542,7 +542,7 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             // Yup, found another pixel in the blob, so count it
             blobcnt[current_blob]++;
             // And mark this 'side' of the bounding box for expansion
-            expand_top = true;
+            expand_bottom = true;
           }
         }
         
@@ -556,7 +556,7 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             // Yup, found another pixel in the blob, so count it
             blobcnt[current_blob]++;
             // And mark this 'side' of the bounding box for expansion
-            expand_right = true;
+            expand_left = true;
           }
         }
         
@@ -574,7 +574,6 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             }
             else
             {
-            goto blobbreak;
               this_blob_is_done = true;
             }
           }
@@ -586,7 +585,6 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             }
             else
             {
-            goto blobbreak;
               this_blob_is_done = true;
             }
           }
@@ -598,7 +596,6 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             }
             else
             {
-            goto blobbreak;
               this_blob_is_done = true;
             }
           }
@@ -610,7 +607,6 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
             }
             else
             {
-            goto blobbreak;
               this_blob_is_done = true;
             }
           }
@@ -621,17 +617,17 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
           this_blob_is_done = true;
           // Start working on the next blob, but if we're run out of blobs to record, then bail
           current_blob++;
-//          if (current_blob >= MAX_BLOBS)
-//          {
+          if (current_blob >= MAX_BLOBS)
+          {
             goto blobbreak;
-//          }
+          }
         }
       }
     }
   }
   
 blobbreak:     // now sort blobs by size, largest to smallest pixel count
-#if 0
+
   for (xx = 0; xx <= current_blob; xx++)
   {
     if (blobcnt[xx] == 0)    // no more blobs, so exit
@@ -664,10 +660,9 @@ blobbreak:     // now sort blobs by size, largest to smallest pixel count
       }
     }
   }
-#endif
+
   /// For testing - copy over blob frame to display frame
   debug_blob_image((unsigned char *)blob_buf, (unsigned char *)frame_buf, (unsigned char *)ignore_buf, imgWidth, imgHeight);
-
 
   return xx;
 }
