@@ -35,6 +35,7 @@ extern unsigned int imgWidth, imgHeight;
 
 unsigned int ymax[MAX_COLORS], ymin[MAX_COLORS], umax[MAX_COLORS], umin[MAX_COLORS], vmax[MAX_COLORS], vmin[MAX_COLORS];
 unsigned int blobx1[MAX_BLOBS], blobx2[MAX_BLOBS], bloby1[MAX_BLOBS], bloby2[MAX_BLOBS], blobcnt[MAX_BLOBS], blobix[MAX_BLOBS];
+unsigned int blobx[MAX_BLOBS], bloby[MAX_BLOBS];
 unsigned int hist0[256], hist1[256], mean[3];
 
 static struct quirc *qr;
@@ -304,7 +305,7 @@ void debug_blob_image(unsigned char *blob, unsigned char *dst, unsigned char *ig
 {
   int x, y;
   unsigned int pixel_byte_index;
-
+#if 0
   // First go through all of the ignore buffer
   for (y = 0; y < height; y++)
   {
@@ -329,7 +330,7 @@ void debug_blob_image(unsigned char *blob, unsigned char *dst, unsigned char *ig
       }
     }
   }
-
+#endif
   // Then go through all of the src (blob) buffer
   for (y = 0; y < height; y++)
   {
@@ -398,6 +399,8 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
     bloby1[current_blob] = 0;
     bloby2[current_blob] = 0;
     blobix[current_blob] = 0;
+    blobx[current_blob] = 0;
+    bloby[current_blob] = 0;
   }
 
   // Zero out the blob buffer (image buffer where blobs are recorded)
@@ -481,7 +484,7 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
   current_blob = 0;
 
   // Search for the next blob start pixel (test_pixel_byte is a byte index)
-  for (test_pixel_byte = 0; test_pixel_byte < imgHeight*imgWidth*2; test_pixel_byte++)
+  for (test_pixel_byte = 0; test_pixel_byte < imgHeight*imgWidth*2; test_pixel_byte += 2)
   {
     // Test this pixel to see if it's in in our blob frame and not in the ignore frame
     if (blob_buf[test_pixel_byte] && !ignore_buf[test_pixel_byte])
@@ -493,6 +496,8 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
       blobx2[current_blob] = X_FROM_BYTE(test_pixel_byte)+1;  // Defines where the right side of the bounding box is
       bloby1[current_blob] = Y_FROM_BYTE(test_pixel_byte)-1;  // Defines where the top of the bounding box is
       bloby2[current_blob] = Y_FROM_BYTE(test_pixel_byte)+1;  // Defines where the bottom of the bounding box is
+      blobx[current_blob] = X_FROM_BYTE(test_pixel_byte);
+      bloby[current_blob] = Y_FROM_BYTE(test_pixel_byte);
       // Mark this pixel in the ignore frame
       ignore_buf[test_pixel_byte] = 1;
 
@@ -615,24 +620,29 @@ unsigned int vblob2(unsigned char *frame_buf, unsigned char *blob_buf, unsigned 
         {
           // No, so this blob is now completely bounded by empty space and is completely done.
           this_blob_is_done = true;
-          // Start working on the next blob, but if we're run out of blobs to record, then bail
-          current_blob++;
-          if (current_blob >= MAX_BLOBS)
-          {
-            goto blobbreak;
-          }
         }
       }
+
+      if (current_blob < MAX_BLOBS)
+      {
+        current_blob++;
+      }
+      else
+      {
+        goto blobbreak;
+      }
     }
+    // Always record the pixel that we test into the ignore buffer
+    ignore_buf[test_pixel_byte] = 1;
   }
   
 blobbreak:     // now sort blobs by size, largest to smallest pixel count
 
-  for (xx = 0; xx <= current_blob; xx++)
+  for (xx = 0; xx <= MAX_BLOBS; xx++)
   {
     if (blobcnt[xx] == 0)    // no more blobs, so exit
     {
-      return xx;
+      break;
     }
     for (yy = xx; yy <= current_blob; yy++)
     {

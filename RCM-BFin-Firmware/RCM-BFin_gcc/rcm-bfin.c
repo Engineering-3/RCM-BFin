@@ -1297,13 +1297,14 @@ void grab_frame()
 //      ix = 7;
 //    }
     PacketBegin();
-    printf("Blobs:");
+
     for (ii=0; ii<ix; ii++)
     {
-      printf("%04d ", blobcnt[ii]);
+      printf("blob %02d: ", ii);
+      printf("%04d %03d %03d %03d %03d %03d %03d", blobcnt[ii], blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii], blobx[ii], bloby[ii]);
+      printf("\n");
       addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
     }
-    printf("\n");
     PacketEnd(true);
   }
   else if (qr_code_detect_flag)

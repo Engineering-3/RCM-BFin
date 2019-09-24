@@ -25,7 +25,8 @@
  */
 #include <stdbool.h>
  
-#define MAX_BLOBS  63
+//#define MAX_BLOBS  63
+#define MAX_BLOBS  4
 #define MAX_COLORS 17  // reserve color #16 for internal use
 
 #define index(xx, yy)  ((yy * imgWidth + xx) * 2) & 0xFFFFFFFC  // always a multiple of 4
@@ -49,6 +50,7 @@ extern void edge_detect(unsigned char *outbuf, unsigned char *inbuf, int thresho
 
 extern unsigned int ymax[], ymin[], umax[], umin[], vmax[], vmin[];
 extern unsigned int blobx1[], blobx2[], bloby1[], bloby2[], blobcnt[], blobix[];
+extern unsigned int blobx[], bloby[];
 extern unsigned int hist0[], hist1[], hist2[], mean[];
 
 unsigned int vscan(unsigned char *outbuf, unsigned char *inbuf, int thresh, 
