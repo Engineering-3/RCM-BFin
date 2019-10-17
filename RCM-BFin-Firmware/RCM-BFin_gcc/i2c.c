@@ -78,7 +78,7 @@ int InitI2C(void)
 // Wait until I2C bus is free, with timeout. If timeout, return -1 as error.
 // Also check for any I2C errors, and return an error code if they're set
 static int WaitForIdleBus(void)
-{    
+{
     int Ret = 0;
     
     // Delay so that the transaction can start, otherwise BUSBUSY might not be true yet
@@ -373,6 +373,9 @@ int i2creadSingle(unsigned char i2c_device, unsigned char *i2c_data, unsigned in
         delayUS(10);
         if (t++ >= 200)
         {
+          // Just to be on the safe side, reset the I2C peripheral if the slave
+          // has not responded in this amount of time.
+          InitI2C();
           retval = -1;
         }
       }
@@ -436,7 +439,7 @@ int i2creadSinglers(unsigned char i2c_device, unsigned char *i2c_data, unsigned 
       retval = -2;
     }
   }
-
+  
   if (!retval)
   {
     // To cause repeated start condition, set RSTART bit and set MDIR bit to indicate a receive
@@ -464,6 +467,10 @@ int i2creadSinglers(unsigned char i2c_device, unsigned char *i2c_data, unsigned 
         delayUS(10);
         if (t++ >= 200)
         {
+          // Some slaves can do bad things to the bus if they don't know how to handle a
+          // repeated start. The only way to regain control is to reset the whole
+          // I2C peripheral. 
+          InitI2C();
           retval = -4;
         }
       }
@@ -479,50 +486,54 @@ int i2creadSinglers(unsigned char i2c_device, unsigned char *i2c_data, unsigned 
       }
     }
   }
-  
+
   if (!retval)
   {
     retval = WaitForIdleBus();
   }
-  
+
   return (retval);
 }
 
 // Wrapper function for i2cread(). Tries up to I2CMaxRetries before giving up.
 int i2cread(unsigned char i2c_device, unsigned char *i2c_data, unsigned int data_count, int sccb_flag)
 {
-    int i;
+  int i;
+  int32_t retval = 0;
 
-    // Try up to I2CMaxRetries to send the message out
-    for (i = 0; i < I2CMaxRetries; i++) 
-    { 
-        if (i2creadSingle(i2c_device, i2c_data, data_count, sccb_flag) == 0)
-        {   
-            // We were successful, so return PASS
-            return (0);
-        }
+  // Try up to I2CMaxRetries to send the message out
+  for (i = 0; i < I2CMaxRetries; i++) 
+  {
+    retval = i2creadSingle(i2c_device, i2c_data, data_count, sccb_flag);
+    if (retval == 0)
+    {
+      // We were successful, so return PASS
+      return (0);
     }
-    // We have failed, so return FAIL
-    return (-1);
+  }
+  // We have failed, so return FAIL
+  return (retval);
 }
 
 
 // Wrapper function for i2creadrs(). Tries up to I2CMaxRetries before giving up. Uses repeated start condition.
 int i2creadrs(unsigned char i2c_device, unsigned char *i2c_data, unsigned int data_count, int sccb_flag)
 {
-    int i;
-
-    // Try up to I2CMaxRetries to send the message out
-    for (i = 0; i < I2CMaxRetries; i++) 
-    { 
-        if (i2creadSinglers(i2c_device, i2c_data, data_count, sccb_flag) == 0)
-        {   
-            // We were successful, so return PASS
-            return (0);
-        }
+  int i;
+  int32_t retval = 0;
+  
+  // Try up to I2CMaxRetries to send the message out
+  for (i = 0; i < I2CMaxRetries; i++) 
+  {
+    retval = i2creadSinglers(i2c_device, i2c_data, data_count, sccb_flag);
+    if (retval == 0)
+    {
+      // We were successful, so return PASS
+      return (0);
     }
-    // We have failed, so return FAIL
-    return (-1);
+  }
+  // We have failed, so return FAIL
+  return (retval);
 }
 
 // Return 0 on no error
@@ -530,38 +541,48 @@ int i2creadrs(unsigned char i2c_device, unsigned char *i2c_data, unsigned int da
 /// TODO: Not fully cleaned up yet
 int i2cslowread(unsigned char i2c_device, unsigned char *i2c_data, unsigned int data_count, int sccb_flag)
 {
-    int i;
+  int i;
 
-    // Set/clear sccb flag
-    if (sccb_flag)
-        *pTWI_CONTROL |= SCCB;
-    else
-        *pTWI_CONTROL &= ~SCCB;
+  // Set/clear sccb flag
+  if (sccb_flag)
+  {
+    *pTWI_CONTROL |= SCCB;
+  }
+  else
+  {
+    *pTWI_CONTROL &= ~SCCB;
+  }
 
-     // Target address - just 7-bit address, no read/write flag
-    *pTWI_MASTER_ADDR = (i2c_device & 0x7F);
+   // Target address - just 7-bit address, no read/write flag
+  *pTWI_MASTER_ADDR = (i2c_device & 0x7F);
 
-    while ((*pTWI_FIFO_STAT & XMTSTAT) == XMT_FULL)
-        SSYNC;
-    *pTWI_XMT_DATA8 = *i2c_data; // send the start register 
-    *pTWI_MASTER_CTL = 0x40 | MEN;     
-    I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
-    while (((*pTWI_INT_STAT & MCOMP) == 0) && I2CTimeoutMS) { // Wait until transmission complete and MCOMP is set
-        SSYNC;        
-    }
-    *pTWI_INT_STAT = XMTSERV | MCOMP; // service TWI for next transmission
-
+  while ((*pTWI_FIFO_STAT & XMTSTAT) == XMT_FULL)
+  {
     SSYNC;
-    *pTWI_MASTER_CTL = (data_count << 6) | MEN | MDIR; 
-    for (i=0; i<data_count; i++) {
-        I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
-        while (((*pTWI_FIFO_STAT & RCVSTAT) == 0) && I2CTimeoutMS) {
-            SSYNC;
-        }
-        *i2c_data++ = *pTWI_RCV_DATA8; // Load the next sample into the TX FIFO. 
-        SSYNC;
+  }
+  *pTWI_XMT_DATA8 = *i2c_data; // send the start register 
+  *pTWI_MASTER_CTL = 0x40 | MEN;
+  I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
+  // Wait until transmission complete and MCOMP is set
+  while (((*pTWI_INT_STAT & MCOMP) == 0) && I2CTimeoutMS)
+  {
+    SSYNC;
+  }
+  *pTWI_INT_STAT = XMTSERV | MCOMP; // service TWI for next transmission
+
+  SSYNC;
+  *pTWI_MASTER_CTL = (data_count << 6) | MEN | MDIR; 
+  for (i=0; i<data_count; i++) 
+  {
+    I2CTimeoutMS = I2C_TIMEOUT_RELOAD;
+    while (((*pTWI_FIFO_STAT & RCVSTAT) == 0) && I2CTimeoutMS) 
+    {
+      SSYNC;
     }
-    return (WaitForIdleBus());
+    *i2c_data++ = *pTWI_RCV_DATA8; // Load the next sample into the TX FIFO. 
+    SSYNC;
+  }
+  return (WaitForIdleBus());
 }
 
 // Just like i2cread except you get to specify the time between the write and read sections

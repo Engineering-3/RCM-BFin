@@ -62,33 +62,33 @@ __attribute__((interrupt_handler,nesting))
 //__attribute__((interrupt_handler))
 void Timer0_ISR (void)
 {
-    volatile uint32_t IntTemp;
+  volatile uint32_t IntTemp;
 
-    // confirm interrupt handling
-    *pTIMER_STATUS = 0x0001;
+  // confirm interrupt handling
+  *pTIMER_STATUS = 0x0001;
 
-    // Countdown all registered countdown timer variables
-    /// TODO: Make this some type of registered callback thing
-    if (Counter0) {Counter0--;}
-    if (CounterStreamVideoTimout) {CounterStreamVideoTimout--;}
-    if (LEDCounterMS) {LEDCounterMS--;}
-    if (XMODEMTimeoutMS) {XMODEMTimeoutMS--;}
-    if (I2CTimeoutMS) {I2CTimeoutMS--;}
-    if (PicoCDelay) {PicoCDelay--;}
-    if (I2CDelayTimeoutMS) {I2CDelayTimeoutMS--;}
-    if (I2CAutoincTimeoutMS) {I2CAutoincTimeoutMS--;}
-    UART0LastByteRX++;
-    StreamingLastTickMS++;
-    
-    // If we are not transmitting a byte right now,
-    // then start things off.
-    disable_interrupts(IntTemp);
-    if (TXBufCount && (*pUART0_LSR & THRE) && !CTS_TRIGGERED)
-    {
-        TXSendNextByte();
-    }
-    enable_interrupts(IntTemp);    
+  // Countdown all registered countdown timer variables
+  /// TODO: Make this some type of registered callback thing
+  if (Counter0) {Counter0--;}
+  if (CounterStreamVideoTimout) {CounterStreamVideoTimout--;}
+  if (LEDCounterMS) {LEDCounterMS--;}
+  if (XMODEMTimeoutMS) {XMODEMTimeoutMS--;}
+  if (I2CTimeoutMS) {I2CTimeoutMS--;}
+  if (PicoCDelay) {PicoCDelay--;}
+  if (I2CDelayTimeoutMS) {I2CDelayTimeoutMS--;}
+  if (I2CAutoincTimeoutMS) {I2CAutoincTimeoutMS--;}
+  UART0LastByteRX++;
+  StreamingLastTickMS++;
+  
+  // If we are not transmitting a byte right now,
+  // then start things off.
+  disable_interrupts(IntTemp);
+  if (TXBufCount && (*pUART0_LSR & THRE) && !CTS_TRIGGERED)
+  {
+    TXSendNextByte();
+  }
+  enable_interrupts(IntTemp);
 
-    // Go take care of the times for any enabled streaming sensors
-    StreamingTickTrigger = true;
+  // Go take care of the times for any enabled streaming sensors
+  StreamingTickTrigger = true;
 }
