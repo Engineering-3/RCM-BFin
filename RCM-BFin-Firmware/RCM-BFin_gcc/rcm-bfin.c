@@ -115,11 +115,20 @@ unsigned char frame[] = "000-deg 000-f 000-d 000-l 000-r";
 //unsigned char frame[] = "frame     ";
 
 /* Camera globals */
-unsigned int quality, framecount, ix, overlay_flag;
-unsigned int segmentation_flag, edge_detect_flag, frame_diff_flag, horizon_detect_flag;
+unsigned int quality;
+unsigned int framecount;
+unsigned int ix;
+unsigned int overlay_flag;
+unsigned int segmentation_flag;
+unsigned int edge_detect_flag;
+unsigned int frame_diff_flag;
+unsigned int frame_diff2_flag;
+unsigned int horizon_detect_flag;
 unsigned int obstacle_detect_flag;
 unsigned int blob_display_flag;
 unsigned int blob_display_num;
+unsigned int blob_display2_flag;
+unsigned int blob_display2_num;
 unsigned int edge_thresh;
 unsigned int invert_flag;
 unsigned int qr_code_detect_flag;
@@ -1199,10 +1208,37 @@ void enable_blob_display() {
     blob_display_num = ix;
 }
 
-void enable_qr_code_detection() {
+// Turn on QR code detection
+void enable_qr_code_detection(void)
+{
   printf("##g7");
   qr_code_detect_flag = 1;
   overlay_flag = 1;
+}
+
+// Blob detection and bounding boxes using vblob2()
+void enable_blob2_display(void)
+{
+  unsigned int ix;
+  char cbuf[2];
+  
+  cbuf[0] = getch();
+  cbuf[1] = 0;
+  ix = atoi(cbuf);  // find out which color bin to use with vblob2()
+  printf("##g8 bin# %x\r\n", ix);
+  blob_display2_flag = 1;
+  blob_display2_num = ix;
+}
+
+// Frame differencing, with blob detection and bounding boxes using vblob2()
+void enable_frame2_diff(void)
+{
+  unsigned int ix;
+  char cbuf[2];
+  
+  frame_diff2_flag = 1;
+  grab_reference_frame();
+  printf("##g9");
 }
 
 #ifdef STEREO
@@ -1226,20 +1262,22 @@ void set_edge_thresh () {
 }
 
 void disable_frame_diff() {  // disables frame differencing, edge detect and color segmentation
-    frame_diff_flag = 0;
-    segmentation_flag = 0;
-    edge_detect_flag = 0;
-    horizon_detect_flag = 0;
-    obstacle_detect_flag = 0;
-    blob_display_flag = 0;
-    qr_code_detect_flag = 0;
-    #ifdef STEREO
-    stereo_processing_flag = 0;
-    #endif /* STEREO */
-    printf("#g_");
+  frame_diff_flag = 0;
+  frame_diff2_flag = 0;
+  segmentation_flag = 0;
+  edge_detect_flag = 0;
+  horizon_detect_flag = 0;
+  obstacle_detect_flag = 0;
+  blob_display_flag = 0;
+  blob_display2_flag = 0;
+  qr_code_detect_flag = 0;
+  #ifdef STEREO
+  stereo_processing_flag = 0;
+  #endif /* STEREO */
+  printf("#g_");
 }
 
-void grab_frame() 
+void grab_frame()
 {
   unsigned int vect[16];
   int slope, intercept;
@@ -1256,7 +1294,7 @@ void grab_frame()
   if (invert_flag)
   {
     move_inverted((unsigned char *)DMA_BUF1, (unsigned char *)DMA_BUF2,  // grab and flip new frame
-        (unsigned char *)FRAME_BUF, imgWidth, imgHeight); 
+        (unsigned char *)FRAME_BUF, imgWidth, imgHeight);
   }
   else
   {
@@ -1266,7 +1304,7 @@ void grab_frame()
   
   if (frame_diff_flag)
   {
-    compute_frame_diff((unsigned char *)FRAME_BUF, 
+    compute_frame_diff((unsigned char *)FRAME_BUF,
             (unsigned char *)FRAME_BUF2, imgWidth, imgHeight);
   }
   else if (segmentation_flag)
@@ -1280,7 +1318,7 @@ void grab_frame()
   }
   else if (horizon_detect_flag)
   {
-    vhorizon((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh, 
+    vhorizon((unsigned char *)SPI_BUFFER1, (unsigned char *)FRAME_BUF, edge_thresh,
             16, &vect[0], &slope, &intercept, 5);
     addline((unsigned char *)FRAME_BUF, slope, intercept);
   }
@@ -1291,21 +1329,16 @@ void grab_frame()
   }
   else if (blob_display_flag)
   {
-    ix = vblob2((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, (unsigned char *)FRAME_BUF4, blob_display_num);
-//    if (ix > 7)  // only show 8 largest blobs
-//    {
-//      ix = 7;
-//    }
-    PacketBegin();
-
+    ix = vblob((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, blob_display_num);
+    // only show 8 largest blobs
+    if (ix > 7)
+    {
+      ix = 7;
+    }
     for (ii=0; ii<ix; ii++)
     {
-      printf("blob %02d: ", ii);
-      printf("%04d %03d %03d %03d %03d %03d %03d", blobcnt[ii], blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii], blobx[ii], bloby[ii]);
-      printf("\n");
       addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
     }
-    PacketEnd(true);
   }
   else if (qr_code_detect_flag)
   {
@@ -1323,6 +1356,31 @@ void grab_frame()
       QRValue[0] = 0x00;    // Clear out the overlay text string
     }
   }
+  else if (blob_display2_flag)
+  {
+    ix = vblob2((unsigned char *)FRAME_BUF, (unsigned char *)FRAME_BUF3, (unsigned char *)FRAME_BUF4, blob_display_num);
+//    if (ix > 7)  // only show 8 largest blobs
+//    {
+//      ix = 7;
+//    }
+    PacketBegin();
+
+    for (ii=0; ii<ix; ii++)
+    {
+      printf("blob %02d: ", ii);
+      printf("%04d %03d %03d %03d %03d %03d %03d", blobcnt[ii], blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii], blobx[ii], bloby[ii]);
+      printf("\n");
+      addbox((unsigned char *)FRAME_BUF, blobx1[ii], blobx2[ii], bloby1[ii], bloby2[ii]);
+    }
+    PacketEnd(true);
+  }
+  else if (frame_diff2_flag)
+  {
+    compute_frame_diff2((unsigned char *)FRAME_BUF,
+            (unsigned char *)FRAME_BUF2, imgWidth, imgHeight);
+  }
+
+
   ///// JUST FOR TESTING ////
   // I don't know why these next three lines are necessary. But right before going to Australia 
   // (6/24/2019) while adding the QR code functions, we had to move the BFin stack from the fast
@@ -1395,21 +1453,55 @@ void motion_vect80x64 () {
 }
 
 /*  compute frame difference between two frames 
-     U and V are computed by U1 + 128 - U2
-     Y is computed as abs(Y1 - Y2) 
-     fcur is current frame
-     fref is reference frame*/
-void compute_frame_diff(unsigned char *fcur, unsigned char *fref, int w1, int h1) {
-    int ix, ipix;
-    
-    ipix = w1*h1*2;
-    for (ix=0; ix<ipix; ix+=2) {
-        fcur[ix] = (unsigned char)((unsigned int)fcur[ix] - (unsigned int)fref[ix] + 128);
-        if (fcur[ix+1] < fref[ix+1])
-            fcur[ix+1] = fref[ix+1] - fcur[ix+1];
-        else
-            fcur[ix+1] = fcur[ix+1] - fref[ix+1];
+ *    U and V are computed by U1 + 128 - U2
+ *    Y is computed as abs(Y1 - Y2) 
+ *    fcur is current frame
+ *    fref is reference frame
+ */
+void compute_frame_diff(unsigned char *fcur, unsigned char *fref, int w1, int h1)
+{
+  int ix, ipix;
+  
+  ipix = w1*h1*2;
+  for (ix=0; ix<ipix; ix+=2)
+  {
+    fcur[ix] = (unsigned char)((unsigned int)fcur[ix] - (unsigned int)fref[ix] + 128);
+    if (fcur[ix+1] < fref[ix+1])
+    {
+      fcur[ix+1] = fref[ix+1] - fcur[ix+1];
     }
+    else
+    {
+      fcur[ix+1] = fcur[ix+1] - fref[ix+1];
+    }
+  }
+}
+
+/*  compute frame difference between two frames 
+ *    U and V are computed by U1 + 128 - U2
+ *    Y is computed as abs(Y1 - Y2) 
+ *    fcur is current frame
+ *    fref is reference frame
+ *
+ * Then use vblob2() to see the differences and put bounding boxes around them
+ */
+void compute_frame_diff2(unsigned char *fcur, unsigned char *fref, int w1, int h1)
+{
+  int ix, ipix;
+  
+  ipix = w1*h1*2;
+  for (ix=0; ix<ipix; ix+=2)
+  {
+    fcur[ix] = (unsigned char)((unsigned int)fcur[ix] - (unsigned int)fref[ix] + 128);
+    if (fcur[ix+1] < fref[ix+1])
+    {
+      fcur[ix+1] = fref[ix+1] - fcur[ix+1];
+    }
+    else
+    {
+      fcur[ix+1] = fcur[ix+1] - fref[ix+1];
+    }
+  }
 }
 
 /* JPEG compress and send frame captured by grab_frame()

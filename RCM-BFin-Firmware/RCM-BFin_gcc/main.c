@@ -1086,6 +1086,12 @@ void ProcessCommands(uint8_t CharIn)
                 case '7':
                     enable_qr_code_detection();
                     break;
+                case '8':
+                    enable_blob2_display();
+                    break;
+                case '9':
+                    enable_frame2_diff();
+                    break;
                 default:  // no match - turn them all off
                     disable_frame_diff();
                     break;
