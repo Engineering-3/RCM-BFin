@@ -48,82 +48,82 @@
  *
  */
  
-#include <blackfin.h>
-#include <cdefBF537.h>
-#include <stdio.h>
-#include <gcc.h>
+/// #include <blackfin.h>
+/// #include <cdefBF537.h>
+/// #include <stdio.h>
+/// #include <gcc.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "config.h"
+/// #include "config.h"
 #include "system.h"
-#include "rcm-bfin.h"
-#include "gps.h"
-#include "myfunc.h"
-#include "xmodem.h"
-#include "hokuyo.h"
-#include "intuart.h"
-#include "sysinit.h"
-#include "cache.h"
-#include "options.h"
-#include "edit.h"
-#include "streaming.h"
-#include "i2c.h"
+/// #include "rcm-bfin.h"
+/// #include "gps.h"
+/// #include "myfunc.h"
+/// #include "xmodem.h"
+/// #include "hokuyo.h"
+/// #include "intuart.h"
+/// #include "sysinit.h"
+/// #include "cache.h"
+/// #include "options.h"
+/// #include "edit.h"
+/// #include "streaming.h"
+/// #include "i2c.h"
 
-#ifdef STEREO
-#include "stereo.h"
-#endif
+/// #ifdef STEREO
+/// #include "stereo.h"
+/// #endif
 
 // This should not be here - where is a better place?
-extern uint32_t CounterStreamVideoTimout;
-uint32_t TimeBetweenStreamingFramesMS;
+/// extern uint32_t CounterStreamVideoTimout;
+/// uint32_t TimeBetweenStreamingFramesMS;
 
 // Local function prototypes
-static void ProcessCommands(unsigned char CharIn);
- int superdebug = 0;
+/// static void ProcessCommands(unsigned char CharIn);
+///  int superdebug = 0;
 
 int main() 
 {
-    init_io(); // Initialize LED, GPIO, serial flow & lasers.
+///     init_io(); // Initialize LED, GPIO, serial flow & lasers.
 
     // We do this just to test all of the debug I/O pins - normally these would
     // be shut off by undefined #debug in config.h
-    DEBUG_INIT()
-    DEBUG_H15_LOW()
-    DEBUG_H14_LOW()
-    DEBUG_H13_LOW()
-    DEBUG_H12_LOW()
-    DEBUG_H11_LOW()
-    DEBUG_H10_LOW()
-    DEBUG_H9_LOW()
-    DEBUG_H8_LOW()
-    DEBUG_H15_HIGH()
-    DEBUG_H14_HIGH()
-    DEBUG_H13_HIGH()
-    DEBUG_H12_HIGH()
-    DEBUG_H11_HIGH()
-    DEBUG_H10_HIGH()
-    DEBUG_H9_HIGH()
-    DEBUG_H8_HIGH()
-    DEBUG_H15_LOW()
-    DEBUG_H14_LOW()
-    DEBUG_H13_LOW()
-    DEBUG_H12_LOW()
-    DEBUG_H11_LOW()
-    DEBUG_H10_LOW()
-    DEBUG_H9_LOW()
-    DEBUG_H8_LOW()
+///     DEBUG_INIT()
+///     DEBUG_H15_LOW()
+///     DEBUG_H14_LOW()
+///     DEBUG_H13_LOW()
+///     DEBUG_H12_LOW()
+///     DEBUG_H11_LOW()
+///     DEBUG_H10_LOW()
+///     DEBUG_H9_LOW()
+///     DEBUG_H8_LOW()
+///     DEBUG_H15_HIGH()
+///     DEBUG_H14_HIGH()
+///     DEBUG_H13_HIGH()
+///     DEBUG_H12_HIGH()
+///     DEBUG_H11_HIGH()
+///     DEBUG_H10_HIGH()
+///     DEBUG_H9_HIGH()
+///     DEBUG_H8_HIGH()
+///     DEBUG_H15_LOW()
+///     DEBUG_H14_LOW()
+///     DEBUG_H13_LOW()
+///     DEBUG_H12_LOW()
+///     DEBUG_H11_LOW()
+///     DEBUG_H10_LOW()
+///     DEBUG_H9_LOW()
+///     DEBUG_H8_LOW()
 
     // In init.c, LED1 is on and LED2 is off. Here we 
     // turn 1 off and 0 on.
-    LED1_OFF();
-    LED0_ON();
+///     LED1_OFF();
+///     LED0_ON();
 
-    init_program_clocks();
+///     init_program_clocks();
 
     // NOTE: You must run with cache on if you want serial receive not to drop bytes (i.e. XMODEM)
-    cache_init();
+///     cache_init();
 
-    init_uart0(UART0_BAUDRATE);
+///     init_uart0(UART0_BAUDRATE);
 
 #ifdef UART1_DEBUG_ENABLE
     init_uart1(115200);
@@ -148,19 +148,19 @@ int main()
     //superdebug = 0;
 #endif
 
-    InitI2C();
-    InitTMR0();
-    Init_Interrupts();
-    uart0TurnOnInterrupts();
-    initRTC();
-    initTMR4();
-    init_colors();
-    disable_failsafe();
-    clear_sdram(); // Clears from 0x00200000 to 0x02000000, at about 235 MB/s (max for this part)
-    camera_setup(); // Sets up the camera to 320x240
+///     InitI2C();
+///     InitTMR0();
+///     Init_Interrupts();
+///     uart0TurnOnInterrupts();
+///     initRTC();
+///     initTMR4();
+///     init_colors();
+///     disable_failsafe();
+///     clear_sdram(); // Clears from 0x00200000 to 0x02000000, at about 235 MB/s (max for this part)
+///     camera_setup(); // Sets up the camera to 320x240
     
-    PicoCRunning = false;
-    EditorRunning = false;
+///     PicoCRunning = false;
+///     EditorRunning = false;
     
     #ifdef STEREO
     if (master)
@@ -169,22 +169,22 @@ int main()
     if (master)
         check_for_autorun();
     #else
-    serial_out_version();
-    PacketBegin();
-    check_for_autorun(); // (58ms)
-    PacketEnd(true);
+///     serial_out_version();
+///     PacketBegin();
+///     check_for_autorun(); // (58ms)
+///     PacketEnd(true);
     
     #endif /* STEREO */
 
     // Initialize options
-    SetOption(OPT_STREAM_VIDEO_ON, false);      // Video streaming off
-    SetOption(OPT_VIDEO_TEST_MODE_1, false);    // Video test mode 1 off
-    SetOption(OPT_PACKET_MODE, true);           // Packet mode set to on
-    TimeBetweenStreamingFramesMS = 250;         // Default to 4fps in streaming mode
+///     SetOption(OPT_STREAM_VIDEO_ON, false);      // Video streaming off
+///     SetOption(OPT_VIDEO_TEST_MODE_1, false);    // Video test mode 1 off
+///     SetOption(OPT_PACKET_MODE, true);           // Packet mode set to on
+///     TimeBetweenStreamingFramesMS = 250;         // Default to 4fps in streaming mode
 
     // Turning both LEDs on shows that the boot process has completed.
-    LED1_ON();
-    LED0_ON();
+///     LED1_ON();
+///     LED0_ON();
         
     while (1) 
     {
@@ -200,6 +200,7 @@ int main()
 void MainLoop(bool CalledFromPicoC)
 {
     uint8_t ch;
+#if 0
     // Check to see if a new command has come in from the PC (packet or not)
     while (GetPacketCommand(&ch)) 
     {
@@ -254,8 +255,10 @@ void MainLoop(bool CalledFromPicoC)
 
     // Handle the LED state machine from the main loop
     run_leds();
+#endif
 }
 
+#if 0
 
 // We have a high priority command. This function is called
 // within the RX interrupt handler, to handle these high
@@ -1184,3 +1187,4 @@ void ProcessCommands(uint8_t CharIn)
             break;
     }
 }
+#endif

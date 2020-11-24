@@ -34,14 +34,14 @@
 //--------------------------------------------------------------------------//
 // Header files
 //--------------------------------------------------------------------------//
-#include <blackfin.h>
-#include <cdefBF537.h>
+/// #include <blackfin.h>
+/// #include <cdefBF537.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "config.h"
-#include "intuart.h"
+/// #include "config.h"
+/// #include "intuart.h"
 
 /*****************************************************************
    System wide defines
@@ -211,6 +211,7 @@
 
 // Set up the VCO and SCLK values to give us the best baud rate match possible
 // for the UARTs.
+#if 0
 #if defined(ROUTERBOARD_RADIO_2500000)
     #define VCO_MULTIPLIER      20
     #define SCLK_DIVIDER        4
@@ -225,6 +226,7 @@
     #define SCLK_DIVIDER        4
 #else
     #error You need to define a radio type in config.h
+#endif
 #endif
 
 // MSEL[5:0] = 010110 means VCO = CLKIN * 22
@@ -282,12 +284,12 @@ extern volatile uint32_t PicoCDelay;
 // System wide function prototypes
 //--------------------------------------------------------------------------//
 // in file interrupts.c
-void Timer0_ISR () __attribute__((interrupt_handler, nesting));
+/// void Timer0_ISR () __attribute__((interrupt_handler, nesting));
 //void Timer0_ISR () __attribute__((interrupt_handler));
 
 void interrupts_init(void);
 void exception_init(void);
-void hang(void) __attribute__((noreturn));
+/// void hang(void) __attribute__((noreturn));
 int picoc(char *SourceStr, unsigned char AllowBackgroundMode);
 void httpd_request(char firstChar);
 void hang(void);
