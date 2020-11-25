@@ -1977,7 +1977,7 @@ int32_t PacketNewByteRX(uint8_t Byte)
 
 static int32_t sockfd;
 static int32_t newsockfd;
-static int32_t portno = 100001;
+static int32_t portno = 10001;
 static int32_t clilen;
 static char buffer[256];
 static int32_t n;
