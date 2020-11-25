@@ -33,7 +33,7 @@
 #  picoc/platform/library_surveyor.o picoc/platform.o picoc/platform/platform_surveyor.o \
 #  picoc/include.o interrupts.o sysinit.o system.o \
 #  r8x8dct.o motionvect.o cache.o basiccrt.o options.o streaming.o 
-SOURCES = main.c
+SOURCES = main.c packet.c
 OBJECTS = $(SOURCES:%.c=%.o)
 
 TARGET=rcm-pi

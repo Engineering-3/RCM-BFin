@@ -56,6 +56,7 @@
 #include <stdint.h>
 /// #include "config.h"
 #include "system.h"
+#include "packet.h"
 /// #include "rcm-bfin.h"
 /// #include "gps.h"
 /// #include "myfunc.h"
@@ -81,7 +82,7 @@
 /// static void ProcessCommands(unsigned char CharIn);
 ///  int superdebug = 0;
 
-int main() 
+int main(int argc, char *argv[])
 {
 ///     init_io(); // Initialize LED, GPIO, serial flow & lasers.
 
@@ -125,29 +126,6 @@ int main()
 
 ///     init_uart0(UART0_BAUDRATE);
 
-#ifdef UART1_DEBUG_ENABLE
-    init_uart1(115200);
-    uart1SendString((unsigned char *)"uart1 configured \n\r");
-    //superdebug = 1;
-    //tmp_buf[0] = 0xFF;
-    //tmp_buf[1] = 0xFF;
-    //tmp_buf[2] = 0xFF;
-    //tmp_buf[3] = 0xFF;
-    //tmp_buf[4] = 0x54;
-    //tmp_buf[5] = 0x80;
-    //tmp_buf[6] = 0x00;
-    //tmp_buf[7] = 0x00;
-    //tmp_buf[8] = 0x00;
-    //tmp_buf[9] = 0x2E;
-    //tmp_buf[10] = 0x00;
-    //tmp_buf[11] = 0x02;
-    //tmp_buf[12] = 0x23;
-    //tmp_buf[13] = 0x54;
-    //sprintf(out_buf, "CRC = %02X\n\r", crc16_ccitt(tmp_buf, 14));
-    //uart1SendString(out_buf);
-    //superdebug = 0;
-#endif
-
 ///     InitI2C();
 ///     InitTMR0();
 ///     Init_Interrupts();
@@ -161,21 +139,17 @@ int main()
     
 ///     PicoCRunning = false;
 ///     EditorRunning = false;
-    
-    #ifdef STEREO
-    if (master)
-        serial_out_version();
-    init_svs();
-    if (master)
-        check_for_autorun();
-    #else
+
+    if (packet_Init() == false)
+    {
+        return 0;
+    }
+
 ///     serial_out_version();
 ///     PacketBegin();
 ///     check_for_autorun(); // (58ms)
 ///     PacketEnd(true);
     
-    #endif /* STEREO */
-
     // Initialize options
 ///     SetOption(OPT_STREAM_VIDEO_ON, false);      // Video streaming off
 ///     SetOption(OPT_VIDEO_TEST_MODE_1, false);    // Video test mode 1 off
@@ -190,6 +164,8 @@ int main()
     {
         MainLoop(false);
     }
+    
+    return 0;
 }
 
 // This is the main RCM-Bfin firmware loop. Here we check to see if we've gotten
@@ -200,24 +176,25 @@ int main()
 void MainLoop(bool CalledFromPicoC)
 {
     uint8_t ch;
-#if 0
     // Check to see if a new command has come in from the PC (packet or not)
     while (GetPacketCommand(&ch)) 
     {
-        if (CalledFromPicoC)
-        {
-            ReceiveEnd();
-        }
-        ReceiveBegin();
+ ///       if (CalledFromPicoC)
+ ///       {
+ ///           ReceiveEnd();
+ ///       }
+ ///       ReceiveBegin();
         // This function does all firmware command processing
-        ProcessCommands(ch);
-        reset_failsafe_clock();
-        ReceiveEnd();
-        if (CalledFromPicoC)
-        {
-            ReceiveBegin();
-        }
+///        ProcessCommands(ch);
+///        reset_failsafe_clock();
+///        ReceiveEnd();
+///        if (CalledFromPicoC)
+///        {
+///            ReceiveBegin();
+///        }
     }
+
+#if 0
 
     // Each time through the loop, if we're supposed to stream video,
     // check to see if it's time to send it out. If so, do so.
